@@ -1,50 +1,30 @@
-# React + TypeScript + Vite
+# React Components - PRACTICE AND INTERVIEW QUESTIONS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## React Repo
 
-Currently, two official plugins are available:
+A repository filled with React components and interview question solutions.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**GOAL:** Build and practice React components, improve my TypeScript skills, and add solutions to React-related interview questions.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## How It's Made:
 
-- Configure the top-level `parserOptions` property like this:
+**Tech used:** Vite, React, TypeScript
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Starting October 24, I’ll be using this repo to build components and answer interview questions, saving my progress for future reference.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+---
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Optimizations:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+I will regularly refactor and optimize components for efficiency, readability, and best practices.
+I also really love the [Airbnb React/JSX Style Guide](https://github.com/airbnb/javascript/tree/master/react), which I follow to ensure best practices.
+
+---
+
+## Lessons Learned:
+
+React is fun! I love React! When I first learned it on Scrimba, I thought it was so cool how you can create reusable components, and JSX is so fun to write and easy to use.
+
+This repository allows me to test what I've learned, practice my skills, and be ready for interviews. Not every solution will be perfect at first, but that’s part of the process. I’m excited to track my growth and improve along the way.
