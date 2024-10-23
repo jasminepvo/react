@@ -2,7 +2,7 @@
 
 ## React Repo
 
-A repository filled with React components and interview question solutions.
+A repository filled with React components and interview question solutions. Live site: [react-jasminepvo.netlify.app](https://react-jasminepvo.netlify.app)
 
 **GOAL:** Build and practice React components, improve my TypeScript skills, and add solutions to React-related interview questions.
 
