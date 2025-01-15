@@ -1,4 +1,5 @@
 import { Counter } from "./components/Counter";
+import { Hangman } from "./components/Hangman";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Counter />
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />
+      <Hangman />
     </div>
   );
 }
