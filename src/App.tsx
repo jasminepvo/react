@@ -21,7 +21,7 @@ function App() {
       <TicTacToe /> */}
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />
-      <DatePicker value={date} label="Payment Date" />
+      <DatePicker label="Payment Date" placeholder="MM/DD/YYYY" disclaimer="In order for your payment to be credited today, please select today's date as the payment date and submit your payment before 11:59 PM EST. Please note that payments received after 11:59 PM EST will be credited the next business day." />
     </div>
   );
 }

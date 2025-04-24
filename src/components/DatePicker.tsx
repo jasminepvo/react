@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { format } from "date-fns";
+import { useRef, useState, useEffect } from "react";
+import { format, parse, isValid } from "date-fns";
 import * as Popover from "@radix-ui/react-popover";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
@@ -12,28 +12,79 @@ export interface DatePickerProps {
   placeholder?: string;
   min?: string;
   max?: string;
+  disclaimer?: string;
   // ...add more as needed
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
   value,
   onChange,
-  label = "Payment Date",
+  label,
   placeholder = "MM/DD/YYYY",
   min,
   max,
+  disclaimer,
 }) => {
   const [internalDate, setInternalDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
+  const [tempSelectedDate, setTempSelectedDate] = useState<Date | undefined>(
+    undefined
+  );
+  const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isControlled = value !== undefined;
   const selectedDate = isControlled ? value : internalDate;
 
-  const handleDateChange = (date: Date | undefined) => {
-    if (!isControlled) setInternalDate(date || null);
-    onChange?.(date || null);
+  // Initialize input value when selected date changes
+  useEffect(() => {
+    if (selectedDate) {
+      setInputValue(format(selectedDate, "MM/dd/yyyy"));
+    }
+  }, [selectedDate]);
+
+  const handleCalendarSelect = (date: Date | undefined) => {
+    setTempSelectedDate(date);
+  };
+
+  const handleConfirmDate = () => {
+    const dateToSave = tempSelectedDate || null;
+    if (!isControlled) setInternalDate(dateToSave);
+    onChange?.(dateToSave);
+
+    if (dateToSave) {
+      setInputValue(format(dateToSave, "MM/dd/yyyy"));
+    }
+
     setOpen(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+
+    // Remove any non-digit characters except for slashes
+    value = value.replace(/[^\d/]/g, "");
+
+    // Format as user types: MM/DD/YYYY
+    if (value.length === 2 && !inputValue.includes("/")) {
+      value += "/";
+    } else if (value.length === 5 && inputValue.length === 4) {
+      value += "/";
+    }
+
+    // Prevent more than 10 characters (MM/DD/YYYY)
+    if (value.length <= 10) {
+      setInputValue(value);
+
+      // Try to parse the date if we have enough characters
+      if (value.length === 10) {
+        const parsedDate = parse(value, "MM/dd/yyyy", new Date());
+        if (isValid(parsedDate)) {
+          if (!isControlled) setInternalDate(parsedDate);
+          onChange?.(parsedDate);
+        }
+      }
+    }
   };
 
   return (
@@ -52,9 +103,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             type="text"
             id="date-input"
             className="w-full bg-transparent focus:outline-none text-brown"
-            value={selectedDate ? format(selectedDate, "MM/dd/yyyy") : ""}
+            value={inputValue}
+            onChange={handleInputChange}
             placeholder={placeholder}
-            readOnly
             ref={inputRef}
             min={min}
             max={max}
@@ -76,8 +127,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             <Popover.Portal>
               <Popover.Content className="w-[366px] h-[536px] rounded-2xl bg-cream p-6 shadow-lg">
                 <Calendar
-                  selected={selectedDate || undefined}
-                  onSelect={handleDateChange}
+                  selected={tempSelectedDate || selectedDate || undefined}
+                  onSelect={handleCalendarSelect}
                   showOutsideDays={true}
                 />
                 {/* Legend */}
@@ -91,11 +142,13 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                     <span className="text-sm">Payment due</span>
                   </div>
                 </div>
-                <p className="text-xs text-taupe">
-                  In order for your payment to be credited today, please select today's date as the payment date and submit your payment before 11:59 PM EST. Please note that payments received after 11:59 PM EST will be credited the next business day.
-                </p>
+                <p className="text-xs text-taupe">{disclaimer}</p>
                 <div className="absolute bottom-6 right-6">
-                  <button type="button" className="w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush">
+                  <button
+                    type="button"
+                    className="w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush"
+                    onClick={handleConfirmDate}
+                  >
                     Select Date
                   </button>
                 </div>
