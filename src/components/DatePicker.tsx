@@ -19,6 +19,7 @@ export interface DatePickerProps {
   disclaimer?: string;
   disabled?: Matcher | Matcher[];
   required?: boolean;
+  paymentDueDate?: Date;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
@@ -32,6 +33,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   disclaimer,
   disabled,
   required,
+  paymentDueDate,
 }) => {
   const [internalValue, setInternalValue] = useState<SelectionValue>(null);
   const [open, setOpen] = useState(false);
@@ -179,6 +181,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                   showOutsideDays={true}
                   disabled={disabled}
                   required={required}
+                  paymentDueDate={paymentDueDate}
                 />
                 {/* Legend */}
                 <div className="my-6 flex items-center gap-6">
@@ -186,10 +189,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                     <span className="inline-block h-4 w-4 rounded bg-blush"></span>
                     <span className="text-sm">Selected payment date</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="inline-block h-4 w-4 rounded border border-blush"></span>
-                    <span className="text-sm">Payment due</span>
-                  </div>
+                  {paymentDueDate && (
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block h-4 w-4 rounded border-2 border-blush"></span>
+                      <span className="text-sm">Payment due</span>
+                    </div>
+                  )}
                 </div>
                 <p className="text-xs text-taupe">{disclaimer}</p>
                 <div className="absolute bottom-6 right-6">

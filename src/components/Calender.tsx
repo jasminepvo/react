@@ -10,6 +10,7 @@ type CalendarProps = {
   showOutsideDays?: boolean;
   disabled?: Matcher | Matcher[];
   required?: boolean;
+  paymentDueDate?: Date;
 };
 
 export const Calendar = ({
@@ -20,6 +21,7 @@ export const Calendar = ({
   showOutsideDays = true,
   disabled,
   required,
+  paymentDueDate,
   ...props
 }: CalendarProps) => {
   const baseStyles = {
@@ -38,7 +40,16 @@ export const Calendar = ({
     outside: "opacity-50",
     today: "text-blush font-bold!",
     selected: "bg-blush text-taupe hover:bg-taupe rounded-sm",
+    range_start: "bg-blush text-cream rounded-l-sm",
+    range_end: "bg-blush text-cream rounded-r-sm",
+    range_middle: "bg-blush/50 text-brown",
     ...classNames,
+  };
+
+  // Custom modifiers for the payment due date
+  const modifiers = paymentDueDate ? { paymentDue: paymentDueDate } : {};
+  const modifiersClassNames = {
+    paymentDue: "border-2 border-blush rounded-sm",
   };
 
   if (mode === "single") {
@@ -51,6 +62,8 @@ export const Calendar = ({
         disabled={disabled}
         required={required}
         classNames={baseStyles}
+        modifiers={modifiers}
+        modifiersClassNames={modifiersClassNames}
         {...props}
       />
     );
@@ -66,6 +79,8 @@ export const Calendar = ({
         disabled={disabled}
         required={required}
         classNames={baseStyles}
+        modifiers={modifiers}
+        modifiersClassNames={modifiersClassNames}
         {...props}
       />
     );
@@ -81,6 +96,8 @@ export const Calendar = ({
       disabled={disabled}
       required={required}
       classNames={baseStyles}
+      modifiers={modifiers}
+      modifiersClassNames={modifiersClassNames}
       {...props}
     />
   );

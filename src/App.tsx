@@ -13,6 +13,10 @@ function App() {
   const [multipleDates, setMultipleDates] = useState<Date[]>([]);
   const [dateRange, setDateRange] = useState<DateRange | null>(null);
 
+  // For demonstration, we'll set a default due date 7 days from now
+  const paymentDueDate = new Date();
+  paymentDueDate.setDate(paymentDueDate.getDate() + 7);
+
   // Type-safe onChange handlers with type assertions
   const handleSingleDateChange = (value: AnySelectionValue) => {
     if (value === null || value instanceof Date) {
@@ -47,6 +51,7 @@ function App() {
       <TicTacToe /> */}
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />
+
       <h2 className="text-2xl font-bold text-brown mb-4">Single Date Picker</h2>
       <DatePicker
         mode="single"
@@ -55,6 +60,7 @@ function App() {
         label="Payment Date"
         placeholder="MM/DD/YYYY"
         disclaimer="In order for your payment to be credited today, please select today's date as the payment date and submit your payment before 11:59 PM EST."
+        paymentDueDate={paymentDueDate || undefined}
       />
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />
@@ -68,6 +74,7 @@ function App() {
         label="Select Multiple Dates"
         placeholder="Select dates"
         disclaimer="Select all the dates you want to include."
+        paymentDueDate={paymentDueDate || undefined}
       />
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />
@@ -80,6 +87,7 @@ function App() {
         label="Select Date Range"
         placeholder="Select date range"
         disclaimer="Select the start and end dates for your date range."
+        paymentDueDate={paymentDueDate || undefined}
       />
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />
