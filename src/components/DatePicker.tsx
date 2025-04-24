@@ -4,19 +4,25 @@ import * as Popover from "@radix-ui/react-popover";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { Calendar } from "./Calender";
+import { Matcher, DateRange } from "react-day-picker";
+
+type SelectionValue = Date | Date[] | DateRange | null;
 
 export interface DatePickerProps {
-  value?: Date | null;
-  onChange?: (date: Date | null) => void;
+  mode?: "single" | "multiple" | "range";
+  value?: SelectionValue;
+  onChange?: (value: SelectionValue) => void;
   label?: string;
   placeholder?: string;
   min?: string;
   max?: string;
   disclaimer?: string;
-  // ...add more as needed
+  disabled?: Matcher | Matcher[];
+  required?: boolean;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
+  mode = "single",
   value,
   onChange,
   label,
@@ -24,43 +30,82 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   min,
   max,
   disclaimer,
+  disabled,
+  required,
 }) => {
-  const [internalDate, setInternalDate] = useState<Date | null>(null);
+  const [internalValue, setInternalValue] = useState<SelectionValue>(null);
   const [open, setOpen] = useState(false);
-  const [tempSelectedDate, setTempSelectedDate] = useState<Date | undefined>(
-    undefined
-  );
+  const [tempSelectedValue, setTempSelectedValue] = useState<
+    Date | Date[] | DateRange | undefined
+  >(undefined);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isControlled = value !== undefined;
-  const selectedDate = isControlled ? value : internalDate;
+  const selectedValue = isControlled ? value : internalValue;
+
+  // Format for display
+  const formatSelectedValue = () => {
+    if (!selectedValue) return "";
+
+    if (mode === "single" && selectedValue instanceof Date) {
+      return format(selectedValue, "MM/dd/yyyy");
+    } else if (mode === "multiple" && Array.isArray(selectedValue)) {
+      return selectedValue.length > 0
+        ? `${selectedValue.length} dates selected`
+        : "";
+    } else if (
+      mode === "range" &&
+      selectedValue &&
+      typeof selectedValue === "object" &&
+      "from" in selectedValue
+    ) {
+      if (selectedValue.from) {
+        const fromStr = format(selectedValue.from, "MM/dd/yyyy");
+        if (selectedValue.to) {
+          const toStr = format(selectedValue.to, "MM/dd/yyyy");
+          return `${fromStr} - ${toStr}`;
+        }
+        return `${fromStr} - ...`;
+      }
+    }
+    return "";
+  };
 
   // Initialize input value when selected date changes
   useEffect(() => {
-    if (selectedDate) {
-      setInputValue(format(selectedDate, "MM/dd/yyyy"));
-    }
-  }, [selectedDate]);
+    setInputValue(formatSelectedValue());
+  }, [selectedValue]);
 
-  const handleCalendarSelect = (date: Date | undefined) => {
-    setTempSelectedDate(date);
+  const handleCalendarSelect = (
+    value: Date | Date[] | DateRange | undefined
+  ) => {
+    setTempSelectedValue(value);
+
+    // For single mode, we can also auto-confirm
+    if (mode === "single" && value instanceof Date) {
+      handleConfirmDate();
+    }
   };
 
   const handleConfirmDate = () => {
-    const dateToSave = tempSelectedDate || null;
-    if (!isControlled) setInternalDate(dateToSave);
-    onChange?.(dateToSave);
+    const valueToSave =
+      tempSelectedValue === undefined ? null : tempSelectedValue;
 
-    if (dateToSave) {
-      setInputValue(format(dateToSave, "MM/dd/yyyy"));
-    }
+    if (!isControlled) setInternalValue(valueToSave as SelectionValue);
+    onChange?.(valueToSave as SelectionValue);
 
+    setInputValue(formatSelectedValue());
     setOpen(false);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
+
+    if (mode !== "single") {
+      // For multiple and range, just show the text field as read-only
+      return;
+    }
 
     // Remove any non-digit characters except for slashes
     value = value.replace(/[^\d/]/g, "");
@@ -80,7 +125,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       if (value.length === 10) {
         const parsedDate = parse(value, "MM/dd/yyyy", new Date());
         if (isValid(parsedDate)) {
-          if (!isControlled) setInternalDate(parsedDate);
+          if (!isControlled) setInternalValue(parsedDate);
           onChange?.(parsedDate);
         }
       }
@@ -109,6 +154,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             ref={inputRef}
             min={min}
             max={max}
+            readOnly={mode !== "single"}
           />
 
           <Popover.Root open={open} onOpenChange={setOpen}>
@@ -127,9 +173,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             <Popover.Portal>
               <Popover.Content className="w-[366px] h-[536px] rounded-2xl bg-cream p-6 shadow-lg">
                 <Calendar
-                  selected={tempSelectedDate || selectedDate || undefined}
+                  mode={mode}
+                  selected={tempSelectedValue || selectedValue || undefined}
                   onSelect={handleCalendarSelect}
                   showOutsideDays={true}
+                  disabled={disabled}
+                  required={required}
                 />
                 {/* Legend */}
                 <div className="my-6 flex items-center gap-6">
@@ -150,6 +199,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                     onClick={handleConfirmDate}
                   >
                     Select Date
+                    {mode === "multiple"
+                      ? "s"
+                      : mode === "range"
+                      ? " Range"
+                      : ""}
                   </button>
                 </div>
               </Popover.Content>
