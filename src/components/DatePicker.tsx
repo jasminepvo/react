@@ -63,38 +63,39 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           <Popover.Root open={open} onOpenChange={setOpen}>
             <Popover.Trigger asChild>
               <button
-                className="absolute -top-1/r right-3"
+                className="absolute -top-1/4 right-3"
                 type="button"
                 aria-label="Open calendar"
               >
                 <FontAwesomeIcon
                   icon={faCalendarDays}
-                  className="h-[20px] w-[20px] text-blush"
+                  className="h-[20px] w-[17.5px] text-blush"
                 />
               </button>
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="w-[300px] rounded-lg border border-gray bg-cream p-4 shadow-md">
+              <Popover.Content className="w-[366px] h-[536px] rounded-2xl bg-cream p-6 shadow-lg">
                 <Calendar
                   selected={selectedDate || undefined}
                   onSelect={handleDateChange}
+                  showOutsideDays={true}
                 />
-                <div className="mt-6 mb-4 flex items-center gap-6">
+                {/* Legend */}
+                <div className="my-6 flex items-center gap-6">
                   <div className="flex items-center gap-2">
                     <span className="inline-block h-4 w-4 rounded bg-blush"></span>
-                    <span className="text-taupe">Selected payment date</span>
+                    <span className="text-sm">Selected payment date</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="inline-block h-4 w-4 rounded border border-gray"></span>
-                    <span className="text-taupe">Payment due</span>
+                    <span className="inline-block h-4 w-4 rounded border border-blush"></span>
+                    <span className="text-sm">Payment due</span>
                   </div>
                 </div>
                 <p className="text-xs text-taupe">
-                  The payment date is the date of payment. The payment due date
-                  is the date of payment.
+                  In order for your payment to be credited today, please select today's date as the payment date and submit your payment before 11:59 PM EST. Please note that payments received after 11:59 PM EST will be credited the next business day.
                 </p>
-                <div className="sticky bottom-0 bg-cream p-4">
-                  <button className="w-full rounded-md bg-blush px-4 py-2 text-cream hover:bg-brown">
+                <div className="absolute bottom-6 right-6">
+                  <button type="button" className="w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush">
                     Select Date
                   </button>
                 </div>

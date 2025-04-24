@@ -18,10 +18,10 @@ function App() {
       <Hangman />
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />
-      <TicTacToe />
+      <TicTacToe /> */}
       <hr className="border-t border-gray-300 w-full my-4" />
-      <hr className="border-t border-gray-300 w-full my-4" /> */}
-      <DatePicker value={date} label="My Date" />
+      <hr className="border-t border-gray-300 w-full my-4" />
+      <DatePicker value={date} label="Payment Date" />
     </div>
   );
 }
