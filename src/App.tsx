@@ -17,6 +17,14 @@ function App() {
   const paymentDueDate = new Date();
   paymentDueDate.setDate(paymentDueDate.getDate() + 7);
 
+  // For the Single Date Picker, add minDate and maxDate props to demonstrate the range constraint
+  // Set minDate to 7 days ago and maxDate to 30 days from now
+  const today = new Date();
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(today.getDate() - 7);
+  const thirtyDaysFromNow = new Date(today);
+  thirtyDaysFromNow.setDate(today.getDate() + 30);
+
   // Type-safe onChange handlers with type assertions
   const handleSingleDateChange = (value: AnySelectionValue) => {
     if (value === null || value instanceof Date) {
@@ -60,7 +68,11 @@ function App() {
         label="Payment Date"
         placeholder="MM/DD/YYYY"
         disclaimer="In order for your payment to be credited today, please select today's date as the payment date and submit your payment before 11:59 PM EST."
-        paymentDueDate={paymentDueDate || undefined}
+        paymentDueDate={new Date(2025, 3, 10)}
+        minDate={new Date(2025, 0, 1)}
+        maxDate={new Date(2025, 11, 31)}
+        errorMessage="Please select a date within the current year"
+        required={false}
       />
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />

@@ -2,7 +2,10 @@ import { useRef, useState, useEffect } from "react";
 import { format, parse, isValid } from "date-fns";
 import * as Popover from "@radix-ui/react-popover";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendarDays,
+  faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { Calendar } from "./Calender";
 import { Matcher, DateRange } from "react-day-picker";
 
@@ -14,26 +17,28 @@ export interface DatePickerProps {
   onChange?: (value: SelectionValue) => void;
   label?: string;
   placeholder?: string;
-  min?: string;
-  max?: string;
   disclaimer?: string;
   disabled?: Matcher | Matcher[];
   required?: boolean;
   paymentDueDate?: Date;
+  minDate?: Date;
+  maxDate?: Date;
+  errorMessage?: string;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
-  mode = "single",
+  mode,
   value,
   onChange,
   label,
-  placeholder = "MM/DD/YYYY",
-  min,
-  max,
+  placeholder,
   disclaimer,
   disabled,
   required,
   paymentDueDate,
+  minDate,
+  maxDate,
+  errorMessage,
 }) => {
   const [internalValue, setInternalValue] = useState<SelectionValue>(null);
   const [open, setOpen] = useState(false);
@@ -41,10 +46,32 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     Date | Date[] | DateRange | undefined
   >(undefined);
   const [inputValue, setInputValue] = useState("");
+  const [error, setError] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isControlled = value !== undefined;
   const selectedValue = isControlled ? value : internalValue;
+
+  // Validate required field
+  useEffect(() => {
+    if (required) {
+      if (mode === "single" && !selectedValue) {
+        setError(errorMessage || "This field is required");
+      } else if (
+        mode === "multiple" &&
+        (!selectedValue || (selectedValue as Date[]).length === 0)
+      ) {
+        setError(errorMessage || "At least one date is required");
+      } else if (
+        mode === "range" &&
+        (!selectedValue || !(selectedValue as DateRange).from)
+      ) {
+        setError(errorMessage || "A date range is required");
+      } else {
+        setError("");
+      }
+    }
+  }, [required, selectedValue, mode, errorMessage]);
 
   // Format for display
   const formatSelectedValue = () => {
@@ -83,9 +110,24 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     value: Date | Date[] | DateRange | undefined
   ) => {
     setTempSelectedValue(value);
+    setError(""); // Clear any previous errors
 
-    // For single mode, we can also auto-confirm
+    // For single mode, validate the date immediately
     if (mode === "single" && value instanceof Date) {
+      if (minDate && value < minDate) {
+        setError(
+          errorMessage ||
+            `Date must be on or after ${format(minDate, "MM/dd/yyyy")}`
+        );
+        return;
+      }
+      if (maxDate && value > maxDate) {
+        setError(
+          errorMessage ||
+            `Date must be on or before ${format(maxDate, "MM/dd/yyyy")}`
+        );
+        return;
+      }
       handleConfirmDate();
     }
   };
@@ -103,6 +145,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
+    setError(""); // Clear any previous errors
 
     if (mode !== "single") {
       // For multiple and range, just show the text field as read-only
@@ -127,6 +170,21 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       if (value.length === 10) {
         const parsedDate = parse(value, "MM/dd/yyyy", new Date());
         if (isValid(parsedDate)) {
+          // Check if the parsed date is within min/max constraints
+          if (minDate && parsedDate < minDate) {
+            setError(
+              errorMessage ||
+                `Date must be on or after ${format(minDate, "MM/dd/yyyy")}`
+            );
+            return;
+          }
+          if (maxDate && parsedDate > maxDate) {
+            setError(
+              errorMessage ||
+                `Date must be on or before ${format(maxDate, "MM/dd/yyyy")}`
+            );
+            return;
+          }
           if (!isControlled) setInternalValue(parsedDate);
           onChange?.(parsedDate);
         }
@@ -136,13 +194,20 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   return (
     <div className="text-left">
-      <div className="rounded-lg border border-gray bg-cream px-2 py-1 text-lg focus:outline-none">
+      <div
+        className={`rounded-lg border border-gray bg-cream px-2 py-1 text-lg focus:outline-none ${
+          error ? "border border-red-600" : ""
+        }`}
+      >
         {label && (
           <label
             htmlFor="date-input"
-            className="block text-xs font-normal text-taupe"
+            className={`block text-xs font-normal text-taupe ${
+              error ? "text-red-600" : ""
+            }`}
           >
             {label}
+            {required && <span className="text-red-600 ml-1">*</span>}
           </label>
         )}
         <div className="relative">
@@ -154,9 +219,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             onChange={handleInputChange}
             placeholder={placeholder}
             ref={inputRef}
-            min={min}
-            max={max}
             readOnly={mode !== "single"}
+            required={required}
           />
 
           <Popover.Root open={open} onOpenChange={setOpen}>
@@ -168,7 +232,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
               >
                 <FontAwesomeIcon
                   icon={faCalendarDays}
-                  className="h-[20px] w-[17.5px] text-blush"
+                  className={`h-[20px] w-[17.5px] text-blush ${
+                    error ? "text-red-600" : ""
+                  }`}
                 />
               </button>
             </Popover.Trigger>
@@ -182,6 +248,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                   disabled={disabled}
                   required={required}
                   paymentDueDate={paymentDueDate}
+                  minDate={minDate}
+                  maxDate={maxDate}
                 />
                 {/* Legend */}
                 <div className="my-6 flex items-center gap-6">
@@ -215,7 +283,29 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             </Popover.Portal>
           </Popover.Root>
         </div>
+
+        {(minDate || maxDate) && !error && (
+          <div className="mt-1 text-xs text-taupe">
+            {minDate && maxDate
+              ? `Valid date range: ${format(minDate, "MM/dd/yyyy")} - ${format(
+                  maxDate,
+                  "MM/dd/yyyy"
+                )}`
+              : minDate
+              ? `Minimum date: ${format(minDate, "MM/dd/yyyy")}`
+              : maxDate
+              ? `Maximum date: ${format(maxDate, "MM/dd/yyyy")}`
+              : ""}
+          </div>
+        )}
       </div>
+
+      {error && (
+        <p className="text-sm text-red-600 flex items-center gap-2">
+          <FontAwesomeIcon icon={faExclamationCircle} className="h-4 w-4" />
+          {error}
+        </p>
+      )}
     </div>
   );
 };
