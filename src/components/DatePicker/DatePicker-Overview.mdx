@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/blocks';
+import { DatePicker } from './DatePicker';
+import React from 'react';
+
+<Meta 
+  title="Components/DatePicker/Overview"
+  component={DatePicker}
+  parameters={{
+    layout: 'centered',
+    docs: {
+      page: null
+    }
+  }}
+/>
+
+# Date Picker
+
+The Date Picker component enables users to select a date using a calendar view. It consists of a text input field with an associated calendar contained within a popover for desktop and in a modal for mobile.
+
+**React:** ✅ Available  
+**Figma:** ✅ Available  
+**CI Portal:** ❌ Not Available
+
+```jsx story
+import React from 'react';
+import { DatePicker } from './DatePicker';
+
+export default function Example() {
+  const [date, setDate] = React.useState(null);
+  return <DatePicker label="Date" placeholder="MM/DD/YYYY" value={date} onChange={setDate} />;
+}
+``` 
+
+## Usage Guidelines
+
+Visit the **Variations** page to view all possible states and options for the date picker component.
+
+### Best practices
+
+- Always offer a date picker when asking users to provide a date.
+- Provide the label text that best matches your use case.
+- Keep the expected formatting when customizing the hint text.
+- Provide clear error messages when an invalid format is entered.
+- Ensure there is clear copy to outline why certain dates are unavailable.
+
+### Use cases
+
+- Appointment scheduling
+- Date of birth
+- Vehicle bookings
+

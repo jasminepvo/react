@@ -1,10 +1,9 @@
 import { DayPicker, Matcher, DateRange } from "react-day-picker";
-import "react-day-picker/dist/style.css";
 
 type CalendarProps = {
   mode?: "single" | "multiple" | "range";
-  selected?: Date | Date[] | DateRange | undefined;
-  onSelect?: (value: Date | Date[] | DateRange | undefined) => void;
+  selected?: Date | Date[] | DateRange;
+  onSelect?: (value: Date | Date[] | DateRange) => void;
   classNames?: Record<string, string>;
   showOutsideDays?: boolean;
   disabled?: Matcher | Matcher[];
@@ -32,9 +31,9 @@ export const Calendar = ({
     month_grid: "w-100%",
     month_caption: "text-base text-brown",
     month: "space-y-4 text-center",
-    nav: "flex items-center justify-between w-full absolute left-0 right-0 px-6 top-3",
+    nav: "flex items-center justify-between w-full absolute left-0 right-0 px-6",
     button_previous:
-      "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-taupe absolute left-0 [&>svg]:text-taupe [&>svg]:fill-taupe",
+      "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-taupe absolute left-0 -top-1 [&>svg]:text-taupe [&>svg]:fill-taupe",
     button_next:
       "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-taupe absolute right-0 [&>svg]:text-taupe [&>svg]:fill-taupe",
     caption: "flex items-center justify-center relative",
@@ -89,8 +88,6 @@ export const Calendar = ({
         classNames={baseStyles}
         modifiers={modifiers}
         modifiersClassNames={modifiersClassNames}
-        fromDate={minDate}
-        toDate={maxDate}
         {...props}
       />
     );
@@ -108,8 +105,6 @@ export const Calendar = ({
         classNames={baseStyles}
         modifiers={modifiers}
         modifiersClassNames={modifiersClassNames}
-        fromDate={minDate}
-        toDate={maxDate}
         {...props}
       />
     );
@@ -127,8 +122,6 @@ export const Calendar = ({
       classNames={baseStyles}
       modifiers={modifiers}
       modifiersClassNames={modifiersClassNames}
-      fromDate={minDate}
-      toDate={maxDate}
       {...props}
     />
   );

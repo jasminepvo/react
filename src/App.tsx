@@ -2,16 +2,17 @@
 // import { Hangman } from "./components/Hangman";
 // import { TicTacToe } from "./components/TicTacToe";
 import { useState } from "react";
-import { DatePicker } from "./components/DatePicker";
+import {
+  DatePickerSingle,
+  DatePickerMultiple,
+  DatePickerRange,
+} from "./components/DatePicker";
 import { DateRange } from "react-day-picker";
 
-type AnySelectionValue = Date | Date[] | DateRange | null;
-
-function App() {
-  // State for each DatePicker mode
-  const [singleDate, setSingleDate] = useState<Date | null>(new Date());
+export default function App() {
+  const [singleDate, setSingleDate] = useState<Date | null>(null);
   const [multipleDates, setMultipleDates] = useState<Date[]>([]);
-  const [dateRange, setDateRange] = useState<DateRange | null>(null);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
   // For demonstration, we'll set a default due date 7 days from now
   const paymentDueDate = new Date();
@@ -25,23 +26,16 @@ function App() {
   const thirtyDaysFromNow = new Date(today);
   thirtyDaysFromNow.setDate(today.getDate() + 30);
 
-  // Type-safe onChange handlers with type assertions
-  const handleSingleDateChange = (value: AnySelectionValue) => {
-    if (value === null || value instanceof Date) {
-      setSingleDate(value);
-    }
+  const handleSingleDateChange = (date: Date | null) => {
+    setSingleDate(date);
   };
 
-  const handleMultipleDatesChange = (value: AnySelectionValue) => {
-    if (value !== null && Array.isArray(value)) {
-      setMultipleDates(value);
-    }
+  const handleMultipleDatesChange = (dates: Date[]) => {
+    setMultipleDates(dates);
   };
 
-  const handleDateRangeChange = (value: AnySelectionValue) => {
-    if (value !== null && typeof value === "object" && "from" in value) {
-      setDateRange(value);
-    }
+  const handleDateRangeChange = (range: DateRange) => {
+    setDateRange(range);
   };
 
   return (
@@ -61,8 +55,7 @@ function App() {
       <hr className="border-t border-gray-300 w-full my-4" />
 
       <h2 className="text-2xl font-bold text-brown mb-4">Single Date Picker</h2>
-      <DatePicker
-        mode="single"
+      <DatePickerSingle
         value={singleDate}
         onChange={handleSingleDateChange}
         label="Payment Date"
@@ -79,51 +72,29 @@ function App() {
       <h2 className="text-2xl font-bold text-brown mb-4">
         Multiple Date Picker
       </h2>
-      <DatePicker
-        mode="multiple"
+      <DatePickerMultiple
         value={multipleDates}
         onChange={handleMultipleDatesChange}
         label="Select Multiple Dates"
         placeholder="Select dates"
         disclaimer="Select all the dates you want to include."
-        paymentDueDate={paymentDueDate || undefined}
+        maxDates={5}
       />
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />
 
       <h2 className="text-2xl font-bold text-brown mb-4">Date Range Picker</h2>
-      <DatePicker
-        mode="range"
+      <DatePickerRange
         value={dateRange}
         onChange={handleDateRangeChange}
         label="Select Date Range"
         placeholder="Select date range"
         disclaimer="Select the start and end dates for your date range."
-        paymentDueDate={paymentDueDate || undefined}
+        minRange={2}
+        maxRange={30}
       />
       <hr className="border-t border-gray-300 w-full my-4" />
       <hr className="border-t border-gray-300 w-full my-4" />
-
-      <div className="mt-8 p-6 bg-cream border border-gray rounded-lg">
-        <h3 className="text-xl font-semibold mb-2">Current Selection:</h3>
-        <div>
-          <strong>Single Date:</strong>{" "}
-          {singleDate ? singleDate.toLocaleDateString() : "None"}
-        </div>
-        <div>
-          <strong>Multiple Dates:</strong> {multipleDates.length} dates selected
-        </div>
-        <div>
-          <strong>Date Range:</strong>{" "}
-          {dateRange?.from
-            ? `${dateRange.from.toLocaleDateString()} - ${
-                dateRange.to ? dateRange.to.toLocaleDateString() : "..."
-              }`
-            : "None"}
-        </div>
-      </div>
     </div>
   );
 }
-
-export default App;
