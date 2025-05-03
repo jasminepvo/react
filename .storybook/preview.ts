@@ -12,7 +12,7 @@ const preview: Preview = {
     },
     docs: {
       theme: theme,
-    },
+    }
   },
 };
 

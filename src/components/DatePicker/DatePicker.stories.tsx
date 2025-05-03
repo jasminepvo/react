@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect, userEvent, within } from '@storybook/test';
 import DatePicker from "./DatePicker";
 
 const meta = {
@@ -6,6 +7,19 @@ const meta = {
   component: DatePicker,
   parameters: {
     layout: "centered, top",
+    actions: { argTypesRegex: "^on.*" },
+    a11y: {
+      config: {
+        rules: [
+          {
+            // Only disable the aria-controls check for Radix UI Popover
+            id: 'aria-valid-attr-value',
+            selector: '[aria-controls^="radix-"]',
+            enabled: false
+          }
+        ]
+      }
+    },
     docs: {
       description: {
         component: `
@@ -62,6 +76,25 @@ export const Default: Story = {
   args: {
     label: "Select a date",
     placeholder: "MM/DD/YYYY",
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Test input field presence
+    const input = canvas.getByRole('textbox');
+    await expect(input).toBeInTheDocument();
+    
+    // Test placeholder
+    await expect(input).toHaveAttribute('placeholder', 'MM/DD/YYYY');
+    
+    // Test calendar button
+    const calendarButton = canvas.getByRole('button', { name: /Open calendar/i });
+    await expect(calendarButton).toBeInTheDocument();
+    
+    // Test calendar interaction
+    await userEvent.click(calendarButton);
+    const calendar = document.querySelector('[role="dialog"]');
+    await expect(calendar).toBeInTheDocument();
   },
   parameters: {
     docs: {
@@ -134,6 +167,17 @@ export const ReadOnly: Story = {
     isReadOnly: true,
     selected: new Date(2024, 0, 15),
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Test readonly attribute
+    const input = canvas.getByRole('textbox');
+    await expect(input).toHaveAttribute('readonly');
+    
+    // Test that calendar button is disabled
+    const calendarButton = canvas.getByRole('button', { name: /Open calendar/i });
+    await expect(calendarButton).toBeDisabled();
+  },
   parameters: {
     docs: {
       description: {
@@ -150,6 +194,17 @@ export const Required: Story = {
     label: "Required Date",
     placeholder: "MM/DD/YYYY",
     required: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Test required attribute
+    const input = canvas.getByRole('textbox');
+    await expect(input).toHaveAttribute('required');
+    
+    // Test required indicator in label
+    const requiredIndicator = canvas.getByText('*');
+    await expect(requiredIndicator).toBeInTheDocument();
   },
   parameters: {
     docs: {

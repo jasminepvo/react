@@ -1,46 +1,51 @@
+// This file configures the custom theme for Storybook, which is a development environment
+// for UI components. The theme customizes the appearance of the Storybook interface.
+
 import { create } from '@storybook/theming/create';
 
 export default create({
+  // Sets the base theme to light mode
   base: 'light',
   
-  // Brand
-  brandTitle: 'React Components',
-  brandUrl: 'https://react.dev',
-  brandImage: '/assets/react.svg',
-  brandTarget: '_self',
+  // Brand section customizes the branding elements in Storybook
+  brandTitle: 'React Components', // Title shown in the sidebar
+  brandUrl: 'https://react.dev', // URL when clicking the brand title
+  brandImage: '/assets/react.svg', // Logo image
+  brandTarget: '_self', // Target for brand links
+  
 
-  // UI
-  colorPrimary: '#e0afa0', // blush - Accent color
-  colorSecondary: '#8a817c', // taupe - Secondary color
+  // UI colors for primary interactive elements
+  colorPrimary: '#e0afa0', // blush - Accent color for interactive elements
+  colorSecondary: '#8a817c', // taupe - Secondary color for less prominent elements
 
-  // UI Monochrome
-  appBg: '#1e140a', // brown - Background color
-  appContentBg: '#f4f3ee', // cream - Content background
-  appBorderColor: '#bcb8b1', // gray - Border color
-  appBorderRadius: 4,
+  // UI Monochrome colors define the main interface colors
+  appBg: '#f4f3ee', // cream - Sidebar background
+  appContentBg: '#f4f3ee', // cream - Content area background
+  appBorderColor: '#bcb8b1', // gray - Border color for UI elements
+  appBorderRadius: 4, // Border radius for UI elements
 
-  // Typography
-  fontBase: '"Karla", sans-serif',
-  fontCode: '"Karla", monospace',
+  // Typography settings
+  fontBase: '"Karla", sans-serif', // Main font for text
+  fontCode: '"Karla", monospace', // Font for code blocks
 
-  // Text colors
-  textColor: '#8a817c', // taupe - Main text color
-  textInverseColor: '#f4f3ee', // cream - Inverse text color
+  // Text colors for content
+  textColor: '#8a817c', // taupe - Default text color
+  textInverseColor: '#f4f3ee', // cream - Text color on dark backgrounds
 
-  // Toolbar default and active colors
-  barTextColor: '#f4f3ee', // cream
-  barSelectedColor: '#e0afa0', // blush
-  barBg: '#1e140a', // brown
+  // Toolbar customization
+  barTextColor: '#e0afa0', // blush - Text color in the toolbar
+  barSelectedColor: '#f4f3ee', // cream - Color for selected items in toolbar
+  barBg: '#1e140a', // brown - Toolbar background color
 
-  // Form colors
-  inputBg: '#f4f3ee', // cream
-  inputBorder: '#bcb8b1', // gray
-  inputTextColor: '#1e140a', // brown
-  inputBorderRadius: 4,
+  // Form element styling
+  inputBg: '#f4f3ee', // cream - Input field background
+  inputBorder: '#bcb8b1', // gray - Input field borders
+  inputTextColor: '#1e140a', // brown - Text color in input fields
+  inputBorderRadius: 4, // Border radius for input fields
 
-  // Additional customizations for specific elements
-  buttonBg: '#e0afa0', // blush
-  buttonBorder: '#e0afa0', // blush
-  booleanBg: '#8a817c', // taupe
-  booleanSelectedBg: '#e0afa0', // blush
+  // Additional UI element customizations
+  buttonBg: '#e0afa0', // blush - Button background color
+  buttonBorder: '#e0afa0', // blush - Button border color
+  booleanBg: '#8a817c', // taupe - Boolean control background
+  booleanSelectedBg: '#e0afa0', // blush - Selected boolean control background
 }); 

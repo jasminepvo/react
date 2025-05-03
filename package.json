@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test-storybook": "test-storybook --config-dir .storybook",
+    "test-storybook:ci": "storybook build && test-storybook --config-dir .storybook --ci"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -24,6 +26,7 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",
     "@eslint/js": "^9.13.0",
+    "@storybook/addon-a11y": "^8.6.12",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-onboarding": "^8.6.12",
     "@storybook/blocks": "^8.6.12",
@@ -31,7 +34,9 @@
     "@storybook/react": "^8.6.12",
     "@storybook/react-vite": "^8.6.12",
     "@storybook/test": "^8.6.12",
+    "@storybook/test-runner": "^0.22.0",
     "@storybook/theming": "^8.6.12",
+    "@types/node": "^22.15.3",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",

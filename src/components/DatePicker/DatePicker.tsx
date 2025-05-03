@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import type { JSX } from "react";
 import { format, parse, isValid } from "date-fns";
 import * as Popover from "@radix-ui/react-popover";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
