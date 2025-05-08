@@ -8,7 +8,13 @@ import {
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Calendar } from "./Calender";
-import { validateDateInput, validDateFormat } from "./helper";
+import {
+  validateDateInput,
+  validDateFormat,
+  getInitialInputError,
+  formatDateInput,
+  getRequiredFieldError,
+} from "./helper";
 import { DatePickerProps, SelectionValue } from "./types";
 
 const DatePicker = ({
@@ -34,34 +40,48 @@ const DatePicker = ({
   paymentDueDate,
   showOutsideDays = true,
 }: DatePickerProps): JSX.Element => {
-  const [internalValue, setInternalValue] = useState<SelectionValue>(null);
+  // The currently selected date (uncontrolled mode)
+  const [selectedDate, setSelectedDate] = useState<SelectionValue>(null);
+
+  // Controls whether the calendar popover is open
   const [open, setOpen] = useState(false);
-  const [tempSelectedValue, setTempSelectedValue] = useState<Date | undefined>(
+
+  // Temporarily holds the date selected in the calendar before confirmation
+  const [tempSelectedDate, setTempSelectedDate] = useState<Date | undefined>(
     undefined
   );
-  const [inputValue, setInputValue] = useState(() => {
-    const value = selected || internalValue;
-    return value ? format(value, "MM/dd/yyyy") : "";
+
+  // The string value shown in the input field
+  const [inputValue, setInputValue] = useState<string>(() => {
+    const date = selected || selectedDate;
+    return date ? format(date, "MM/dd/yyyy") : "";
   });
-  const [inputError, setInputError] = useState(() => {
-    return required && !selected && !internalValue
-      ? error || "This field is required"
-      : error || "";
-  });
+
+  // The current error message for the input field
+  const [inputError, setInputError] = useState(() =>
+    getInitialInputError({
+      required,
+      selected,
+      selectedDate,
+      error,
+    })
+  );
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isControlled = selected !== undefined;
-  const selectedValue = isControlled ? selected : internalValue;
+  const selectedDateFinal = isControlled ? selected : selectedDate;
 
-  const handleCalendarSelect = (value: Date | undefined) => {
-    setTempSelectedValue(value);
+  // Handles date selection from the calendar popover
+  const handleCalendarSelect = (date: Date | undefined) => {
+    setTempSelectedDate(date);
     setInputError(""); // Clear any previous errors
 
-    if (value) {
+    if (date) {
       const validationError = validateDateInput({
         minDate: startDate || new Date(0),
         maxDate: endDate || new Date(8640000000000000),
-        formattedDate: format(value, "MM/dd/yyyy"),
+        formattedDate: format(date, "MM/dd/yyyy"),
         excludeDates,
         startDateErrorMessage,
         endDateErrorMessage,
@@ -72,53 +92,47 @@ const DatePicker = ({
         setInputError(validationError);
         return;
       }
-      setTempSelectedValue(value);
+      setTempSelectedDate(date);
     }
   };
 
+  // Handles confirming the selected date from the calendar
   const handleConfirmDate = () => {
-    const valueToSave = tempSelectedValue ?? null;
+    const confirmedDate = tempSelectedDate ?? null;
 
     if (!isControlled) {
-      setInternalValue(valueToSave);
+      setSelectedDate(confirmedDate);
     }
-    onChange?.(valueToSave);
+    onChange?.(confirmedDate);
 
-    setInputValue(valueToSave ? format(valueToSave, "MM/dd/yyyy") : "");
-    setInputError(
-      required && !valueToSave ? error || "This field is required" : ""
-    );
+    setInputValue(confirmedDate ? format(confirmedDate, "MM/dd/yyyy") : "");
+    // Use helper to get required field error message
+    setInputError(getRequiredFieldError(confirmedDate, required, error));
     setOpen(false);
   };
 
+  // Handles user input in the text field, including formatting and validation
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isReadOnly) return;
 
-    let value = e.target.value;
+    let input = e.target.value;
     setInputError(""); // Clear any previous errors
 
-    // Remove any non-digit characters except for slashes
-    value = value.replace(/[^\d/]/g, "");
-
-    // Format as user types: MM/DD/YYYY
-    if (value.length === 2 && !value.includes("/")) {
-      value += "/";
-    } else if (value.length === 5 && value.length > inputValue.length) {
-      value += "/";
-    }
+    // Use helper to format input as MM/DD/YYYY
+    input = formatDateInput(input);
 
     // Prevent more than 10 characters (MM/DD/YYYY)
-    if (value.length <= 10) {
-      setInputValue(value);
+    if (input.length <= 10) {
+      setInputValue(input);
 
       // Try to parse the date if we have enough characters
-      if (value.length === 10 && validDateFormat(value)) {
-        const parsedDate = parse(value, "MM/dd/yyyy", new Date());
+      if (input.length === 10 && validDateFormat(input)) {
+        const parsedDate = parse(input, "MM/dd/yyyy", new Date());
         if (isValid(parsedDate)) {
           const validationError = validateDateInput({
             minDate: startDate || new Date(0),
             maxDate: endDate || new Date(8640000000000000),
-            formattedDate: value,
+            formattedDate: input,
             excludeDates,
             startDateErrorMessage,
             endDateErrorMessage,
@@ -129,13 +143,15 @@ const DatePicker = ({
             setInputError(validationError);
           } else {
             if (!isControlled) {
-              setInternalValue(parsedDate);
+              setSelectedDate(parsedDate);
             }
             onChange?.(parsedDate);
-            setInputError(
-              required && !parsedDate ? error || "This field is required" : ""
-            );
+            // Use helper to get required field error message
+            setInputError(getRequiredFieldError(parsedDate, required, error));
           }
+        } else {
+          // Set a custom error message for invalid dates
+          setInputError("Please enter a valid date (MM/DD/YYYY).");
         }
       }
     }
@@ -199,7 +215,7 @@ const DatePicker = ({
             <Popover.Portal>
               <Popover.Content className="w-[366px] h-[536px] rounded-2xl bg-cream p-6 shadow-lg">
                 <Calendar
-                  selected={tempSelectedValue || selectedValue || undefined}
+                  selected={tempSelectedDate || selectedDateFinal || undefined}
                   onSelect={handleCalendarSelect}
                   disabled={disabled}
                   required={required}
