@@ -5,3 +5,9 @@
 body {
     @apply h-screen bg-taupe font-sans text-base;
 }
+
+@layer utilities {
+    .radix-select-trigger-width {
+        width: var(--radix-select-trigger-width);
+    }
+}
