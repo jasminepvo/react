@@ -1,5 +1,7 @@
 import { ValidateDateInputProps } from "./types";
 
+const INVALID_MSG = "Invalid date range";
+
 /**
  * Validates a date input against min/max range and excluded dates.
  * @param params - An object containing minDate, maxDate, formattedDate, excludeDates, and error messages.
@@ -21,15 +23,15 @@ export const validateDateInput = ({
     );
 
     if (isDateRange && typedDate < minDate) {
-        return startDateErrorMessage || "Invalid date range";
+        return startDateErrorMessage || INVALID_MSG;
     }
 
     if (isDateRange && typedDate > maxDate) {
-        return endDateErrorMessage || "Invalid date range";
+        return endDateErrorMessage || INVALID_MSG;
     }
     
     if (isExcludeDates) {       
-        return excludeDatesErrorMessage || "Invalid date range";
+        return excludeDatesErrorMessage || INVALID_MSG;
     }
 
     return "";
