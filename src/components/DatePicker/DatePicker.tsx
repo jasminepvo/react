@@ -1,24 +1,24 @@
-import { useRef, useState } from "react";
-import type { JSX } from "react";
-import { format, parse, isValid } from "date-fns";
-import * as Popover from "@radix-ui/react-popover";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRef, useState } from 'react';
+import type { JSX } from 'react';
+import { format, parse, isValid } from 'date-fns';
+import * as Popover from '@radix-ui/react-popover';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendarDays,
   faExclamationCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import { Calendar } from "./Calender";
+} from '@fortawesome/free-solid-svg-icons';
+import { Calendar } from './Calender';
 import {
   validateDateInput,
   validDateFormat,
   getInitialInputError,
   formatDateInput,
   getRequiredFieldError,
-} from "./helper";
-import { DatePickerProps, SelectionValue } from "./types";
+} from './helper';
+import { DatePickerProps, SelectionValue } from './types';
 
 const DatePicker = ({
-  className = "",
+  className = '',
   startDate,
   endDate,
   excludeDates = [],
@@ -26,7 +26,7 @@ const DatePicker = ({
   required = false,
   selected,
   onChange,
-  placeholder = "",
+  placeholder = '',
   helpText,
   idTextfield,
   name,
@@ -39,6 +39,7 @@ const DatePicker = ({
   disabled,
   paymentDueDate,
   showOutsideDays = true,
+  captionLayout = 'dropdown',
 }: DatePickerProps): JSX.Element => {
   // The currently selected date (uncontrolled mode)
   const [selectedDate, setSelectedDate] = useState<SelectionValue>(null);
@@ -54,7 +55,7 @@ const DatePicker = ({
   // The string value shown in the input field
   const [inputValue, setInputValue] = useState<string>(() => {
     const date = selected || selectedDate;
-    return date ? format(date, "MM/dd/yyyy") : "";
+    return date ? format(date, 'MM/dd/yyyy') : '';
   });
 
   // The current error message for the input field
@@ -75,13 +76,13 @@ const DatePicker = ({
   // Handles date selection from the calendar popover
   const handleCalendarSelect = (date: Date | undefined) => {
     setTempSelectedDate(date);
-    setInputError(""); // Clear any previous errors
+    setInputError(''); // Clear any previous errors
 
     if (date) {
       const validationError = validateDateInput({
         minDate: startDate || new Date(0),
         maxDate: endDate || new Date(8640000000000000),
-        formattedDate: format(date, "MM/dd/yyyy"),
+        formattedDate: format(date, 'MM/dd/yyyy'),
         excludeDates,
         startDateErrorMessage,
         endDateErrorMessage,
@@ -105,7 +106,7 @@ const DatePicker = ({
     }
     onChange?.(confirmedDate);
 
-    setInputValue(confirmedDate ? format(confirmedDate, "MM/dd/yyyy") : "");
+    setInputValue(confirmedDate ? format(confirmedDate, 'MM/dd/yyyy') : '');
     // Use helper to get required field error message
     setInputError(getRequiredFieldError(confirmedDate, required, error));
     setOpen(false);
@@ -116,7 +117,7 @@ const DatePicker = ({
     if (isReadOnly) return;
 
     let input = e.target.value;
-    setInputError(""); // Clear any previous errors
+    setInputError(''); // Clear any previous errors
 
     // Use helper to format input as MM/DD/YYYY
     input = formatDateInput(input);
@@ -127,7 +128,7 @@ const DatePicker = ({
 
       // Try to parse the date if we have enough characters
       if (input.length === 10 && validDateFormat(input)) {
-        const parsedDate = parse(input, "MM/dd/yyyy", new Date());
+        const parsedDate = parse(input, 'MM/dd/yyyy', new Date());
         if (isValid(parsedDate)) {
           const validationError = validateDateInput({
             minDate: startDate || new Date(0),
@@ -151,36 +152,36 @@ const DatePicker = ({
           }
         } else {
           // Set a custom error message for invalid dates
-          setInputError("Please enter a valid date (MM/DD/YYYY).");
+          setInputError('Please enter a valid date (MM/DD/YYYY).');
         }
       }
     }
   };
 
   return (
-    <div className="text-left">
+    <div className='text-left'>
       <div
         className={`rounded-lg border border-gray bg-cream px-2 py-1 text-lg focus:outline-none ${
-          inputError ? "border border-red-600" : ""
+          inputError ? 'border border-red-600' : ''
         } ${className}`}
       >
         {label && (
           <label
-            htmlFor={idTextfield || "date-input"}
+            htmlFor={idTextfield || 'date-input'}
             className={`block text-xs font-normal text-taupe ${
-              inputError ? "text-red-600" : ""
+              inputError ? 'text-red-600' : ''
             }`}
           >
             {label}
-            {required && <span className="text-red-600 ml-1">*</span>}
+            {required && <span className='text-red-600 ml-1'>*</span>}
           </label>
         )}
-        <div className="relative">
+        <div className='relative'>
           <input
-            type="text"
-            id={idTextfield || "date-input"}
+            type='text'
+            id={idTextfield || 'date-input'}
             name={name}
-            className="w-full bg-transparent focus:outline-none text-brown"
+            className='w-full bg-transparent focus:outline-none text-brown'
             value={inputValue}
             onChange={handleInputChange}
             placeholder={placeholder}
@@ -199,21 +200,21 @@ const DatePicker = ({
           >
             <Popover.Trigger asChild>
               <button
-                className="absolute -top-1/4 right-3"
-                type="button"
-                aria-label="Open calendar"
+                className='absolute -top-1/4 right-3'
+                type='button'
+                aria-label='Open calendar'
                 disabled={isReadOnly}
               >
                 <FontAwesomeIcon
                   icon={faCalendarDays}
                   className={`h-[20px] w-[17.5px] text-blush ${
-                    inputError ? "text-red-600" : ""
+                    inputError ? 'text-red-600' : ''
                   }`}
                 />
               </button>
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="w-[366px] h-[536px] rounded-2xl bg-cream p-6 shadow-lg">
+              <Popover.Content className='w-[366px] h-[536px] rounded-2xl bg-cream p-6 shadow-lg'>
                 <Calendar
                   selected={tempSelectedDate || selectedDateFinal || undefined}
                   onSelect={handleCalendarSelect}
@@ -223,25 +224,26 @@ const DatePicker = ({
                   maxDate={endDate}
                   paymentDueDate={paymentDueDate}
                   showOutsideDays={showOutsideDays}
+                  captionLayout={captionLayout}
                 />
                 {/* Legend */}
-                <div className="my-6 flex items-center gap-6">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-block h-4 w-4 rounded bg-blush"></span>
-                    <span className="text-sm">Selected payment date</span>
+                <div className='my-6 flex items-center gap-6'>
+                  <div className='flex items-center gap-2'>
+                    <span className='inline-block h-4 w-4 rounded bg-blush'></span>
+                    <span className='text-sm'>Selected payment date</span>
                   </div>
                   {paymentDueDate && (
-                    <div className="flex items-center gap-2">
-                      <span className="inline-block h-4 w-4 rounded border-2 border-blush"></span>
-                      <span className="text-sm">Payment due</span>
+                    <div className='flex items-center gap-2'>
+                      <span className='inline-block h-4 w-4 rounded border-2 border-blush'></span>
+                      <span className='text-sm'>Payment due</span>
                     </div>
                   )}
                 </div>
-                <p className="text-xs text-taupe">{disclaimer}</p>
-                <div className="absolute bottom-6 right-6">
+                <p className='text-xs text-taupe'>{disclaimer}</p>
+                <div className='absolute bottom-6 right-6'>
                   <button
-                    type="button"
-                    className="w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush"
+                    type='button'
+                    className='w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush'
                     onClick={handleConfirmDate}
                   >
                     Select Date
@@ -268,11 +270,11 @@ const DatePicker = ({
         )} */}
       </div>
       {helpText && !inputError && (
-        <p className="mt-1 ml-1 text-xs text-black">{helpText}</p>
+        <p className='mt-1 ml-1 text-xs text-black'>{helpText}</p>
       )}
       {inputError && (
-        <p className="text-sm text-red-600 flex items-center gap-2">
-          <FontAwesomeIcon icon={faExclamationCircle} className="h-4 w-4" />
+        <p className='text-sm text-red-600 flex items-center gap-2'>
+          <FontAwesomeIcon icon={faExclamationCircle} className='h-4 w-4' />
           {inputError}
         </p>
       )}

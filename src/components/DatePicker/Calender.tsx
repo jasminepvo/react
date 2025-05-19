@@ -1,9 +1,9 @@
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
-import { CalendarProps } from "./types";
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
+import { CalendarProps } from './types';
 
 const formatWeekdayName = (weekday: Date) => {
-  return weekday.toLocaleDateString("en-US", { weekday: "narrow" });
+  return weekday.toLocaleDateString('en-US', { weekday: 'narrow' });
 };
 
 export const Calendar = ({
@@ -17,30 +17,37 @@ export const Calendar = ({
   maxDate,
   paymentDueDate,
   formatters = { formatWeekdayName },
+  captionLayout,
   ...props
 }: CalendarProps) => {
   const baseStyles = {
-    root: "relative",
-    months: "relative",
-    day: "h-11 w-11 text-brown/70 text-base p-0 font-light aria-selected:opacity-100 hover:bg-gray/20 rounded-sm pointer",
-    month_grid: "w-100%",
-    month_caption: "text-base text-brown",
-    month: "space-y-4 text-center",
-    nav: "flex items-center justify-between w-full absolute left-0 right-0 px-6 top-3",
+    root: 'relative',
+    months: 'relative',
+    day: 'h-11 w-11 text-brown/70 text-base p-0 font-light aria-selected:opacity-100 hover:bg-gray/20 rounded-sm pointer',
+    month_grid: 'w-100%',
+    month_caption: 'text-base text-brown',
+    month: 'space-y-4 text-center',
+    nav: 'flex items-center justify-between w-full absolute left-0 right-0 px-6 top-3',
     button_previous:
-      "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-taupe absolute left-0 [&>svg]:text-taupe [&>svg]:fill-taupe",
+      'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-taupe absolute left-0 [&>svg]:text-taupe [&>svg]:fill-taupe',
     button_next:
-      "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-taupe absolute right-0 [&>svg]:text-taupe [&>svg]:fill-taupe",
-    caption: "flex items-center justify-center relative",
-    weekdays: "text-base font-extrabold w-4 h-6 text-brown",
-    disabled: "text-gray hover:bg-gray/10",
-    hidden: "invisible",
-    outside: "opacity-50",
-    today: "text-blush! font-bold!",
-    selected: "bg-blush text-taupe hover:bg-taupe rounded-sm",
-    range_start: "bg-blush text-cream rounded-l-sm",
-    range_end: "bg-blush text-cream rounded-r-sm",
-    range_middle: "bg-blush/50 text-brown",
+      'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-taupe absolute right-0 [&>svg]:text-taupe [&>svg]:fill-taupe',
+    'vrc-caption': 'flex items-center justify-center relative',
+    'vrc-caption_dropdowns': 'relative flex gap-1',
+    'vrc-caption_label': 'text-base font-medium text-brown',
+    'vrc-dropdown':
+      'absolute top-full mt-1 bg-white border border-taupe/20 shadow-lg rounded-md py-1 z-10',
+    'vrc-dropdown_month': 'left-0',
+    'vrc-dropdown_year': 'right-0',
+    weekdays: 'text-base font-extrabold w-4 h-6 text-brown',
+    disabled: 'text-gray hover:bg-gray/10',
+    hidden: 'invisible',
+    outside: 'opacity-50',
+    today: 'text-blush! font-bold!',
+    selected: 'bg-blush text-taupe hover:bg-taupe rounded-sm',
+    range_start: 'bg-blush text-cream rounded-l-sm',
+    range_end: 'bg-blush text-cream rounded-r-sm',
+    range_middle: 'bg-blush/50 text-brown',
     ...classNames,
   };
 
@@ -50,7 +57,7 @@ export const Calendar = ({
   };
 
   const modifiersClassNames = {
-    paymentDue: "border-2 border-blush rounded-sm",
+    paymentDue: 'border-2 border-blush rounded-sm',
   };
 
   // Create date range constraint
@@ -73,7 +80,7 @@ export const Calendar = ({
 
   return (
     <DayPicker
-      mode="single"
+      mode='single'
       selected={selected as Date | undefined}
       onSelect={onSelect as (date: Date | undefined) => void}
       showOutsideDays={showOutsideDays}
@@ -83,6 +90,7 @@ export const Calendar = ({
       modifiers={modifiers}
       modifiersClassNames={modifiersClassNames}
       formatters={formatters}
+      captionLayout={captionLayout}
       {...props}
     />
   );

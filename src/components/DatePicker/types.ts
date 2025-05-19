@@ -12,6 +12,7 @@ export interface CalendarProps extends Pick<React.ComponentProps<typeof DayPicke
     minDate?: Date;
     maxDate?: Date;
     paymentDueDate?: Date;
+    captionLayout?: 'dropdown' | 'label' | 'dropdown-months' | 'dropdown-years';
 }
 
 export interface ValidateDateInputProps {
@@ -46,4 +47,5 @@ export interface DatePickerProps {
     disabled?: Matcher | Matcher[];
     paymentDueDate?: Date;
     showOutsideDays?: boolean;
+    captionLayout?: 'dropdown' | 'label' | 'dropdown-months' | 'dropdown-years';
 }
