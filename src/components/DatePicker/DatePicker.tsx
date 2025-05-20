@@ -40,6 +40,7 @@ const DatePicker = ({
   paymentDueDate,
   showOutsideDays = true,
   captionLayout = 'dropdown',
+  numberOfMonths = 2,
 }: DatePickerProps): JSX.Element => {
   // The currently selected date (uncontrolled mode)
   const [selectedDate, setSelectedDate] = useState<SelectionValue>(null);
@@ -214,7 +215,11 @@ const DatePicker = ({
               </button>
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className='w-[366px] h-[536px] rounded-2xl bg-cream p-6 shadow-lg'>
+              <Popover.Content
+                className={`${
+                  numberOfMonths === 2 ? 'w-[632px]' : 'w-[366px]'
+                } h-[536px] rounded-2xl bg-cream p-6 shadow-lg`}
+              >
                 <Calendar
                   selected={tempSelectedDate || selectedDateFinal || undefined}
                   onSelect={handleCalendarSelect}
@@ -225,6 +230,7 @@ const DatePicker = ({
                   paymentDueDate={paymentDueDate}
                   showOutsideDays={showOutsideDays}
                   captionLayout={captionLayout}
+                  numberOfMonths={numberOfMonths}
                 />
                 {/* Legend */}
                 <div className='my-6 flex items-center gap-6'>
