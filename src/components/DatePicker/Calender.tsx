@@ -18,12 +18,13 @@ export const Calendar = ({
   paymentDueDate,
   formatters = { formatWeekdayName },
   captionLayout,
+  numberOfMonths = 1,
   ...props
 }: CalendarProps) => {
   const baseStyles = {
     root: 'relative',
-    months: 'relative',
-    day: 'h-11 w-11 text-brown/70 text-base p-0 font-light aria-selected:opacity-100 hover:bg-gray/20 rounded-sm pointer',
+    months: 'flex space-x-8 relative',
+    day: 'h-11 w-11 text-brown/70 text-base p-0 font-light aria-selected:opacity-100 hover:bg-gray/20 pointer rounded-lg',
     month_grid: 'w-100%',
     month_caption: 'text-base text-brown',
     month: 'space-y-4 text-center',
@@ -44,9 +45,9 @@ export const Calendar = ({
     hidden: 'invisible',
     outside: 'opacity-50',
     today: 'text-blush! font-bold!',
-    selected: 'bg-blush text-taupe hover:bg-taupe rounded-sm',
-    range_start: 'bg-blush text-cream rounded-l-sm',
-    range_end: 'bg-blush text-cream rounded-r-sm',
+    selected: 'bg-blush text-taupe hover:bg-taupe rounded-lg',
+    range_start: 'bg-blush text-cream rounded-l-lg',
+    range_end: 'bg-blush text-cream rounded-r-lg',
     range_middle: 'bg-blush/50 text-brown',
     ...classNames,
   };
@@ -91,6 +92,7 @@ export const Calendar = ({
       modifiersClassNames={modifiersClassNames}
       formatters={formatters}
       captionLayout={captionLayout}
+      numberOfMonths={numberOfMonths}
       {...props}
     />
   );

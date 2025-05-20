@@ -13,6 +13,12 @@ const meta = {
         'Controls how the calendar caption (month/year) is displayed',
       defaultValue: 'label',
     },
+    numberOfMonths: {
+      control: 'radio',
+      options: [1, 2],
+      description: 'Number of months to display',
+      defaultValue: 1,
+    },
   },
   decorators: [
     (Story) => (
