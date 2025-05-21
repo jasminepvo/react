@@ -218,19 +218,19 @@ const DatePicker = ({
               <Popover.Content
                 className={`${
                   numberOfMonths === 2 ? 'w-[632px]' : 'w-[366px]'
-                } h-[536px] rounded-2xl bg-cream p-6 shadow-lg`}
+                } h-[536px] rounded-2xl bg-cream p-6 shadow-lg z-10 px-4 py-2`}
               >
                 <Calendar
-                  selected={tempSelectedDate || selectedDateFinal || undefined}
-                  onSelect={handleCalendarSelect}
+                  captionLayout={captionLayout}
                   disabled={disabled}
-                  required={required}
                   minDate={startDate}
                   maxDate={endDate}
-                  paymentDueDate={paymentDueDate}
-                  showOutsideDays={showOutsideDays}
-                  captionLayout={captionLayout}
                   numberOfMonths={numberOfMonths}
+                  onSelect={handleCalendarSelect}
+                  paymentDueDate={paymentDueDate}
+                  required={required}
+                  selected={tempSelectedDate || selectedDateFinal || undefined}
+                  showOutsideDays={showOutsideDays}
                 />
                 {/* Legend */}
                 <div className='my-6 flex items-center gap-6'>
