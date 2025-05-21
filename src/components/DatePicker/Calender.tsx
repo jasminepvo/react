@@ -1,12 +1,13 @@
 import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
 import { CalendarProps } from './types';
+import 'react-day-picker/dist/style.css';
 
 const formatWeekdayName = (weekday: Date) => {
   return weekday.toLocaleDateString('en-US', { weekday: 'narrow' });
 };
 
 export const Calendar = ({
+  captionLayout,
   classNames = {},
   selected,
   onSelect,
@@ -15,40 +16,32 @@ export const Calendar = ({
   required,
   minDate,
   maxDate,
+  numberOfMonths = 2,
   paymentDueDate,
   formatters = { formatWeekdayName },
-  captionLayout,
-  numberOfMonths = 1,
   ...props
 }: CalendarProps) => {
   const baseStyles = {
     root: 'relative',
-    months: 'flex space-x-8 relative',
-    day: 'h-11 w-11 text-brown/70 text-base p-0 font-light aria-selected:opacity-100 hover:bg-gray/20 pointer rounded-lg',
-    month_grid: 'w-100%',
+    months: 'flex justify-center',
+    day: 'h-10 w-10 text-brown/70 text-base p-0 font-light aria-selected:opacity-100 hover:bg-gray/20 pointer rounded-lg',
+    day_button: 'h-10 w-10',
+    month_grid: 'w-[100%]',
     month_caption: 'text-base text-brown',
-    month: 'space-y-4 text-center',
-    nav: 'flex items-center justify-between w-full absolute left-0 right-0 px-6 top-3',
+    month: 'space-y-4 text-center px-2 mx-4',
+    nav: 'flex items-center justify-between w-full',
     button_previous:
-      'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-taupe absolute left-0 [&>svg]:text-taupe [&>svg]:fill-taupe',
+      'h-6 w-6 p-0 opacity-50 hover:opacity-100 absolute left-2 top-0 text-taupe [&>svg]:text-taupe [&>svg]:fill-taupe',
     button_next:
-      'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-taupe absolute right-0 [&>svg]:text-taupe [&>svg]:fill-taupe',
-    'vrc-caption': 'flex items-center justify-center relative',
-    'vrc-caption_dropdowns': 'relative flex gap-1',
-    'vrc-caption_label': 'text-base font-medium text-brown',
-    'vrc-dropdown':
-      'absolute top-full mt-1 bg-white border border-taupe/20 shadow-lg rounded-md py-1 z-10',
-    'vrc-dropdown_month': 'left-0',
-    'vrc-dropdown_year': 'right-0',
-    weekdays: 'text-base font-extrabold w-4 h-6 text-brown',
+      'h-6 w-6 p-0 opacity-50 hover:opacity-100 text-taupe absolute right-2 top-0 [&>svg]:text-taupe [&>svg]:fill-taupe',
+    weekdays: 'text-base font-semibold w-4 h-6',
     disabled: 'text-gray hover:bg-gray/10',
     hidden: 'invisible',
     outside: 'opacity-50',
-    today: 'text-blush! font-bold!',
-    selected: 'bg-blush text-taupe hover:bg-taupe rounded-lg',
+    today: 'text-blush font-bold!',
     range_start: 'bg-blush text-cream rounded-l-lg',
     range_end: 'bg-blush text-cream rounded-r-lg',
-    range_middle: 'bg-blush/50 text-brown',
+    selected: 'bg-blush text-taupe hover:bg-taupe rounded-lg',
     ...classNames,
   };
 
