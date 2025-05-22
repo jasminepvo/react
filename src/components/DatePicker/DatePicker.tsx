@@ -218,7 +218,7 @@ const DatePicker = ({
               <Popover.Content
                 className={`${
                   numberOfMonths === 2 ? 'w-[632px]' : 'w-[366px]'
-                } h-[536px] rounded-2xl bg-cream p-6 shadow-lg z-10 px-4 py-2`}
+                } max-h-[90vh] h-fit overflow-y-auto relative rounded-2xl bg-cream shadow-lg z-10 p-6`}
               >
                 <Calendar
                   captionLayout={captionLayout}
@@ -245,8 +245,13 @@ const DatePicker = ({
                     </div>
                   )}
                 </div>
-                <p className='text-xs text-taupe'>{disclaimer}</p>
-                <div className='absolute bottom-6 right-6'>
+                {disclaimer && (
+                  <p className='text-xs text-taupe leading-[20px]'>
+                    {disclaimer}
+                  </p>
+                )}
+                {/* Footer */}
+                <div className='sticky bottom-0 right-0 pt-4 w-full bg-cream flex justify-end'>
                   <button
                     type='button'
                     className='w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush'
@@ -259,21 +264,6 @@ const DatePicker = ({
             </Popover.Portal>
           </Popover.Root>
         </div>
-
-        {/* {(startDate || endDate) && !inputError && (
-          <div className="mt-1 text-xs text-taupe">
-            {startDate && endDate
-              ? `Valid date range: ${format(
-                  startDate,
-                  "MM/dd/yyyy"
-                )} - ${format(endDate, "MM/dd/yyyy")}`
-              : startDate
-              ? `Minimum date: ${format(startDate, "MM/dd/yyyy")}`
-              : endDate
-              ? `Maximum date: ${format(endDate, "MM/dd/yyyy")}`
-              : ""}
-          </div>
-        )} */}
       </div>
       {helpText && !inputError && (
         <p className='mt-1 ml-1 text-xs text-black'>{helpText}</p>

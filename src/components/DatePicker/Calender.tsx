@@ -16,7 +16,7 @@ export const Calendar = ({
   required,
   minDate,
   maxDate,
-  numberOfMonths = 2,
+  numberOfMonths = 1,
   paymentDueDate,
   formatters = { formatWeekdayName },
   ...props

@@ -96,6 +96,8 @@ export interface DatePickerProps {
     selected?: Date;
     /** Whether to show days from previous/next months */
     showOutsideDays?: boolean;
+    /** Whether to show the legend below the calendar */
+    showLegend?: boolean;
     /** Initial or minimum selectable date */
     startDate?: Date;
     /** Error message for invalid start date */
