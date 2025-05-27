@@ -1,6 +1,7 @@
 import { DayPicker } from 'react-day-picker';
 import { CalendarProps } from './types';
 import 'react-day-picker/dist/style.css';
+import clsx from 'clsx';
 
 const formatWeekdayName = (weekday: Date) => {
   return weekday.toLocaleDateString('en-US', { weekday: 'narrow' });
@@ -23,7 +24,12 @@ export const Calendar = ({
 }: CalendarProps) => {
   const baseStyles = {
     root: 'relative',
-    months: 'flex justify-center',
+    months: clsx(
+      'flex justify-center relative',
+      numberOfMonths === 2
+        ? 'after:absolute after:top-10 after:bottom-0 after:w-[1px] after:bg-red-200 after:left-1/2'
+        : ''
+    ),
     day: 'h-10 w-10 text-brown/70 text-base p-0 font-light aria-selected:opacity-100 hover:bg-gray/20 pointer rounded-lg',
     day_button: 'h-10 w-10',
     month_grid: 'w-[100%]',
@@ -51,7 +57,7 @@ export const Calendar = ({
   };
 
   const modifiersClassNames = {
-    paymentDue: 'border-2 border-blush rounded-sm',
+    paymentDue: 'outline-2 outline-blush rounded-sm',
   };
 
   // Create date range constraint
