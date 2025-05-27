@@ -16,6 +16,17 @@ import {
   getRequiredFieldError,
 } from './helper';
 import { DatePickerProps, SelectionValue } from './types';
+import clsx from 'clsx';
+
+/**
+ * DatePicker component allows for controlled or uncontrolled date selection.
+ * It also allows for the selection of a payment due date.
+ *
+ * @param {DatePickerProps} props - The props for the DatePicker component.
+ * @returns {JSX.Element} The DatePicker component.
+ *
+ * [Storybook](todo: add link)
+ */
 
 const DatePicker = ({
   className = '',
@@ -162,21 +173,23 @@ const DatePicker = ({
   return (
     <div className='text-left'>
       <div
-        className={`rounded-lg border border-gray bg-cream px-2 py-1 text-lg focus:outline-none ${
-          inputError ? 'border border-red-600' : ''
-        } ${className}`}
-      >
-        {label && (
-          <label
-            htmlFor={idTextfield || 'date-input'}
-            className={`block text-xs font-normal text-taupe ${
-              inputError ? 'text-red-600' : ''
-            }`}
-          >
-            {label}
-            {required && <span className='text-red-600 ml-1'>*</span>}
-          </label>
+        className={clsx(
+          'rounded-lg border border-gray bg-cream px-2 py-1 text-lg focus:outline-none',
+          inputError && 'border-red-600',
+          className
         )}
+      >
+        <label
+          htmlFor={idTextfield || 'date-input'}
+          className={clsx(
+            'block text-xs font-normal text-taupe',
+            inputError && 'text-red-600'
+          )}
+        >
+          {label}
+          {required && <span className='text-red-600 ml-1'>*</span>}
+        </label>
+
         <div className='relative'>
           <input
             type='text'
@@ -194,8 +207,6 @@ const DatePicker = ({
           <Popover.Root
             open={open && !isReadOnly}
             onOpenChange={(isOpen) => {
-              // Prevent closing when clicking outside
-              if (!isOpen) return;
               setOpen(isOpen);
             }}
           >
@@ -208,57 +219,63 @@ const DatePicker = ({
               >
                 <FontAwesomeIcon
                   icon={faCalendarDays}
-                  className={`h-[20px] w-[17.5px] text-blush ${
-                    inputError ? 'text-red-600' : ''
-                  }`}
+                  className={clsx(
+                    'h-[20px] w-[17.5px] text-blush',
+                    inputError && 'text-red-600'
+                  )}
                 />
               </button>
             </Popover.Trigger>
             <Popover.Portal>
               <Popover.Content
-                className={`${
+                className={clsx(
+                  'max-h-[90vh] h-fit overflow-y-auto relative rounded-2xl bg-cream shadow-lg z-10',
                   numberOfMonths === 2 ? 'w-[632px]' : 'w-[366px]'
-                } max-h-[90vh] h-fit overflow-y-auto relative rounded-2xl bg-cream shadow-lg z-10 p-6`}
-              >
-                <Calendar
-                  captionLayout={captionLayout}
-                  disabled={disabled}
-                  minDate={startDate}
-                  maxDate={endDate}
-                  numberOfMonths={numberOfMonths}
-                  onSelect={handleCalendarSelect}
-                  paymentDueDate={paymentDueDate}
-                  required={required}
-                  selected={tempSelectedDate || selectedDateFinal || undefined}
-                  showOutsideDays={showOutsideDays}
-                />
-                {/* Legend */}
-                <div className='my-6 flex items-center gap-6'>
-                  <div className='flex items-center gap-2'>
-                    <span className='inline-block h-4 w-4 rounded bg-blush'></span>
-                    <span className='text-sm'>Selected payment date</span>
-                  </div>
-                  {paymentDueDate && (
-                    <div className='flex items-center gap-2'>
-                      <span className='inline-block h-4 w-4 rounded border-2 border-blush'></span>
-                      <span className='text-sm'>Payment due</span>
-                    </div>
-                  )}
-                </div>
-                {disclaimer && (
-                  <p className='text-xs text-taupe leading-[20px]'>
-                    {disclaimer}
-                  </p>
                 )}
-                {/* Footer */}
-                <div className='sticky bottom-0 right-0 pt-4 w-full bg-cream flex justify-end'>
-                  <button
-                    type='button'
-                    className='w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush'
-                    onClick={handleConfirmDate}
-                  >
-                    Select Date
-                  </button>
+              >
+                <div className='pt-6 px-6'>
+                  <Calendar
+                    captionLayout={captionLayout}
+                    disabled={disabled}
+                    minDate={startDate}
+                    maxDate={endDate}
+                    numberOfMonths={numberOfMonths}
+                    onSelect={handleCalendarSelect}
+                    paymentDueDate={paymentDueDate}
+                    required={required}
+                    selected={
+                      tempSelectedDate || selectedDateFinal || undefined
+                    }
+                    showOutsideDays={showOutsideDays}
+                  />
+                  {/* Legend */}
+                  <div className='my-6 flex items-center gap-6'>
+                    <div className='flex items-center gap-2'>
+                      <span className='inline-block h-4 w-4 rounded bg-blush'></span>
+                      <span className='text-sm'>Selected payment date</span>
+                    </div>
+                    {paymentDueDate && (
+                      <div className='flex items-center gap-2'>
+                        <span className='inline-block h-4 w-4 rounded border-2 border-blush'></span>
+                        <span className='text-sm'>Payment due</span>
+                      </div>
+                    )}
+                  </div>
+                  {disclaimer && (
+                    <p className='text-xs text-taupe leading-[20px]'>
+                      {disclaimer}
+                    </p>
+                  )}
+                  {/* Footer */}
+                  <div className='sticky bottom-0 right-0 py-4 w-full bg-cream flex justify-end'>
+                    <button
+                      type='button'
+                      className='w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush'
+                      onClick={handleConfirmDate}
+                    >
+                      Select Date
+                    </button>
+                  </div>
                 </div>
               </Popover.Content>
             </Popover.Portal>
