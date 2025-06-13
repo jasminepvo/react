@@ -167,11 +167,13 @@ export const CustomStyling: Story = {
 export const WithCustomWidth: Story = {
   render: () => (
     <BottomSheetWrapper
-      width={300}
       header={<div className='text-xl font-semibold'>Custom Width</div>}
     >
       <div className='space-y-4'>
-        <p>This bottom sheet has a width of 300 pixels.</p>
+        <p>
+          This bottom sheet has a custom width story, but now always uses full
+          width.
+        </p>
         <p>Without a width prop, it defaults to full width.</p>
       </div>
     </BottomSheetWrapper>
@@ -182,11 +184,13 @@ export const WithCustomWidth: Story = {
 export const PercentageWidth: Story = {
   render: () => (
     <BottomSheetWrapper
-      width='75%'
       header={<div className='text-xl font-semibold'>75% Width</div>}
     >
       <div className='space-y-4'>
-        <p>This bottom sheet takes up 75% of the screen width.</p>
+        <p>
+          This bottom sheet takes up the full width of the screen (percentage
+          width is no longer supported).
+        </p>
         <p>It will resize responsively.</p>
       </div>
     </BottomSheetWrapper>
@@ -197,7 +201,6 @@ export const PercentageWidth: Story = {
 export const FullWidth: Story = {
   render: () => (
     <BottomSheetWrapper
-      width='full'
       header={<div className='text-xl font-semibold'>Full Width</div>}
     >
       <div className='space-y-4'>

@@ -19,6 +19,4 @@ export interface SwipeableBottomSheetProps {
     stickyFooter?: boolean;
     /** Minimum distance in pixels required to trigger sheet dismissal */
     swipeDownThreshold?: number;
-    /** Width of the bottom sheet in pixels */
-    width?: number;
 }
