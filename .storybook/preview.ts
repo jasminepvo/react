@@ -6,13 +6,33 @@ const preview: Preview = {
   parameters: {
     controls: {
       matchers: {
-       color: /(background|color)$/i,
-       date: /Date$/i,
+        color: /(background|color)$/i,
+        date: /Date$/i,
       },
     },
     docs: {
       theme: theme,
-    }
+    },
+    options: {
+      storySort: {
+        method: 'alphabetical',
+        order: [
+          'gettingStarted',
+          'changelog',
+          'Components',
+          [
+            '*',
+            [
+              'CHANGELOG',
+              'docs',
+              'Default',
+              '*'
+            ]
+          ]
+        ],
+        locales: 'en-US',
+      },
+    },
   },
 };
 
