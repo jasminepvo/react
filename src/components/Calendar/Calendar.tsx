@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { format } from 'date-fns';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import { cn } from '../../lib/utils';
+import { clsx } from 'clsx';
 
 // Calendar Context
 interface CalendarContextType {
@@ -55,7 +55,7 @@ const Calendar = ({
       }}
     >
       <div
-        className={cn(
+        className={clsx(
           'bg-white rounded-lg shadow-lg p-4 w-full max-w-md',
           className
         )}
@@ -77,7 +77,9 @@ const CalendarHeading = ({ className, children }: CalendarHeadingProps) => {
 
   if (children) {
     return (
-      <div className={cn('flex items-center justify-between mb-4', className)}>
+      <div
+        className={clsx('flex items-center justify-between mb-4', className)}
+      >
         {children}
       </div>
     );
@@ -127,7 +129,7 @@ const CalendarHeading = ({ className, children }: CalendarHeadingProps) => {
   const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
 
   return (
-    <div className={cn('flex items-center justify-between mb-4', className)}>
+    <div className={clsx('flex items-center justify-between mb-4', className)}>
       <button
         onClick={handlePreviousMonth}
         className='p-1 hover:bg-gray-100 rounded'
@@ -186,7 +188,7 @@ const CalendarNavButton = ({
   return (
     <button
       onClick={onClick}
-      className={cn('p-1 hover:bg-gray-100 rounded', className)}
+      className={clsx('p-1 hover:bg-gray-100 rounded', className)}
     >
       {children}
     </button>
@@ -254,7 +256,7 @@ const CalendarMonthSelect = ({ className }: { className?: string }) => {
     <select
       value={month.getMonth()}
       onChange={handleMonthChange}
-      className={cn(
+      className={clsx(
         'text-lg font-semibold bg-transparent border-none outline-none cursor-pointer',
         className
       )}
@@ -284,7 +286,7 @@ const CalendarYearSelect = ({ className }: { className?: string }) => {
     <select
       value={month.getFullYear()}
       onChange={handleYearChange}
-      className={cn(
+      className={clsx(
         'text-lg font-semibold bg-transparent border-none outline-none cursor-pointer',
         className
       )}
@@ -305,7 +307,7 @@ interface CalendarGridProps {
 }
 
 const CalendarGrid = ({ children, className }: CalendarGridProps) => {
-  return <div className={cn('mb-4', className)}>{children}</div>;
+  return <div className={clsx('mb-4', className)}>{children}</div>;
 };
 
 // Calendar Grid Header Component
@@ -321,7 +323,7 @@ const CalendarGridHeader = ({
   const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   return (
-    <div className={cn('flex mb-2', className)}>
+    <div className={clsx('flex mb-2', className)}>
       {weekdays.map((weekday, index) => (
         <div key={index} className='flex-1 text-center'>
           {children(weekday)}
@@ -342,7 +344,7 @@ const CalendarHeaderCell = ({
   className,
 }: CalendarHeaderCellProps) => {
   return (
-    <div className={cn('text-gray-500 text-sm font-medium py-2', className)}>
+    <div className={clsx('py-2 text-center text-gray-600', className)}>
       {children}
     </div>
   );
@@ -382,7 +384,7 @@ const CalendarGridBody = ({ children, className }: CalendarGridBodyProps) => {
   }
 
   return (
-    <div className={cn('space-y-1', className)}>
+    <div className={clsx('space-y-1', className)}>
       {weeks.map((week, weekIndex) => (
         <div key={weekIndex} className='flex'>
           {week.map((date, dayIndex) => (
@@ -447,7 +449,7 @@ const CalendarCell = ({
   return (
     <button
       onClick={handleClick}
-      className={cn(
+      className={clsx(
         'h-9 w-9 text-sm rounded-full transition-colors',
         variantStyles[computedVariant],
         className
@@ -467,8 +469,8 @@ interface CalendarLegendProps {
 const CalendarLegend = ({ children, className }: CalendarLegendProps) => {
   return (
     <div
-      className={cn(
-        'flex items-center justify-center space-x-6 text-sm mb-4',
+      className={clsx(
+        'flex items-center justify-center space-x-4 mt-4',
         className
       )}
     >
@@ -489,22 +491,20 @@ const CalendarLegendItem = ({
   className,
 }: CalendarLegendItemProps) => {
   return (
-    <div className={cn('flex items-center space-x-2', className)}>
+    <div className={clsx('flex items-center space-x-2', className)}>
       {indicator}
-      <span className='text-gray-600'>{children}</span>
+      <span className='text-sm text-gray-600'>{children}</span>
     </div>
   );
 };
 
 // Legend Indicator Components
 const CalendarSelectedIndicator = ({ className }: { className?: string }) => (
-  <div className={cn('w-4 h-4 bg-orange-200 rounded-full', className)} />
+  <div className={clsx('w-4 h-4 bg-blue-100 rounded-full', className)} />
 );
 
 const CalendarPaymentDueIndicator = ({ className }: { className?: string }) => (
-  <div
-    className={cn('w-4 h-4 border-2 border-orange-300 rounded-full', className)}
-  />
+  <div className={clsx('w-4 h-4 border-2 rounded-full', className)} />
 );
 
 // Messaging Component - Completely Customizable
@@ -515,7 +515,7 @@ interface CalendarMessagingProps {
 
 const CalendarMessaging = ({ children, className }: CalendarMessagingProps) => {
   return (
-    <div className={cn('text-gray-500 text-sm text-left mb-4', className)}>
+    <div className={clsx('text-center mt-4 text-gray-600', className)}>
       {children}
     </div>
   );
