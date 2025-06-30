@@ -1,6 +1,7 @@
 import { Counter } from './components/Counter';
 import { Hangman } from './components/Hangman';
 import { TicTacToe } from './components/TicTacToe';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import DatePicker from './components/DatePicker/DatePicker';
 import { Calendar } from './components/Calendar';
@@ -18,8 +19,22 @@ function App() {
 
   return (
     <div className='p-10'>
-      <span className='font-italiana text-5xl lg:text-7xl italic'>React</span>
-      <span className='text-5xl lg:text-7xl font-thin'> Components</span>
+      <div className='flex items-center justify-between mb-8'>
+        <div>
+          <span className='font-italiana text-5xl lg:text-7xl italic'>
+            React
+          </span>
+          <span className='text-5xl lg:text-7xl font-thin'> Components</span>
+        </div>
+        <Link
+          to='/calendar'
+          className='bg-pink-500 text-white px-6 py-3 rounded-lg hover:bg-pink-600 
+                     transition-colors font-medium'
+        >
+          View Calendar
+        </Link>
+      </div>
+
       <hr className='border-t border-gray-300 w-full my-4' />
       <hr className='border-t border-gray-300 w-full my-4' />
       <Counter />
@@ -130,7 +145,7 @@ function App() {
             <Calendar.Legend className='justify-start space-x-4'>
               <Calendar.LegendItem
                 indicator={
-                  <Calendar.SelectedIndicator className='bg-blue-200' />
+                  <Calendar.SelectedIndicator className='bg-purple-200' />
                 }
               >
                 Your Selection
