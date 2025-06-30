@@ -9,4 +9,3 @@ export {
     CalendarLegend,
     CalendarMessaging
 } from './Calendar';
-export { default as CalendarExample } from './CalendarExample'; 
