@@ -1,0 +1,110 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+<making_components>
+When building components, follow these composition-first principles:
+1. Compound Components Over Props
+- Instead of:
+```tsx
+<Calendar 
+  showHeader={true}
+  headerStyle="minimal"
+  showNavigation={true}
+  navigationPosition="top"
+/>
+```
+- Prefer:
+```tsx
+<Calendar>
+  <Calendar.Header>
+    <Calendar.Navigation />
+  </Calendar.Header>
+</Calendar>
+```
+
+2. Children Over Configuration
+- Instead of:
+```tsx
+<Tabs 
+  items={[
+    { label: "Tab 1", content: "Content 1" },
+    { label: "Tab 2", content: "Content 2" }
+  ]} 
+/>
+```
+- Prefer:
+```tsx
+<Tabs>
+  <Tab label="Tab 1">Content 1</Tab>
+  <Tab label="Tab 2">Content 2</Tab>
+</Tabs>
+```
+
+3. Context Over Props Drilling
+- Use React Context to share state between compound components
+- Each component family should manage its own context
+- Avoid passing state through multiple levels of props
+
+4. Slots Over Fixed Structure
+- Instead of:
+```tsx
+<Card
+  title="My Card"
+  subtitle="Subtitle"
+  footer="Footer content"
+/>
+```
+- Prefer:
+```tsx
+<Card>
+  <Card.Title>My Card</Card.Title>
+  <Card.Subtitle>Subtitle</Card.Subtitle>
+  <Card.Footer>Footer content</Card.Footer>
+</Card>
+```
+
+5. Composition Patterns
+- Use the Compound Component pattern for related component families
+- Implement Render Props for flexible content rendering
+- Utilize Controlled Props for state management
+- Support Render Functions for dynamic content
+
+6. Style Composition
+- Allow style composition at every level
+- Support className and style props on all components
+- Enable theme customization through composition
+
+7. Behavior Composition
+- Allow injection of custom event handlers
+- Support composition of behaviors (e.g., drag-and-drop, sorting)
+- Enable extension of default functionality
+
+8. Documentation Guidelines
+- Document composition patterns clearly
+- Provide examples of common composition scenarios
+- Show progressive complexity through composition
+
+9. Testing Approach
+- Test components both individually and in composition
+- Verify that composed behaviors work correctly
+- Ensure style compositions don't break functionality
+
+10. Performance Considerations
+- Optimize component rendering in composition
+- Use React.memo() strategically in compound components
+- Avoid unnecessary re-renders in composed structures
+</making_components>
+
+This philosophy encourages:
+1. Maximum flexibility through composition
+2. Intuitive API design
+3. Better code organization
+4. Easier testing and maintenance
+5. More predictable behavior
+6. Better developer experience
+
+The Calendar component we just discussed is a perfect example of this philosophy in action - it uses compound components to create a flexible, composable interface rather than a complex configuration API.
+
+Would you like me to expand on any of these points or provide more specific examples of how to implement these principles in practice?
