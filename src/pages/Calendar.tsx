@@ -46,7 +46,7 @@ const CalendarPage = () => {
           className='border border-gray-200 rounded-lg shadow-sm'
         >
           {/* Custom Header */}
-          <Calendar.Heading className='bg-gray-50 p-4 rounded-t-lg border-b border-gray-200'>
+          <Calendar.Heading className='bg-pink-500 p-4 rounded-t-lg border-b border-gray-200'>
             <Calendar.PrevButton className='text-gray-600 hover:bg-gray-100 rounded-md p-2' />
             <div className='flex items-center space-x-2'>
               <Calendar.MonthSelect className='text-gray-800 font-medium' />
@@ -57,22 +57,22 @@ const CalendarPage = () => {
 
           {/* Calendar Grid */}
           <Calendar.Grid className='p-4'>
-            <Calendar.GridHeader>
-              {(weekday) => (
+            <Calendar.GridHeader
+              render={(weekday: string) => (
                 <Calendar.HeaderCell className='text-gray-500 font-medium'>
-                  {weekday.slice(0, 3)}
+                  {weekday.slice(0, 2)}
                 </Calendar.HeaderCell>
               )}
-            </Calendar.GridHeader>
+            />
 
-            <Calendar.GridBody>
-              {(date) => (
+            <Calendar.GridBody
+              render={(date: Date) => (
                 <Calendar.Cell
                   date={date}
                   className='hover:bg-blue-50 rounded-full transition-colors'
                 />
               )}
-            </Calendar.GridBody>
+            />
           </Calendar.Grid>
 
           {/* Legend */}
@@ -113,19 +113,19 @@ const CalendarPage = () => {
           <Calendar
             selectedDate={selectedDate}
             paymentDueDate={paymentDueDate}
-            onSelectDate={(date) => setSelectedDate(date)}
+            onSelectDate={setSelectedDate}
             defaultMonth={new Date(2025, 5, 1)}
           >
             <Calendar.Heading />
             <Calendar.Grid>
-              <Calendar.GridHeader>
-                {(weekday) => (
+              <Calendar.GridHeader
+                render={(weekday: string) => (
                   <Calendar.HeaderCell>{weekday}</Calendar.HeaderCell>
                 )}
-              </Calendar.GridHeader>
-              <Calendar.GridBody>
-                {(date) => <Calendar.Cell date={date} />}
-              </Calendar.GridBody>
+              />
+              <Calendar.GridBody
+                render={(date: Date) => <Calendar.Cell date={date} />}
+              />
             </Calendar.Grid>
             <Calendar.Legend>
               <Calendar.LegendItem indicator={<Calendar.SelectedIndicator />}>
@@ -149,7 +149,7 @@ const CalendarPage = () => {
           <Calendar
             selectedDate={selectedDate}
             paymentDueDate={paymentDueDate}
-            onSelectDate={(date) => setSelectedDate(date)}
+            onSelectDate={setSelectedDate}
             defaultMonth={new Date(2025, 5, 1)}
             className='border-2 border-blue-200'
           >
@@ -165,23 +165,23 @@ const CalendarPage = () => {
 
             <Calendar.Grid>
               {/* Custom header */}
-              <Calendar.GridHeader className='bg-gray-50 rounded'>
-                {(weekday) => (
+              <Calendar.GridHeader
+                render={(weekday: string) => (
                   <Calendar.HeaderCell className='font-bold text-blue-600'>
                     {weekday}
                   </Calendar.HeaderCell>
                 )}
-              </Calendar.GridHeader>
+              />
 
               {/* Custom body with custom cell styling */}
-              <Calendar.GridBody>
-                {(date) => (
+              <Calendar.GridBody
+                render={(date: Date) => (
                   <Calendar.Cell
                     date={date}
                     className='hover:bg-blue-100 border border-transparent hover:border-blue-200'
                   />
                 )}
-              </Calendar.GridBody>
+              />
             </Calendar.Grid>
 
             {/* Custom Legend with additional items */}
@@ -232,23 +232,20 @@ const CalendarPage = () => {
         {/* Minimal Calendar */}
         <div className='max-w-md mx-auto'>
           <h2 className='text-xl font-bold mb-4'>Minimal Calendar</h2>
-          <Calendar
-            selectedDate={selectedDate}
-            onSelectDate={(date) => setSelectedDate(date)}
-          >
+          <Calendar selectedDate={selectedDate} onSelectDate={setSelectedDate}>
             <Calendar.Grid>
-              <Calendar.GridHeader>
-                {(weekday) => (
+              <Calendar.GridHeader
+                render={(weekday: string) => (
                   <Calendar.HeaderCell className='text-xs'>
                     {weekday}
                   </Calendar.HeaderCell>
                 )}
-              </Calendar.GridHeader>
-              <Calendar.GridBody>
-                {(date) => (
+              />
+              <Calendar.GridBody
+                render={(date: Date) => (
                   <Calendar.Cell date={date} className='text-xs h-8 w-8' />
                 )}
-              </Calendar.GridBody>
+              />
             </Calendar.Grid>
           </Calendar>
         </div>
