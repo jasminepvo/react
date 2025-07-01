@@ -1,0 +1,248 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Component Philosophy" />
+
+# React Component Rules
+
+## Core Principles
+
+### 1. Composition Over Configuration
+
+Our components should favor composition patterns over complex configuration objects. This makes components more flexible, maintainable, and easier to understand.
+
+### 2. Component Design Philosophy
+
+#### Compound Components
+
+Instead of passing numerous configuration props, break components into logical sub-components:
+
+```tsx
+// ❌ Avoid configuration-heavy components
+<Calendar
+  showHeader={true}
+  headerStyle="minimal"
+  showNavigation={true}
+  navigationPosition="top"
+/>
+
+// ✅ Use compound components
+<Calendar>
+  <Calendar.Header>
+    <Calendar.Navigation />
+  </Calendar.Header>
+</Calendar>
+```
+
+#### Children Over Configuration
+
+Prefer passing children for content rather than configuration objects:
+
+```tsx
+// ❌ Avoid configuration objects for content
+<Tabs
+  items={[
+    { label: "Tab 1", content: "Content 1" },
+    { label: "Tab 2", content: "Content 2" }
+  ]}
+/>
+
+// ✅ Use children components
+<Tabs>
+  <Tab label="Tab 1">Content 1</Tab>
+  <Tab label="Tab 2">Content 2</Tab>
+</Tabs>
+```
+
+#### Context Over Props Drilling
+
+- Use React Context to share state between compound components
+- Each component family should manage its own context
+- Avoid passing state through multiple levels of props
+
+```tsx
+// ❌ Avoid props drilling
+const Calendar = ({ selectedDate, onSelectDate }) => (
+  <div>
+    <CalendarHeader selectedDate={selectedDate} onSelectDate={onSelectDate} />
+    <CalendarGrid>
+      <CalendarMonth selectedDate={selectedDate} onSelectDate={onSelectDate}>
+        <CalendarWeek>
+          <CalendarDay
+            selectedDate={selectedDate}
+            onSelectDate={onSelectDate}
+          />
+        </CalendarWeek>
+      </CalendarMonth>
+    </CalendarGrid>
+  </div>
+);
+
+// ✅ Use Context
+// 1. Create a context
+interface CalendarContextType {
+  selectedDate?: Date;
+  onSelectDate: (date: Date) => void;
+}
+
+const CalendarContext = React.createContext<CalendarContextType | undefined>(
+  undefined
+);
+
+// 2. Create a provider component
+const Calendar = ({ children }) => {
+  const [selectedDate, setSelectedDate] = useState<Date>();
+
+  return (
+    <CalendarContext.Provider
+      value={{ selectedDate, onSelectDate: setSelectedDate }}
+    >
+      {children}
+    </CalendarContext.Provider>
+  );
+};
+
+// 3. Create a hook for consuming components
+const useCalendar = () => {
+  const context = useContext(CalendarContext);
+  if (!context) {
+    throw new Error(
+      'Calendar components must be used within a Calendar provider'
+    );
+  }
+  return context;
+};
+
+// 4. Use context in child components
+const CalendarDay = ({ date }) => {
+  const { selectedDate, onSelectDate } = useCalendar();
+
+  return (
+    <button
+      onClick={() => onSelectDate(date)}
+      className={date === selectedDate ? 'selected' : ''}
+    >
+      {date.getDate()}
+    </button>
+  );
+};
+
+// 5. Clean component composition
+<Calendar>
+  <Calendar.Header />
+  <Calendar.Grid>
+    <Calendar.Month>
+      <Calendar.Week>
+        <Calendar.Day date={new Date()} />
+      </Calendar.Week>
+    </Calendar.Month>
+  </Calendar.Grid>
+</Calendar>;
+```
+
+Benefits of using context:
+
+- Eliminates prop drilling
+- Components only access the state they need
+- Easier to add new features without changing prop chains
+- Better component encapsulation
+- Simpler testing of individual components
+
+#### Slots Over Fixed Structure
+
+Allow flexible content placement through slots:
+
+```tsx
+// ❌ Avoid fixed structure
+<Card
+  title="My Card"
+  subtitle="Subtitle"
+  footer="Footer content"
+/>
+
+// ✅ Use slots for flexibility
+<Card>
+  <Card.Title>My Card</Card.Title>
+  <Card.Subtitle>Subtitle</Card.Subtitle>
+  <Card.Footer>Footer content</Card.Footer>
+</Card>
+```
+
+### 3. Implementation Guidelines
+
+#### Composition Patterns
+
+1. Use the Compound Component pattern for related component families
+2. Implement Render Props for flexible content rendering
+3. Utilize Controlled Props for state management
+4. Support Render Functions for dynamic content
+
+#### Style Composition
+
+1. Allow style composition at every level
+2. Support className and style props on all components
+3. Enable theme customization through composition
+
+#### Behavior Composition
+
+1. Allow injection of custom event handlers
+2. Support composition of behaviors (e.g., drag-and-drop, sorting)
+3. Enable extension of default functionality
+
+### 4. Documentation and Testing
+
+#### Documentation Guidelines
+
+1. Document composition patterns clearly
+2. Provide examples of common composition scenarios
+3. Show progressive complexity through composition
+
+#### Testing Approach
+
+1. Test components both individually and in composition
+2. Verify that composed behaviors work correctly
+3. Ensure style compositions don't break functionality
+
+### 5. Performance Considerations
+
+1. Optimize component rendering in composition
+2. Use React.memo() strategically in compound components
+3. Avoid unnecessary re-renders in composed structures
+
+## Examples
+
+### Calendar Component
+
+Our Calendar component demonstrates these principles:
+
+```tsx
+<Calendar>
+  <Calendar.Heading>
+    <Calendar.PrevButton />
+    <Calendar.MonthSelect />
+    <Calendar.YearSelect />
+    <Calendar.NextButton />
+  </Calendar.Heading>
+
+  <Calendar.Grid>
+    <Calendar.GridHeader>
+      {(weekday) => <Calendar.HeaderCell>{weekday}</Calendar.HeaderCell>}
+    </Calendar.GridHeader>
+    <Calendar.GridBody>
+      {(date) => <Calendar.Cell date={date} />}
+    </Calendar.GridBody>
+  </Calendar.Grid>
+
+  <Calendar.Legend>
+    <Calendar.LegendItem>
+      <Calendar.SelectedIndicator />
+    </Calendar.LegendItem>
+  </Calendar.Legend>
+</Calendar>
+```
+
+This structure allows for:
+
+- Flexible composition of calendar parts
+- Custom styling at each level
+- Easy extension of functionality
+- Clear separation of concerns
