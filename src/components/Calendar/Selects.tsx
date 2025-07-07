@@ -1,10 +1,69 @@
 import React, { FC } from 'react';
-import { format as dateFnsFormat } from 'date-fns';
-import { CompoundComponentProps } from './types';
+import { format as dateFnsFormat, addMonths, addYears } from 'date-fns';
+import {
+  MonthSelectProps,
+  YearSelectProps,
+  MonthYearSelectProps,
+} from './types';
 import { useCalendarContext } from './CalendarContext';
 
-export const MonthSelect: FC<CompoundComponentProps> = ({ className }) => {
+export const MonthYearSelect: FC<MonthYearSelectProps> = ({
+  className,
+  optionsBefore = 0,
+  optionsAfter = 12,
+}) => {
   const { month, setMonth } = useCalendarContext();
+
+  const options = Array.from(
+    { length: optionsBefore + optionsAfter + 1 },
+    (_, i) => {
+      const date = addMonths(month, i - optionsBefore);
+      return {
+        value: date.toISOString(),
+        label: dateFnsFormat(date, 'MMMM yyyy'),
+      };
+    }
+  );
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setMonth(new Date(event.target.value));
+  };
+
+  return (
+    <select
+      className={`calendar-select ${className || ''}`}
+      value={month.toISOString()}
+      onChange={handleChange}
+      aria-label='Select month and year'
+    >
+      {options.map(({ value, label }) => (
+        <option key={value} value={value}>
+          {label}
+        </option>
+      ))}
+    </select>
+  );
+};
+
+export const MonthSelect: FC<MonthSelectProps> = ({
+  className,
+  optionsBefore = 0,
+  optionsAfter = 11, // Show full year of months by default
+}) => {
+  const { month, setMonth } = useCalendarContext();
+  const currentMonth = month.getMonth();
+
+  const options = Array.from(
+    { length: optionsBefore + optionsAfter + 1 },
+    (_, i) => {
+      const monthIndex = (currentMonth - optionsBefore + i + 12) % 12; // Ensure it wraps around
+      const date = new Date(month.getFullYear(), monthIndex, 1);
+      return {
+        value: monthIndex,
+        label: dateFnsFormat(date, 'MMMM'),
+      };
+    }
+  );
 
   const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newMonth = new Date(month);
@@ -19,18 +78,32 @@ export const MonthSelect: FC<CompoundComponentProps> = ({ className }) => {
       onChange={handleMonthChange}
       aria-label='Select month'
     >
-      {Array.from({ length: 12 }, (_, i) => (
-        <option key={i} value={i}>
-          {dateFnsFormat(new Date(2024, i, 1), 'MMMM')}
+      {options.map(({ value, label }) => (
+        <option key={value} value={value}>
+          {label}
         </option>
       ))}
     </select>
   );
 };
 
-export const YearSelect: FC<CompoundComponentProps> = ({ className }) => {
+export const YearSelect: FC<YearSelectProps> = ({
+  className,
+  optionsBefore = 0,
+  optionsAfter = 5,
+}) => {
   const { month, setMonth } = useCalendarContext();
-  const currentYear = new Date().getFullYear();
+
+  const options = Array.from(
+    { length: optionsBefore + optionsAfter + 1 },
+    (_, i) => {
+      const date = addYears(month, i - optionsBefore);
+      return {
+        value: date.getFullYear(),
+        label: date.getFullYear().toString(),
+      };
+    }
+  );
 
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newMonth = new Date(month);
@@ -45,9 +118,9 @@ export const YearSelect: FC<CompoundComponentProps> = ({ className }) => {
       onChange={handleYearChange}
       aria-label='Select year'
     >
-      {Array.from({ length: 10 }, (_, i) => currentYear - 5 + i).map((year) => (
-        <option key={year} value={year}>
-          {year}
+      {options.map(({ value, label }) => (
+        <option key={value} value={value}>
+          {label}
         </option>
       ))}
     </select>

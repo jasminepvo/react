@@ -12,6 +12,17 @@ export interface CalendarProps extends CompoundComponentProps {
     defaultMonth?: Date;
 }
 
+export interface SelectOptionsProps extends CompoundComponentProps {
+    optionsBefore?: number; // Number of options to show before current
+    optionsAfter?: number; // Number of options to show after current
+}
+
+export type MonthYearSelectProps = SelectOptionsProps;
+
+export type MonthSelectProps = SelectOptionsProps;
+
+export type YearSelectProps = SelectOptionsProps;
+
 export type CaptionProps = CompoundComponentProps;
 
 export interface GridHeaderProps extends CompoundComponentProps {
@@ -64,11 +75,6 @@ export interface HeadingProps extends BaseCalendarProps {
 // Navigation button props
 export interface NavigationButtonProps extends BaseCalendarProps {
     direction: 'prev' | 'next';
-}
-
-// Select props for month/year dropdowns
-export interface SelectProps extends BaseCalendarProps {
-    type: 'month' | 'year';
 }
 
 // Grid props
