@@ -7,6 +7,15 @@ import {
   CellProps,
 } from './types';
 import { useCalendar } from './CalendarContext';
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  getDay,
+  isSameDay,
+  getDate,
+} from 'date-fns';
 import clsx from 'clsx';
 
 const Grid: FC<GridProps> = ({ children, className, layout = 'default' }) => {
@@ -24,15 +33,10 @@ const Grid: FC<GridProps> = ({ children, className, layout = 'default' }) => {
 };
 
 const GridHeader: FC<GridHeaderProps> = ({ render, className }) => {
-  const weekdays = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
+  // Use date-fns to generate weekday names
+  const weekdays = Array.from({ length: 7 }, (_, i) =>
+    format(new Date(2024, 0, i + 1), 'EEEE')
+  );
 
   return (
     <div className={clsx('grid grid-cols-7 mb-2', className)}>
@@ -62,14 +66,12 @@ const HeaderCell: FC<HeaderCellProps> = ({ children, className }) => {
 
 const GridBody: FC<GridBodyProps> = ({ render, className }) => {
   const { defaultMonth = new Date() } = useCalendar();
-  const year = defaultMonth.getFullYear();
-  const month = defaultMonth.getMonth();
 
-  // Calculate dates for the month
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const daysInMonth = lastDay.getDate();
-  const startingDay = firstDay.getDay();
+  // Calculate dates for the month using date-fns
+  const monthStart = startOfMonth(defaultMonth);
+  const monthEnd = endOfMonth(defaultMonth);
+  const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
+  const startingDay = getDay(monthStart);
 
   // Create calendar grid
   const days: (Date | null)[] = [];
@@ -80,9 +82,7 @@ const GridBody: FC<GridBodyProps> = ({ render, className }) => {
   }
 
   // Add all days of the month
-  for (let day = 1; day <= daysInMonth; day++) {
-    days.push(new Date(year, month, day));
-  }
+  days.push(...daysInMonth);
 
   // Group days into weeks
   const weeks: (Date | null)[][] = [];
@@ -108,8 +108,8 @@ const GridBody: FC<GridBodyProps> = ({ render, className }) => {
 const Cell: FC<CellProps> = ({ date, className }) => {
   const { selectedDate, onSelectDate, paymentDueDate } = useCalendar();
 
-  const isSelected = selectedDate?.toDateString() === date.toDateString();
-  const isPaymentDue = paymentDueDate?.toDateString() === date.toDateString();
+  const isSelected = selectedDate && isSameDay(selectedDate, date);
+  const isPaymentDue = paymentDueDate && isSameDay(paymentDueDate, date);
 
   return (
     <button
@@ -122,7 +122,7 @@ const Cell: FC<CellProps> = ({ date, className }) => {
         className
       )}
     >
-      {date.getDate()}
+      {getDate(date)}
     </button>
   );
 };

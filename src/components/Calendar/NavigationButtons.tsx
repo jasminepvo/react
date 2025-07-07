@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { NavigationButtonProps } from './types';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import clsx from 'clsx';
