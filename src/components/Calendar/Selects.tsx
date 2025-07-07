@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { SelectProps } from './types';
 import { useCalendar } from './CalendarContext';
-import { getMonth, getYear, format } from 'date-fns';
+import { getMonth, getYear, format, setMonth, setYear } from 'date-fns';
 import clsx from 'clsx';
 
 const baseSelectStyles =
@@ -16,22 +16,27 @@ const months = Array.from({ length: 12 }, (_, i) =>
  * MonthSelect Component
  * Renders a dropdown for selecting months
  * - Uses Omit to remove 'type' from SelectProps since it's hardcoded for this component
- * - Gets defaultMonth from CalendarContext
- * - Falls back to current month if defaultMonth is not provided
- * - Uses date-fns for consistent date handling
+ * - Gets month from CalendarContext
+ * - Updates the calendar context when month changes
  */
 export const MonthSelect: FC<Omit<SelectProps, 'type'>> = ({ className }) => {
-  const { defaultMonth } = useCalendar();
-  // Get current month (0-11) using date-fns
-  const currentMonth = defaultMonth
-    ? getMonth(defaultMonth)
-    : getMonth(new Date());
+  const { month, setMonth: updateMonth } = useCalendar();
+  const currentMonth = getMonth(month);
+
+  const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newMonth = parseInt(event.target.value, 10);
+    updateMonth(setMonth(month, newMonth));
+  };
 
   return (
-    <select value={currentMonth} className={clsx(baseSelectStyles, className)}>
-      {months.map((month, index) => (
-        <option key={month} value={index}>
-          {month}
+    <select
+      value={currentMonth}
+      onChange={handleMonthChange}
+      className={clsx(baseSelectStyles, className)}
+    >
+      {months.map((monthName, index) => (
+        <option key={monthName} value={index}>
+          {monthName}
         </option>
       ))}
     </select>
@@ -42,22 +47,28 @@ export const MonthSelect: FC<Omit<SelectProps, 'type'>> = ({ className }) => {
  * YearSelect Component
  * Renders a dropdown for selecting years
  * - Uses Omit to remove 'type' from SelectProps since it's hardcoded for this component
- * - Gets defaultMonth from CalendarContext
- * - Falls back to current year if defaultMonth is not provided
- * - Shows a range of 10 years (5 years before and 4 years after current year)
- * - Uses date-fns for consistent date handling
+ * - Gets year from CalendarContext
+ * - Updates the calendar context when year changes
+ * - Shows a range of years (5 years before and 4 years after current year)
  */
 export const YearSelect: FC<Omit<SelectProps, 'type'>> = ({ className }) => {
-  const { defaultMonth } = useCalendar();
-  // Get current year using date-fns
-  const currentYear = defaultMonth
-    ? getYear(defaultMonth)
-    : getYear(new Date());
+  const { month, setMonth: updateMonth } = useCalendar();
+  const currentYear = getYear(month);
+
   // Generate array of years: 5 years before and 4 years after current year
   const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
 
+  const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newYear = parseInt(event.target.value, 10);
+    updateMonth(setYear(month, newYear));
+  };
+
   return (
-    <select value={currentYear} className={clsx(baseSelectStyles, className)}>
+    <select
+      value={currentYear}
+      onChange={handleYearChange}
+      className={clsx(baseSelectStyles, className)}
+    >
       {years.map((year) => (
         <option key={year} value={year}>
           {year}

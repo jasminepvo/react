@@ -65,11 +65,11 @@ const HeaderCell: FC<HeaderCellProps> = ({ children, className }) => {
 };
 
 const GridBody: FC<GridBodyProps> = ({ render, className }) => {
-  const { defaultMonth = new Date() } = useCalendar();
+  const { month } = useCalendar();
 
   // Calculate dates for the month using date-fns
-  const monthStart = startOfMonth(defaultMonth);
-  const monthEnd = endOfMonth(defaultMonth);
+  const monthStart = startOfMonth(month);
+  const monthEnd = endOfMonth(month);
   const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
   const startingDay = getDay(monthStart);
 
