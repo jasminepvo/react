@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { BaseCalendarProps, LegendItemProps, IndicatorProps } from './types';
 import clsx from 'clsx';
 
