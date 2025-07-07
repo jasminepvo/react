@@ -10,15 +10,11 @@ import {
   endOfWeek,
   addDays,
 } from 'date-fns';
-import {
-  CompoundComponentProps,
-  GridHeaderProps,
-  GridBodyProps,
-} from './types';
+import { GridProps, GridHeaderProps, GridBodyProps } from './types';
 import { useCalendarContext } from './CalendarContext';
 
 // Grid Component
-export const Grid: FC<CompoundComponentProps> = ({ className, children }) => (
+export const Grid: FC<GridProps> = ({ className, children }) => (
   <div className={className}>{children}</div>
 );
 
