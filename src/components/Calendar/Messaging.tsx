@@ -1,11 +1,11 @@
-import { FC } from 'react';
-import { MessagingProps } from './types';
-import clsx from 'clsx';
+import React, { FC } from 'react';
+import { CompoundComponentProps } from './types';
 
-export const Messaging: FC<MessagingProps> = ({ children, className }) => {
-  return (
-    <div className={clsx('text-center mt-4 text-sm text-gray-600', className)}>
-      {children}
-    </div>
-  );
-};
+export const Messaging: FC<CompoundComponentProps> = ({
+  className,
+  children,
+}) => (
+  <div className={className} role='status'>
+    {children}
+  </div>
+);

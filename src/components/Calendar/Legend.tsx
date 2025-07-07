@@ -1,44 +1,27 @@
-import { FC } from 'react';
-import { BaseCalendarProps, LegendItemProps, IndicatorProps } from './types';
-import clsx from 'clsx';
+import React, { FC } from 'react';
+import { CompoundComponentProps, LegendItemProps } from './types';
 
-export const Legend: FC<BaseCalendarProps> = ({ children, className }) => {
-  return (
-    <div
-      className={clsx(
-        'flex items-center justify-center space-x-4',
-        'mt-4',
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-};
+export const Legend: FC<CompoundComponentProps> = ({ className, children }) => (
+  <div className={`calendar-legend ${className || ''}`}>{children}</div>
+);
 
-const LegendItem: FC<LegendItemProps> = ({
-  children,
-  indicator,
+export const LegendItem: FC<LegendItemProps> = ({
   className,
-}) => {
-  return (
-    <div className={clsx('flex items-center gap-2', className)}>
-      {indicator}
-      <span className='text-sm text-gray-600'>{children}</span>
-    </div>
-  );
-};
-
-const SelectedIndicator: FC<IndicatorProps> = ({ className }) => {
-  return <div className={clsx('w-4 h-4 rounded-lg bg-blue-500', className)} />;
-};
-
-const PaymentDueIndicator: FC<IndicatorProps> = ({ className }) => {
-  return (
+  children,
+  type,
+}) => (
+  <div className={`calendar-legend-item ${className || ''}`}>
     <div
-      className={clsx('w-4 h-4 rounded-lg border-2 border-red-500', className)}
+      className={`w-4 h-4 ${
+        type === 'selected'
+          ? 'bg-blue-500 rounded-full'
+          : type === 'payment-due'
+          ? 'border-2 border-yellow-300'
+          : type === 'today'
+          ? 'bg-gray-200 rounded-full'
+          : ''
+      }`}
     />
-  );
-};
-
-export { LegendItem, SelectedIndicator, PaymentDueIndicator };
+    <span>{children}</span>
+  </div>
+);

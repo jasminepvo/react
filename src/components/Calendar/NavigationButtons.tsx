@@ -1,46 +1,34 @@
-import { FC } from 'react';
-import { NavigationButtonProps } from './types';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import { useCalendar } from './CalendarContext';
-import { addMonths, subMonths } from 'date-fns';
-import clsx from 'clsx';
+import React, { FC } from 'react';
+import { NavigationProps } from './types';
+import { useCalendarContext } from './CalendarContext';
 
-const baseButtonStyles = 'p-2 rounded-lg hover:bg-gray-100 transition-colors';
-
-export const PrevButton: FC<Omit<NavigationButtonProps, 'direction'>> = ({
+export const Navigation: FC<NavigationProps> = ({
   className,
+  navLayout = 'around',
 }) => {
-  const { month, setMonth } = useCalendar();
+  const { month, setMonth } = useCalendarContext();
 
   const handlePrevMonth = () => {
-    setMonth(subMonths(month, 1));
+    const prevMonth = new Date(month);
+    prevMonth.setMonth(prevMonth.getMonth() - 1);
+    setMonth(prevMonth);
   };
-
-  return (
-    <button
-      onClick={handlePrevMonth}
-      className={clsx(baseButtonStyles, className)}
-    >
-      <ChevronLeftIcon className='w-5 h-5' />
-    </button>
-  );
-};
-
-export const NextButton: FC<Omit<NavigationButtonProps, 'direction'>> = ({
-  className,
-}) => {
-  const { month, setMonth } = useCalendar();
 
   const handleNextMonth = () => {
-    setMonth(addMonths(month, 1));
+    const nextMonth = new Date(month);
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    setMonth(nextMonth);
   };
 
   return (
-    <button
-      onClick={handleNextMonth}
-      className={clsx(baseButtonStyles, className)}
-    >
-      <ChevronRightIcon className='w-5 h-5' />
-    </button>
+    <div className={`calendar-navigation ${className || ''}`}>
+      <button onClick={handlePrevMonth} aria-label='Previous month'>
+        ←
+      </button>
+      {navLayout === 'around' && <div className='flex-1' />}
+      <button onClick={handleNextMonth} aria-label='Next month'>
+        →
+      </button>
+    </div>
   );
 };

@@ -1,130 +1,123 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import {
-  GridProps,
-  GridHeaderProps,
-  HeaderCellProps,
-  GridBodyProps,
-  CellProps,
-} from './types';
-import { useCalendar } from './CalendarContext';
-import {
-  format,
+  format as dateFnsFormat,
   startOfMonth,
   endOfMonth,
   eachDayOfInterval,
-  getDay,
+  isSameMonth,
   isSameDay,
-  getDate,
+  startOfWeek,
+  endOfWeek,
 } from 'date-fns';
-import clsx from 'clsx';
+import {
+  CompoundComponentProps,
+  GridHeaderProps,
+  GridBodyProps,
+} from './types';
+import { useCalendarContext } from './CalendarContext';
 
-const Grid: FC<GridProps> = ({ children, className, layout = 'default' }) => {
-  return (
-    <div
-      className={clsx(
-        'mt-4',
-        layout === 'compact' ? 'gap-1' : 'gap-2',
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-};
+// Grid Component
+export const Grid: FC<CompoundComponentProps> = ({ className, children }) => (
+  <div className={className}>{children}</div>
+);
 
-const GridHeader: FC<GridHeaderProps> = ({ render, className }) => {
-  // Use date-fns to generate weekday names
-  const weekdays = Array.from({ length: 7 }, (_, i) =>
-    format(new Date(2024, 0, i + 1), 'EEEE')
-  );
-
-  return (
-    <div className={clsx('grid grid-cols-7 mb-2', className)}>
-      {weekdays.map((weekday) =>
-        render ? (
-          render(weekday)
-        ) : (
-          <HeaderCell key={weekday}>{weekday}</HeaderCell>
-        )
-      )}
-    </div>
-  );
-};
-
-const HeaderCell: FC<HeaderCellProps> = ({ children, className }) => {
-  return (
-    <div
-      className={clsx(
-        'text-center text-sm font-medium text-gray-500',
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-};
-
-const GridBody: FC<GridBodyProps> = ({ render, className }) => {
-  const { month } = useCalendar();
-
-  // Calculate dates for the month using date-fns
-  const monthStart = startOfMonth(month);
-  const monthEnd = endOfMonth(month);
-  const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
-  const startingDay = getDay(monthStart);
-
-  // Create calendar grid
-  const days: (Date | null)[] = [];
-
-  // Add empty cells for days before the first of the month
-  for (let i = 0; i < startingDay; i++) {
-    days.push(null);
-  }
-
-  // Add all days of the month
-  days.push(...daysInMonth);
-
-  // Group days into weeks
-  const weeks: (Date | null)[][] = [];
-  for (let i = 0; i < days.length; i += 7) {
-    weeks.push(days.slice(i, i + 7));
-  }
+// Grid Header Component
+export const GridHeader: FC<GridHeaderProps> = ({
+  className,
+  weekdayChar = 2,
+}) => {
+  const weekDays = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(2024, 0, i + 1); // Using a Sunday-starting week
+    return dateFnsFormat(
+      date,
+      weekdayChar === 1
+        ? 'EEEEE'
+        : weekdayChar === 2
+        ? 'EE'
+        : weekdayChar === 3
+        ? 'EEE'
+        : 'EEEE'
+    );
+  });
 
   return (
-    <div className={clsx('grid gap-1', className)}>
-      {weeks.map((week, weekIndex) => (
-        <div key={weekIndex} className='grid grid-cols-7 gap-1'>
-          {week.map((date, dayIndex) => (
-            <div key={dayIndex} className='aspect-square'>
-              {date && (render ? render(date) : <Cell date={date} />)}
-            </div>
-          ))}
-        </div>
+    <div className={className}>
+      {weekDays.map((day, i) => (
+        <div key={i}>{day}</div>
       ))}
     </div>
   );
 };
 
-const Cell: FC<CellProps> = ({ date, className }) => {
-  const { selectedDate, onSelectDate, paymentDueDate } = useCalendar();
+// Grid Body Component
+export const GridBody: FC<GridBodyProps> = ({
+  className,
+  outsideDays = true,
+}) => {
+  const { month, selectedDate, paymentDueDate, onSelectDate } =
+    useCalendarContext();
 
-  const isSelected = selectedDate && isSameDay(selectedDate, date);
-  const isPaymentDue = paymentDueDate && isSameDay(paymentDueDate, date);
+  // Get the start and end dates for the calendar grid
+  const monthStart = startOfMonth(month);
+  const monthEnd = endOfMonth(month);
+  const calendarStart = startOfWeek(monthStart);
+  const calendarEnd = endOfWeek(monthEnd);
+
+  // Generate all dates to display
+  const dates = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
+
+  // Group dates into weeks
+  const weeks: Date[][] = [];
+  let currentWeek: Date[] = [];
+
+  dates.forEach((date) => {
+    currentWeek.push(date);
+    if (currentWeek.length === 7) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  });
+
+  const getDayClasses = (date: Date) => {
+    const isOutsideMonth = !isSameMonth(date, month);
+    const isSelected = selectedDate ? isSameDay(date, selectedDate) : false;
+    const isPaymentDue = paymentDueDate
+      ? isSameDay(date, paymentDueDate)
+      : false;
+    const isToday = isSameDay(date, new Date());
+
+    return `
+      calendar-day
+      ${isOutsideMonth ? 'outside-month' : ''}
+      ${isSelected ? 'selected' : ''}
+      ${isPaymentDue ? 'payment-due' : ''}
+      ${isToday ? 'today' : ''}
+    `.trim();
+  };
 
   return (
-    <button
-      onClick={() => onSelectDate(date)}
-      className={clsx(
-        'w-full h-full flex items-center justify-center rounded-lg transition-colors',
-        isSelected && 'bg-blue-500 text-white',
-        isPaymentDue && 'border-2 border-red-500',
-        !isSelected && !isPaymentDue && 'hover:bg-gray-100',
-        className
-      )}
-    >
-      {getDate(date)}
-    </button>
+    <div className={`calendar-grid ${className || ''}`}>
+      {weeks.map((week, weekIndex) => (
+        <div key={weekIndex} className='calendar-week'>
+          {week.map((date, dayIndex) => {
+            const isOutsideMonth = !isSameMonth(date, month);
+            if (!outsideDays && isOutsideMonth) {
+              return <div key={dayIndex} className='calendar-day empty' />;
+            }
+
+            return (
+              <button
+                key={dayIndex}
+                className={getDayClasses(date)}
+                onClick={() => onSelectDate(date)}
+                disabled={isOutsideMonth && !outsideDays}
+              >
+                {dateFnsFormat(date, 'd')}
+              </button>
+            );
+          })}
+        </div>
+      ))}
+    </div>
   );
 };
-
-export { Grid, GridHeader, GridBody, HeaderCell, Cell };
