@@ -3,13 +3,11 @@ import { CalendarProps } from './types';
 import { CalendarContext } from './CalendarContext';
 import { Heading } from './Heading';
 import { Grid, GridHeader, GridBody, HeaderCell, Cell } from './Grid';
-import {
-  Legend,
-  LegendItem,
-} from './Legend';
+import { Legend, LegendItem } from './Legend';
 import { Messaging } from './Messaging';
 import { PrevButton, NextButton } from './NavigationButtons';
 import { MonthSelect, YearSelect } from './Selects';
+import { DayPicker } from 'react-day-picker';
 
 // Define compound component type
 type CalendarComponent = FC<CalendarProps> & {
@@ -50,7 +48,22 @@ export function Calendar({
         setMonth,
       }}
     >
-      <div className={className}>{children}</div>
+      <DayPicker
+        className={className}
+        mode='single'
+        selected={selectedDate}
+        onSelect={onSelectDate}
+        month={month}
+        onMonthChange={setMonth}
+        components={{
+          MonthsGrid: Grid,
+          Head: GridHeader,
+          HeadCell: HeaderCell,
+          Body: GridBody,
+          Day: Cell,
+        }}
+      />
+      {children}
     </CalendarContext.Provider>
   );
 }

@@ -4,6 +4,7 @@ import { TicTacToe } from './components/TicTacToe';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import DatePicker from './components/DatePicker/DatePicker';
+import { DayPickerExample } from '../components/DayPickerCal/Example';
 
 function App() {
   const [singleDate, setSingleDate] = useState<Date | undefined>(new Date());
@@ -60,6 +61,7 @@ function App() {
         helpText='This is a help text'
         captionLayout='dropdown'
       />
+      <DayPickerExample />
     </div>
   );
 }
