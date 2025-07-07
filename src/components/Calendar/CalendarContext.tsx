@@ -1,17 +1,23 @@
 import { createContext, useContext } from 'react';
-import { CalendarContextType } from './types';
 
-// Creates a context with undefined as initial value
-export const CalendarContext = createContext<CalendarContextType | undefined>(
+export interface CalendarContextValue {
+  selectedDate?: Date;
+  paymentDueDate?: Date;
+  onSelectDate: (date: Date) => void;
+  month: Date;
+  setMonth: (month: Date) => void;
+  defaultMonth: Date;
+}
+
+export const CalendarContext = createContext<CalendarContextValue | undefined>(
   undefined
 );
 
-// Custom hook to use the calendar context
-export const useCalendar = () => {
+export const useCalendarContext = () => {
   const context = useContext(CalendarContext);
   if (!context) {
     throw new Error(
-      'Calendar components must be used within a Calendar provider'
+      'Calendar compound components must be used within Calendar'
     );
   }
   return context;

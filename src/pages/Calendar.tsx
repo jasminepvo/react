@@ -31,8 +31,8 @@ const CalendarPage = () => {
         >
           <Calendar.Heading className='bg-pink-500 p-4 rounded-t-lg border-b border-gray-200'>
             <div className='flex items-center justify-between'>
-              <Calendar.Navigation navLayout='around' className='text-white' />
-              <Calendar.Caption className='text-white font-medium'>
+              <Calendar.Navigation navLayout='after' className='text-white' />
+              <Calendar.Caption className='text-white font-medium' captionLayout='label'>
                 <div className='flex gap-2'>
                   <Calendar.MonthSelect className='calendar-select bg-pink-600 border-pink-400 text-white' />
                   <Calendar.YearSelect className='calendar-select bg-pink-600 border-pink-400 text-white' />

@@ -1,5 +1,37 @@
 import { ReactNode } from 'react';
 
+export interface CompoundComponentProps {
+    className?: string;
+    children?: ReactNode;
+}
+
+export interface CalendarProps extends CompoundComponentProps {
+    selectedDate?: Date;
+    paymentDueDate?: Date;
+    onSelectDate: (date: Date) => void;
+    defaultMonth?: Date;
+}
+
+export interface NavigationProps extends CompoundComponentProps {
+    navLayout?: 'around' | 'before' | 'after';
+}
+
+export interface CaptionProps extends CompoundComponentProps {
+    captionLayout?: 'label' | 'dropdown' | 'buttons';
+}
+
+export interface GridHeaderProps extends CompoundComponentProps {
+    weekdayChar?: number;
+}
+
+export interface GridBodyProps extends CompoundComponentProps {
+    outsideDays?: boolean;
+}
+
+export interface LegendItemProps extends CompoundComponentProps {
+    type?: 'selected' | 'payment-due' | 'today';
+}
+
 export type NavLayout = 'around' | 'after';
 export type CaptionLayout = 'label' | 'dropdown' | 'dropdown-months' | 'dropdown-years';
 
@@ -31,14 +63,6 @@ export interface BaseCalendarProps {
     children?: ReactNode;
 }
 
-// Main Calendar component props
-export interface CalendarProps extends BaseCalendarProps {
-    selectedDate?: Date;
-    paymentDueDate?: Date;
-    onSelectDate: (date: Date) => void;
-    defaultMonth?: Date;
-}
-
 // Heading component props
 export interface HeadingProps extends BaseCalendarProps {
     className?: string;
@@ -61,21 +85,9 @@ export interface GridProps extends BaseCalendarProps {
     outsideDayClassName?: string;
 }
 
-// Grid header props
-export interface GridHeaderProps extends BaseCalendarProps {
-    render?: (weekday: string) => ReactNode;
-}
-
 // Header cell props
 export interface HeaderCellProps extends BaseCalendarProps {
     children: ReactNode;
-}
-
-// Grid body props
-export interface GridBodyProps extends BaseCalendarProps {
-    render?: (date: Date, isOutsideDay?: boolean) => ReactNode;
-    outsideDays?: 'hidden' | 'visible';
-    outsideDayClassName?: string;
 }
 
 // Cell props
@@ -83,11 +95,6 @@ export interface CellProps extends BaseCalendarProps {
     date: Date;
     isOutsideDay?: boolean;
     variant?: 'default' | 'selected' | 'payment-due' | 'today';
-}
-
-// Legend item props
-export interface LegendItemProps extends BaseCalendarProps {
-    indicator?: ReactNode;
 }
 
 // Indicator props
