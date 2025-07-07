@@ -1,105 +1,80 @@
 import { ReactNode } from 'react';
 
-export interface CompoundComponentProps {
+/** Base properties shared by all calendar components */
+export interface BaseProps {
+    /** Optional CSS class name for styling */
     className?: string;
+    /** Optional child elements */
     children?: ReactNode;
 }
 
-export interface CalendarProps extends CompoundComponentProps {
-    selectedDate?: Date;
-    paymentDueDate?: Date;
-    onSelectDate: (date: Date) => void;
+/** Properties for the main Calendar component */
+export interface CalendarProps extends BaseProps {
+    /** Default month to display when calendar first renders */
     defaultMonth?: Date;
+    /** Callback function when a date is selected */
+    onSelectDate: (date: Date) => void;
+    /** Date when payment is due, will be highlighted */
+    paymentDueDate?: Date;
+    /** Currently selected date */
+    selectedDate?: Date;
 }
 
-export interface SelectOptionsProps extends CompoundComponentProps {
-    optionsBefore?: number; // Number of options to show before current
-    optionsAfter?: number; // Number of options to show after current
-}
-
-export type MonthYearSelectProps = SelectOptionsProps;
-
-export type MonthSelectProps = SelectOptionsProps;
-
-export type YearSelectProps = SelectOptionsProps;
-
-export type CaptionProps = CompoundComponentProps;
-
-export interface GridHeaderProps extends CompoundComponentProps {
-    weekdayChar?: number;
-    weekStartsOn?: 0 | 1; // 0 for Sunday, 1 for Monday
-}
-
-export interface GridBodyProps extends CompoundComponentProps {
+/** Properties for the calendar grid body component */
+export interface GridBodyProps extends BaseProps {
+    /** Whether to show days from previous/next months */
     showOutsideDays?: boolean;
-    weekStartsOn?: 0 | 1; // 0 for Sunday, 1 for Monday
+    /** Which day the week starts on (0 = Sunday, 1 = Monday) */
+    weekStartsOn?: 0 | 1;
 }
 
-export interface LegendItemProps extends CompoundComponentProps {
+/** Properties for the calendar grid header component */
+export interface GridHeaderProps extends BaseProps {
+    /** Number of characters to show for weekday names */
+    weekdayChar?: number;
+    /** Which day the week starts on (0 = Sunday, 1 = Monday) */
+    weekStartsOn?: 0 | 1;
+}
+
+/** Properties for the main grid container component */
+export interface GridProps extends BaseProps {
+    /** Custom class name for styling days outside the current month */
+    outsideDayClassName?: string;
+    /** Whether to show days from previous/next months */
+    showOutsideDays?: boolean;
+}
+
+/** Properties for legend items showing date types */
+export interface LegendItemProps extends BaseProps {
+    /** Type of date the legend item represents */
     type?: 'selected' | 'payment-due' | 'today';
 }
 
-export type CaptionLayout = 'label' | 'dropdown' | 'dropdown-months' | 'dropdown-years';
-
-export interface DayPickerConfig {
-    showWeekNumber: boolean;
-    fixedWeeks: boolean;
-    showOutsideDays: boolean;
-    hideWeekdays: boolean;
-    numberOfMonths: number;
-}
-
-// Context type
-export interface CalendarContextType {
-    selectedDate?: Date;
-    paymentDueDate?: Date;
-    onSelectDate: (date: Date) => void;
-    defaultMonth?: Date;
-    month: Date;
-    setMonth: (month: Date) => void;
-    dayPickerConfig: DayPickerConfig;
-    setDayPickerConfig: (config: DayPickerConfig | ((prev: DayPickerConfig) => DayPickerConfig)) => void;
-}
-
-// Base props that all calendar components share
-export interface BaseCalendarProps {
-    className?: string;
-    children?: ReactNode;
-}
-
-// Heading component props
-export interface HeadingProps extends BaseCalendarProps {
-    className?: string;
-}
-
-// Navigation button props
-export interface NavigationButtonProps extends BaseCalendarProps {
+/** Properties for navigation buttons */
+export interface NavigationButtonProps extends BaseProps {
+    /** Direction of navigation (previous/next month) */
     direction: 'prev' | 'next';
 }
 
-// Grid props
-export interface GridProps extends BaseCalendarProps {
-    layout?: 'default' | 'compact';
-    showOutsideDays?: boolean;
-    outsideDayClassName?: string;
+/** Base properties for all select components */
+export interface SelectOptionsProps extends BaseProps {
+    /** Number of options to show after current value */
+    optionsAfter?: number;
+    /** Number of options to show before current value */
+    optionsBefore?: number;
 }
 
-// Header cell props
-export interface HeaderCellProps extends BaseCalendarProps {
-    children: ReactNode;
-}
+/** Properties for month selection component */
+export type MonthSelectProps = SelectOptionsProps;
 
-// Cell props
-export interface CellProps extends BaseCalendarProps {
-    date: Date;
-    isOutsideDay?: boolean;
-    variant?: 'default' | 'selected' | 'payment-due' | 'today';
-}
+/** Properties for combined month-year selection component */
+export type MonthYearSelectProps = SelectOptionsProps;
 
-// Indicator props
-export interface IndicatorProps extends BaseCalendarProps {
-    type?: 'selected' | 'payment-due';
-}
+/** Properties for year selection component */
+export type YearSelectProps = SelectOptionsProps;
 
-// Messaging props
-export type MessagingProps = BaseCalendarProps
+/** Properties for the calendar caption component */
+export type CaptionProps = BaseProps;
+
+/** Properties for the calendar messaging component */
+export type MessagingProps = BaseProps;
