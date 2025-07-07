@@ -12,9 +12,7 @@ export interface CalendarProps extends CompoundComponentProps {
     defaultMonth?: Date;
 }
 
-export interface CaptionProps extends CompoundComponentProps {
-    captionLayout?: 'label' | 'dropdown' | 'buttons';
-}
+export type CaptionProps = CompoundComponentProps;
 
 export interface GridHeaderProps extends CompoundComponentProps {
     weekdayChar?: number;
@@ -33,7 +31,6 @@ export interface LegendItemProps extends CompoundComponentProps {
 export type CaptionLayout = 'label' | 'dropdown' | 'dropdown-months' | 'dropdown-years';
 
 export interface DayPickerConfig {
-    captionLayout: CaptionLayout;
     showWeekNumber: boolean;
     fixedWeeks: boolean;
     showOutsideDays: boolean;
