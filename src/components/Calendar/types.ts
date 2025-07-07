@@ -1,5 +1,18 @@
 import { ReactNode } from 'react';
 
+export type NavLayout = 'around' | 'after';
+export type CaptionLayout = 'label' | 'dropdown' | 'dropdown-months' | 'dropdown-years';
+
+export interface DayPickerConfig {
+    navLayout: NavLayout;
+    captionLayout: CaptionLayout;
+    showWeekNumber: boolean;
+    fixedWeeks: boolean;
+    showOutsideDays: boolean;
+    hideWeekdays: boolean;
+    numberOfMonths: number;
+}
+
 // Context type
 export interface CalendarContextType {
     selectedDate?: Date;
@@ -8,6 +21,8 @@ export interface CalendarContextType {
     defaultMonth?: Date;
     month: Date;
     setMonth: (month: Date) => void;
+    dayPickerConfig: DayPickerConfig;
+    setDayPickerConfig: (config: DayPickerConfig | ((prev: DayPickerConfig) => DayPickerConfig)) => void;
 }
 
 // Base props that all calendar components share
@@ -42,6 +57,8 @@ export interface SelectProps extends BaseCalendarProps {
 // Grid props
 export interface GridProps extends BaseCalendarProps {
     layout?: 'default' | 'compact';
+    outsideDays?: 'hidden' | 'visible';
+    outsideDayClassName?: string;
 }
 
 // Grid header props
@@ -56,12 +73,15 @@ export interface HeaderCellProps extends BaseCalendarProps {
 
 // Grid body props
 export interface GridBodyProps extends BaseCalendarProps {
-    render?: (date: Date) => ReactNode;
+    render?: (date: Date, isOutsideDay?: boolean) => ReactNode;
+    outsideDays?: 'hidden' | 'visible';
+    outsideDayClassName?: string;
 }
 
 // Cell props
 export interface CellProps extends BaseCalendarProps {
     date: Date;
+    isOutsideDay?: boolean;
     variant?: 'default' | 'selected' | 'payment-due' | 'today';
 }
 
