@@ -1,34 +1,30 @@
-import React, { FC } from 'react';
-import { NavigationProps } from './types';
+import React from 'react';
+import { NavigationButtonProps } from './types';
 import { useCalendarContext } from './CalendarContext';
 
-export const Navigation: FC<NavigationProps> = ({
+export const Navigation: React.FC<NavigationButtonProps> = ({
   className,
-  navLayout = 'around',
+  direction,
 }) => {
   const { month, setMonth } = useCalendarContext();
 
-  const handlePrevMonth = () => {
-    const prevMonth = new Date(month);
-    prevMonth.setMonth(prevMonth.getMonth() - 1);
-    setMonth(prevMonth);
+  const handleClick = () => {
+    const newMonth = new Date(month);
+    newMonth.setMonth(newMonth.getMonth() + (direction === 'prev' ? -1 : 1));
+    setMonth(newMonth);
   };
 
-  const handleNextMonth = () => {
-    const nextMonth = new Date(month);
-    nextMonth.setMonth(nextMonth.getMonth() + 1);
-    setMonth(nextMonth);
-  };
+  const buttonClasses = `p-2 text-gray-600 hover:text-gray-900 transition-colors ${
+    className || ''
+  }`;
 
   return (
-    <div className={`calendar-navigation ${className || ''}`}>
-      <button onClick={handlePrevMonth} aria-label='Previous month'>
-        ←
-      </button>
-      {navLayout === 'around' && <div className='flex-1' />}
-      <button onClick={handleNextMonth} aria-label='Next month'>
-        →
-      </button>
-    </div>
+    <button
+      onClick={handleClick}
+      className={buttonClasses}
+      aria-label={`${direction === 'prev' ? 'Previous' : 'Next'} month`}
+    >
+      {direction === 'prev' ? '←' : '→'}
+    </button>
   );
 };
