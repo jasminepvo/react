@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import {
   format as dateFnsFormat,
   startOfMonth,
@@ -8,6 +8,7 @@ import {
   isSameDay,
   startOfWeek,
   endOfWeek,
+  addDays,
 } from 'date-fns';
 import {
   CompoundComponentProps,
@@ -25,19 +26,22 @@ export const Grid: FC<CompoundComponentProps> = ({ className, children }) => (
 export const GridHeader: FC<GridHeaderProps> = ({
   className,
   weekdayChar = 2,
+  weekStartsOn = 0, // Default to Sunday
 }) => {
+  // Get the start of the week based on weekStartsOn
+  const baseDate = startOfWeek(new Date(), { weekStartsOn });
+
   const weekDays = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date(2024, 0, i + 1); // Using a Sunday-starting week
-    return dateFnsFormat(
-      date,
-      weekdayChar === 1
-        ? 'EEEEE'
-        : weekdayChar === 2
-        ? 'EE'
-        : weekdayChar === 3
-        ? 'EEE'
-        : 'EEEE'
-    );
+    const date = addDays(baseDate, i);
+    const fullName = dateFnsFormat(date, 'EEEE');
+
+    return weekdayChar === 1
+      ? fullName[0]
+      : weekdayChar === 2
+      ? fullName.slice(0, 2)
+      : weekdayChar === 3
+      ? fullName.slice(0, 3)
+      : fullName;
   });
 
   return (
@@ -52,7 +56,8 @@ export const GridHeader: FC<GridHeaderProps> = ({
 // Grid Body Component
 export const GridBody: FC<GridBodyProps> = ({
   className,
-  outsideDays = true,
+  showOutsideDays = true,
+  weekStartsOn = 0, // Default to Sunday
 }) => {
   const { month, selectedDate, paymentDueDate, onSelectDate } =
     useCalendarContext();
@@ -60,8 +65,8 @@ export const GridBody: FC<GridBodyProps> = ({
   // Get the start and end dates for the calendar grid
   const monthStart = startOfMonth(month);
   const monthEnd = endOfMonth(month);
-  const calendarStart = startOfWeek(monthStart);
-  const calendarEnd = endOfWeek(monthEnd);
+  const calendarStart = startOfWeek(monthStart, { weekStartsOn });
+  const calendarEnd = endOfWeek(monthEnd, { weekStartsOn });
 
   // Generate all dates to display
   const dates = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
@@ -101,7 +106,7 @@ export const GridBody: FC<GridBodyProps> = ({
         <div key={weekIndex} className='calendar-week'>
           {week.map((date, dayIndex) => {
             const isOutsideMonth = !isSameMonth(date, month);
-            if (!outsideDays && isOutsideMonth) {
+            if (!showOutsideDays && isOutsideMonth) {
               return <div key={dayIndex} className='calendar-day empty' />;
             }
 
@@ -110,7 +115,7 @@ export const GridBody: FC<GridBodyProps> = ({
                 key={dayIndex}
                 className={getDayClasses(date)}
                 onClick={() => onSelectDate(date)}
-                disabled={isOutsideMonth && !outsideDays}
+                disabled={isOutsideMonth && !showOutsideDays}
               >
                 {dateFnsFormat(date, 'd')}
               </button>
