@@ -31,13 +31,17 @@ const CalendarPage = () => {
         >
           <Calendar.Heading className='bg-pink-500 p-4 rounded-t-lg border-b border-gray-200'>
             <div className='flex items-center justify-between'>
-              <Calendar.Navigation navLayout='after' className='text-white' />
-              <Calendar.Caption className='text-white font-medium' captionLayout='label'>
+              <Calendar.Navigation className='text-white' direction='prev' />
+              <Calendar.Caption
+                className='text-white font-medium'
+                captionLayout='label'
+              >
                 <div className='flex gap-2'>
                   <Calendar.MonthSelect className='calendar-select bg-pink-600 border-pink-400 text-white' />
                   <Calendar.YearSelect className='calendar-select bg-pink-600 border-pink-400 text-white' />
                 </div>
               </Calendar.Caption>
+              <Calendar.Navigation className='text-white' direction='next' />
             </div>
           </Calendar.Heading>
 
@@ -81,12 +85,16 @@ const CalendarPage = () => {
         >
           <Calendar.Heading>
             <div className='flex items-center justify-between mb-4'>
-              <Calendar.Navigation />
+              <Calendar.Navigation direction='prev' />
+              <Calendar.Navigation direction='next' />
               <Calendar.Caption captionLayout='label' />
             </div>
           </Calendar.Heading>
           <Calendar.Grid>
-            <Calendar.GridHeader className='calendar-week-header mb-2 text-gray-600' weekdayChar={1} />
+            <Calendar.GridHeader
+              className='calendar-week-header mb-2 text-gray-600'
+              weekdayChar={1}
+            />
             <Calendar.GridBody />
           </Calendar.Grid>
         </Calendar>

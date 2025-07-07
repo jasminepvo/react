@@ -12,10 +12,6 @@ export interface CalendarProps extends CompoundComponentProps {
     defaultMonth?: Date;
 }
 
-export interface NavigationProps extends CompoundComponentProps {
-    navLayout?: 'around' | 'before' | 'after';
-}
-
 export interface CaptionProps extends CompoundComponentProps {
     captionLayout?: 'label' | 'dropdown' | 'buttons';
 }
@@ -32,11 +28,9 @@ export interface LegendItemProps extends CompoundComponentProps {
     type?: 'selected' | 'payment-due' | 'today';
 }
 
-export type NavLayout = 'around' | 'after';
 export type CaptionLayout = 'label' | 'dropdown' | 'dropdown-months' | 'dropdown-years';
 
 export interface DayPickerConfig {
-    navLayout: NavLayout;
     captionLayout: CaptionLayout;
     showWeekNumber: boolean;
     fixedWeeks: boolean;
