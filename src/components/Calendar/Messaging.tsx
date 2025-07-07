@@ -1,11 +1,13 @@
-import React, { FC } from 'react';
-import { CompoundComponentProps } from './types';
+import { FC, HTMLAttributes } from 'react';
+import { BaseProps } from './types';
+import clsx from 'clsx';
 
-export const Messaging: FC<CompoundComponentProps> = ({
+export const Messaging: FC<BaseProps & HTMLAttributes<HTMLDivElement>> = ({
   className,
   children,
+  ...props
 }) => (
-  <div className={className} role='status'>
+  <div className={clsx('text-left', className)} {...props}>
     {children}
   </div>
 );

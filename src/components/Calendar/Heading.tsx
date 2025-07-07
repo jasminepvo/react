@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
-import { CompoundComponentProps } from './types';
+import { FC } from 'react';
+import { BaseProps } from './types';
 
-export const Heading: FC<CompoundComponentProps> = ({
+export const Heading: FC<BaseProps> = ({
   className,
   children,
 }) => <div className={className}>{children}</div>;

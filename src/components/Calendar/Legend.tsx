@@ -1,8 +1,11 @@
-import React, { FC } from 'react';
-import { CompoundComponentProps, LegendItemProps } from './types';
+import { FC } from 'react';
+import clsx from 'clsx';
+import { BaseProps, LegendItemProps } from './types';
 
-export const Legend: FC<CompoundComponentProps> = ({ className, children }) => (
-  <div className={`calendar-legend ${className || ''}`}>{children}</div>
+export const Legend: FC<BaseProps> = ({ className, children }) => (
+  <div className={clsx('flex gap-4 p-4', className)}>
+    {children}
+  </div>
 );
 
 export const LegendItem: FC<LegendItemProps> = ({
@@ -10,17 +13,14 @@ export const LegendItem: FC<LegendItemProps> = ({
   children,
   type,
 }) => (
-  <div className={`calendar-legend-item ${className || ''}`}>
+  <div
+    className={clsx('flex items-center gap-2 text-sm text-gray-600', className)}
+  >
     <div
-      className={`w-4 h-4 ${
-        type === 'selected'
-          ? 'bg-blue-500 rounded-full'
-          : type === 'payment-due'
-          ? 'border-2 border-yellow-300'
-          : type === 'today'
-          ? 'bg-gray-200 rounded-full'
-          : ''
-      }`}
+      className={clsx('w-4 h-4', {
+        'bg-pink-500': type === 'selected',
+        'border-2 border-yellow-400': type === 'payment-due',
+      })}
     />
     <span>{children}</span>
   </div>

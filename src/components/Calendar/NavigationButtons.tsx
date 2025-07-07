@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { NavigationButtonProps } from './types';
 import { useCalendarContext } from './CalendarContext';
 
@@ -14,9 +15,10 @@ export const Navigation: React.FC<NavigationButtonProps> = ({
     setMonth(newMonth);
   };
 
-  const buttonClasses = `p-2 text-gray-600 hover:text-gray-900 transition-colors ${
-    className || ''
-  }`;
+  const buttonClasses = clsx(
+    'p-2 text-white hover:text-black transition-colors',
+    className
+  );
 
   return (
     <button
