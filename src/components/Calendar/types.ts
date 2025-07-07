@@ -11,7 +11,7 @@ export interface CalendarContextType {
 }
 
 // Base props that all calendar components share
-interface BaseCalendarProps {
+export interface BaseCalendarProps {
     className?: string;
     children?: ReactNode;
 }
@@ -65,11 +65,6 @@ export interface CellProps extends BaseCalendarProps {
     variant?: 'default' | 'selected' | 'payment-due' | 'today';
 }
 
-// Legend props
-export interface LegendProps extends BaseCalendarProps {
-    position?: 'top' | 'bottom';
-}
-
 // Legend item props
 export interface LegendItemProps extends BaseCalendarProps {
     indicator?: ReactNode;
@@ -81,6 +76,4 @@ export interface IndicatorProps extends BaseCalendarProps {
 }
 
 // Messaging props
-export interface MessagingProps extends BaseCalendarProps {
-    format?: 'short' | 'long';
-}
+export type MessagingProps = BaseCalendarProps

@@ -33,14 +33,14 @@ type CalendarComponent = FC<CalendarProps> & {
 };
 
 // Main Calendar Component
-const Calendar = ({
+export function Calendar({
   children,
   selectedDate,
   paymentDueDate,
   onSelectDate,
   defaultMonth = new Date(),
   className = '',
-}: CalendarProps) => {
+}: CalendarProps) {
   const [month, setMonth] = React.useState<Date>(defaultMonth);
 
   return (
@@ -57,7 +57,7 @@ const Calendar = ({
       <div className={className}>{children}</div>
     </CalendarContext.Provider>
   );
-};
+}
 
 // Attach compound components
 Calendar.Heading = Heading;
