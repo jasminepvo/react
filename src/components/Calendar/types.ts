@@ -65,15 +65,5 @@ export interface CellProps extends BaseCalendarProps {
     variant?: 'default' | 'selected' | 'payment-due' | 'today';
 }
 
-// Legend item props
-export interface LegendItemProps extends BaseCalendarProps {
-    indicator?: ReactNode;
-}
-
-// Indicator props
-export interface IndicatorProps extends BaseCalendarProps {
-    type?: 'selected' | 'payment-due';
-}
-
 // Messaging props
 export type MessagingProps = BaseCalendarProps

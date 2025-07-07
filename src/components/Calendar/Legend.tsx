@@ -1,6 +1,10 @@
 import { FC } from 'react';
-import { BaseCalendarProps, LegendItemProps, IndicatorProps } from './types';
+import { BaseCalendarProps } from './types';
 import clsx from 'clsx';
+
+export interface LegendItemProps extends BaseCalendarProps {
+  type: 'selected' | 'payment-due';
+}
 
 export const Legend: FC<BaseCalendarProps> = ({ children, className }) => {
   return (
@@ -16,29 +20,18 @@ export const Legend: FC<BaseCalendarProps> = ({ children, className }) => {
   );
 };
 
-const LegendItem: FC<LegendItemProps> = ({
-  children,
-  indicator,
-  className,
-}) => {
+const LegendItem: FC<LegendItemProps> = ({ children, type, className }) => {
   return (
     <div className={clsx('flex items-center gap-2', className)}>
-      {indicator}
+      <div
+        className={clsx('w-4 h-4 rounded-lg', {
+          'bg-blue-200': type === 'selected',
+          'border-2 border-yellow-300 bg-yellow-100': type === 'payment-due',
+        })}
+      />
       <span className='text-sm text-gray-600'>{children}</span>
     </div>
   );
 };
 
-const SelectedIndicator: FC<IndicatorProps> = ({ className }) => {
-  return <div className={clsx('w-4 h-4 rounded-lg bg-blue-500', className)} />;
-};
-
-const PaymentDueIndicator: FC<IndicatorProps> = ({ className }) => {
-  return (
-    <div
-      className={clsx('w-4 h-4 rounded-lg border-2 border-red-500', className)}
-    />
-  );
-};
-
-export { LegendItem, SelectedIndicator, PaymentDueIndicator };
+export { LegendItem };

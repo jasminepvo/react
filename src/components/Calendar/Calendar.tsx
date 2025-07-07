@@ -6,8 +6,6 @@ import { Grid, GridHeader, GridBody, HeaderCell, Cell } from './Grid';
 import {
   Legend,
   LegendItem,
-  SelectedIndicator,
-  PaymentDueIndicator,
 } from './Legend';
 import { Messaging } from './Messaging';
 import { PrevButton, NextButton } from './NavigationButtons';
@@ -23,8 +21,6 @@ type CalendarComponent = FC<CalendarProps> & {
   Cell: typeof Cell;
   Legend: typeof Legend;
   LegendItem: typeof LegendItem;
-  SelectedIndicator: typeof SelectedIndicator;
-  PaymentDueIndicator: typeof PaymentDueIndicator;
   Messaging: typeof Messaging;
   PrevButton: typeof PrevButton;
   NextButton: typeof NextButton;
@@ -68,8 +64,6 @@ Calendar.HeaderCell = HeaderCell;
 Calendar.Cell = Cell;
 Calendar.Legend = Legend;
 Calendar.LegendItem = LegendItem;
-Calendar.SelectedIndicator = SelectedIndicator;
-Calendar.PaymentDueIndicator = PaymentDueIndicator;
 Calendar.Messaging = Messaging;
 Calendar.PrevButton = PrevButton;
 Calendar.NextButton = NextButton;
