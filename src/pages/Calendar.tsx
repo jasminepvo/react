@@ -32,8 +32,11 @@ const CalendarPage = () => {
           <Calendar.Heading className='bg-pink-500 p-4 rounded-t-lg border-b border-gray-200'>
             <div className='flex items-center justify-between'>
               <Calendar.Navigation className='text-white' direction='prev' />
-              <Calendar.MonthSelect className='calendar-select bg-pink-600 border-pink-400 text-white' />
-              <Calendar.YearSelect className='calendar-select bg-pink-600 border-pink-400 text-white' />
+              <Calendar.MonthYearSelect
+                className='calendar-select bg-pink-600 border-pink-400 text-white'
+                optionsBefore={2}
+                optionsAfter={6}
+              />
               <Calendar.Navigation className='text-white' direction='next' />
             </div>
           </Calendar.Heading>
@@ -78,9 +81,18 @@ const CalendarPage = () => {
           className='border rounded p-4'
         >
           <Calendar.Heading className='flex items-center justify-start mb-4'>
-              <Calendar.Navigation direction='prev' />
-              <Calendar.Navigation direction='next' />
-              <Calendar.Caption className='text-gray-700 font-medium' />
+            <Calendar.Navigation direction='prev' />
+            <Calendar.Navigation direction='next' />
+            <Calendar.Caption className='text-gray-700 font-medium' />
+            <Calendar.MonthSelect
+              className='calendar-select bg-purple-400 border-pink-400 text-white'
+              optionsBefore={6}
+              optionsAfter={5}
+            />
+            <Calendar.YearSelect
+              className='calendar-select bg-purple-400 border-pink-400 text-white'
+              optionsAfter={10}
+            />
           </Calendar.Heading>
           <Calendar.Grid>
             <Calendar.GridHeader

@@ -3,7 +3,7 @@ import { CalendarProps } from './types';
 import { CalendarContext } from './CalendarContext';
 import { Grid, GridHeader, GridBody } from './Grid';
 import { Navigation } from './NavigationButtons';
-import { MonthSelect, YearSelect } from './Selects';
+import { MonthSelect, YearSelect, MonthYearSelect } from './Selects';
 import { Legend, LegendItem } from './Legend';
 import { Messaging } from './Messaging';
 import { Heading } from './Heading';
@@ -18,6 +18,7 @@ interface CalendarComponent extends FC<CalendarProps> {
   Caption: typeof Caption;
   MonthSelect: typeof MonthSelect;
   YearSelect: typeof YearSelect;
+  MonthYearSelect: typeof MonthYearSelect;
   Grid: typeof Grid;
   GridHeader: typeof GridHeader;
   GridBody: typeof GridBody;
@@ -58,6 +59,7 @@ export const Calendar = Object.assign(CalendarBase, {
   Caption,
   MonthSelect,
   YearSelect,
+  MonthYearSelect,
   Grid,
   GridHeader,
   GridBody,
