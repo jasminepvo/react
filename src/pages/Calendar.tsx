@@ -48,9 +48,10 @@ const CalendarPage = () => {
           <Calendar.Grid className='p-4'>
             <Calendar.GridHeader
               className='calendar-week-header mb-2 text-gray-600'
-              weekdayChar={3}
+              weekdayChar={2}
+              weekStartsOn={0}
             />
-            <Calendar.GridBody outsideDays />
+            <Calendar.GridBody showOutsideDays weekStartsOn={0} />
           </Calendar.Grid>
 
           <Calendar.Legend className='calendar-legend'>
@@ -94,8 +95,9 @@ const CalendarPage = () => {
             <Calendar.GridHeader
               className='calendar-week-header mb-2 text-gray-600'
               weekdayChar={1}
+              weekStartsOn={1}
             />
-            <Calendar.GridBody />
+            <Calendar.GridBody weekStartsOn={1} showOutsideDays={false} />
           </Calendar.Grid>
         </Calendar>
       </div>

@@ -18,10 +18,12 @@ export interface CaptionProps extends CompoundComponentProps {
 
 export interface GridHeaderProps extends CompoundComponentProps {
     weekdayChar?: number;
+    weekStartsOn?: 0 | 1; // 0 for Sunday, 1 for Monday
 }
 
 export interface GridBodyProps extends CompoundComponentProps {
-    outsideDays?: boolean;
+    showOutsideDays?: boolean;
+    weekStartsOn?: 0 | 1; // 0 for Sunday, 1 for Monday
 }
 
 export interface LegendItemProps extends CompoundComponentProps {
@@ -75,7 +77,7 @@ export interface SelectProps extends BaseCalendarProps {
 // Grid props
 export interface GridProps extends BaseCalendarProps {
     layout?: 'default' | 'compact';
-    outsideDays?: 'hidden' | 'visible';
+    showOutsideDays?: boolean;
     outsideDayClassName?: string;
 }
 
