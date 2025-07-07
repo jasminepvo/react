@@ -93,17 +93,10 @@ const CalendarPage = () => {
 
           {/* Status Message */}
           <Calendar.Messaging className='text-gray-600 text-sm text-center pb-4'>
-            {selectedDate
-              ? `Payment will be processed on ${selectedDate.toLocaleDateString()}`
-              : 'Select a date to schedule your payment'}
+            Payments scheduled after 11:59 PM EST will be processed the next
+            business day
           </Calendar.Messaging>
         </Calendar>
-
-        {/* Additional Information */}
-        <p className='text-xs text-gray-500 mt-4 text-center'>
-          Payments scheduled after 11:59 PM EST will be processed the next
-          business day
-        </p>
       </div>
 
       <div className='space-y-8 mt-8'>
@@ -136,9 +129,8 @@ const CalendarPage = () => {
               </Calendar.LegendItem>
             </Calendar.Legend>
             <Calendar.Messaging>
-              {selectedDate
-                ? `Selected date: ${selectedDate.toLocaleDateString()}`
-                : 'Select a payment date'}
+              Payments scheduled after 11:59 PM EST will be processed the next
+              business day
             </Calendar.Messaging>
           </Calendar>
         </div>
@@ -215,17 +207,17 @@ const CalendarPage = () => {
             </Calendar.Messaging>
 
             {/* Additional custom content */}
-            <div className='text-center space-y-2'>
               <button
                 className='bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-gray-300'
                 disabled={!selectedDate}
               >
                 SCHEDULE PAYMENT
               </button>
-              <p className='text-xs text-gray-500'>
-                Payment will be processed on the selected date
-              </p>
-            </div>
+             
+
+            <Calendar.Messaging className='text-blue-600 font-medium'>
+              Payment will be processed on the selected date
+            </Calendar.Messaging>
           </Calendar>
         </div>
 
@@ -244,7 +236,7 @@ const CalendarPage = () => {
               <Calendar.GridBody
                 render={(date: Date) => (
                   <Calendar.Cell date={date} className='text-xs h-8 w-8' />
-                )}
+                )} 
               />
             </Calendar.Grid>
           </Calendar>

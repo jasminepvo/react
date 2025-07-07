@@ -1,17 +1,13 @@
-import { FC } from 'react';
-import { LegendProps, LegendItemProps, IndicatorProps } from './types';
+import React, { FC } from 'react';
+import { BaseCalendarProps, LegendItemProps, IndicatorProps } from './types';
 import clsx from 'clsx';
 
-const Legend: FC<LegendProps> = ({
-  children,
-  className,
-  position = 'bottom',
-}) => {
+export const Legend: FC<BaseCalendarProps> = ({ children, className }) => {
   return (
     <div
       className={clsx(
-        'flex items-center gap-4',
-        position === 'top' ? 'mb-4' : 'mt-4',
+        'flex items-center justify-center space-x-4',
+        'mt-4',
         className
       )}
     >
@@ -45,4 +41,4 @@ const PaymentDueIndicator: FC<IndicatorProps> = ({ className }) => {
   );
 };
 
-export { Legend, LegendItem, SelectedIndicator, PaymentDueIndicator };
+export { LegendItem, SelectedIndicator, PaymentDueIndicator };
