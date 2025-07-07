@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 import { format as dateFnsFormat, addMonths, addYears } from 'date-fns';
 import {
   MonthSelectProps,
@@ -6,6 +7,14 @@ import {
   MonthYearSelectProps,
 } from './types';
 import { useCalendarContext } from './CalendarContext';
+
+const selectBaseClasses = clsx(
+  'py-1 pr-4 pl-3',
+  'border border-gray-200 rounded-md',
+  'bg-white text-pink-900',
+  'cursor-pointer appearance-none',
+  'focus:outline-none focus:ring-2 focus:ring-blue-500',
+);
 
 export const MonthYearSelect: FC<MonthYearSelectProps> = ({
   className,
@@ -31,7 +40,7 @@ export const MonthYearSelect: FC<MonthYearSelectProps> = ({
 
   return (
     <select
-      className={`calendar-select ${className || ''}`}
+      className={clsx(selectBaseClasses, className)}
       value={month.toISOString()}
       onChange={handleChange}
       aria-label='Select month and year'
@@ -73,7 +82,7 @@ export const MonthSelect: FC<MonthSelectProps> = ({
 
   return (
     <select
-      className={`calendar-select ${className || ''}`}
+      className={clsx(selectBaseClasses, className)}
       value={month.getMonth()}
       onChange={handleMonthChange}
       aria-label='Select month'
@@ -113,7 +122,7 @@ export const YearSelect: FC<YearSelectProps> = ({
 
   return (
     <select
-      className={`calendar-select ${className || ''}`}
+      className={clsx(selectBaseClasses, className)}
       value={month.getFullYear()}
       onChange={handleYearChange}
       aria-label='Select year'

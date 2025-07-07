@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import clsx from 'clsx';
 import {
   format as dateFnsFormat,
   startOfMonth,
@@ -41,7 +42,12 @@ export const GridHeader: FC<GridHeaderProps> = ({
   });
 
   return (
-    <div className={className}>
+    <div
+      className={clsx(
+        'grid grid-cols-7 gap-px bg-gray-100 text-center text-xs text-gray-500 py-2',
+        className
+      )}
+    >
       {weekDays.map((day, i) => (
         <div key={i}>{day}</div>
       ))}
@@ -87,23 +93,44 @@ export const GridBody: FC<GridBodyProps> = ({
       : false;
     const isToday = isSameDay(date, new Date());
 
-    return `
-      calendar-day
-      ${isOutsideMonth ? 'outside-month' : ''}
-      ${isSelected ? 'selected' : ''}
-      ${isPaymentDue ? 'payment-due' : ''}
-      ${isToday ? 'today' : ''}
-    `.trim();
+    const baseClasses =
+      'aspect-square flex items-center justify-center text-md cursor-pointer';
+
+    return clsx(baseClasses, {
+      // Text colors
+      'bg-pink-100 text-pink-300': isOutsideMonth && !isSelected,
+      'text-white': isSelected,
+      'font-bold': isToday,
+
+      // Background colors
+      'bg-white': !isOutsideMonth && !isSelected,
+      'bg-pink-500': isSelected,
+      'hover:bg-pink-500': !isSelected,
+
+      // Borders and special states
+      'outline outline-1 outline-yellow-400': isPaymentDue,
+      'focus:ring-1 focus:ring-pink-500': true,
+    });
   };
 
   return (
-    <div className={`calendar-grid ${className || ''}`}>
+    <div
+      className={clsx(
+        'grid gap-px bg-gray-100 rounded-lg overflow-hidden',
+        className
+      )}
+    >
       {weeks.map((week, weekIndex) => (
-        <div key={weekIndex} className='calendar-week'>
+        <div key={weekIndex} className='grid grid-cols-7 gap-px'>
           {week.map((date, dayIndex) => {
             const isOutsideMonth = !isSameMonth(date, month);
             if (!showOutsideDays && isOutsideMonth) {
-              return <div key={dayIndex} className='calendar-day empty' />;
+              return (
+                <div
+                  key={dayIndex}
+                  className='aspect-square bg-gray-100 cursor-default'
+                />
+              );
             }
 
             return (

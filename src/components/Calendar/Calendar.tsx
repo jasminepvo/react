@@ -9,9 +9,6 @@ import { Messaging } from './Messaging';
 import { Heading } from './Heading';
 import { Caption } from './Caption';
 
-// Styles
-import './Calendar.css';
-
 interface CalendarComponent extends FC<CalendarProps> {
   Heading: typeof Heading;
   Navigation: typeof Navigation;
