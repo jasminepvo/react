@@ -19,6 +19,20 @@ export const Grid: FC<GridProps> = ({ className, children }) => (
   <div className={className}>{children}</div>
 );
 
+// Helper function to format weekday names
+const getFormattedWeekday = (fullName: string, weekdayChar: number): string => {
+  switch (weekdayChar) {
+    case 1:
+      return fullName[0];
+    case 2:
+      return fullName.slice(0, 2);
+    case 3:
+      return fullName.slice(0, 3);
+    default:
+      return fullName;
+  }
+};
+
 // Grid Header Component
 export const GridHeader: FC<GridHeaderProps> = ({
   className,
@@ -31,14 +45,7 @@ export const GridHeader: FC<GridHeaderProps> = ({
   const weekDays = Array.from({ length: 7 }, (_, i) => {
     const date = addDays(baseDate, i);
     const fullName = dateFnsFormat(date, 'EEEE');
-
-    return weekdayChar === 1
-      ? fullName[0]
-      : weekdayChar === 2
-      ? fullName.slice(0, 2)
-      : weekdayChar === 3
-      ? fullName.slice(0, 3)
-      : fullName;
+    return getFormattedWeekday(fullName, weekdayChar);
   });
 
   return (
@@ -77,13 +84,18 @@ export const GridBody: FC<GridBodyProps> = ({
   const weeks: Date[][] = [];
   let currentWeek: Date[] = [];
 
-  dates.forEach((date) => {
+  dates.forEach((date: Date) => {
     currentWeek.push(date);
     if (currentWeek.length === 7) {
       weeks.push(currentWeek);
       currentWeek = [];
     }
   });
+
+  // If there's a partial week remaining, add it
+  if (currentWeek.length > 0) {
+    weeks.push(currentWeek);
+  }
 
   const getDayClasses = (date: Date) => {
     const isOutsideMonth = !isSameMonth(date, month);
