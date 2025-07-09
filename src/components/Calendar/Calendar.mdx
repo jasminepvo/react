@@ -1,0 +1,167 @@
+# Calendar Component
+
+The Calendar component is a highly composable, flexible date selection interface built using React's compound component pattern. It follows modern React best practices and emphasizes composition over configuration.
+
+## Key Features
+
+- 🎨 Fully customizable styling
+- 📱 Responsive design
+- ♿️ Accessible by default
+- 🧩 Composable architecture
+- 🔄 Controlled or uncontrolled usage
+- 📅 Flexible date handling
+
+## Basic Usage
+
+```tsx
+import { Calendar } from './components/Calendar';
+
+function App() {
+  const handleDateSelect = (date: Date) => {
+    console.log('Selected date:', date);
+  };
+
+  return (
+    <Calendar onSelectDate={handleDateSelect}>
+      <Calendar.Navigation />
+      <div className="flex gap-2">
+        <Calendar.MonthSelect />
+        <Calendar.YearSelect optionsAfter={10} />
+      </div>
+      <Calendar.Grid>
+        <Calendar.Grid.Header weekdayChar={1} />
+        <Calendar.Grid.Body />
+      </Calendar.Grid>
+    </Calendar>
+  );
+}
+```
+
+## Component Architecture
+
+The Calendar uses a compound component pattern, which offers several advantages:
+
+### 1. Flexible Composition
+
+Instead of passing numerous props to configure the calendar, components can be composed exactly as needed:
+
+```tsx
+// Simple month view
+<Calendar onSelectDate={handleSelect}>
+  <Calendar.Grid />
+</Calendar>
+
+// Full featured with custom layout
+<Calendar onSelectDate={handleSelect}>
+  <div className="flex justify-between items-center">
+    <Calendar.Navigation direction="prev" />
+    <Calendar.MonthYearSelect />
+    <Calendar.Navigation direction="next" />
+  </div>
+  <Calendar.Grid>
+    <Calendar.Grid.Header />
+    <Calendar.Grid.Body showOutsideDays />
+  </Calendar.Grid>
+</Calendar>
+```
+
+### 2. Shared State via Context
+
+The Calendar uses React Context to share state between components, eliminating prop drilling:
+
+```tsx
+interface CalendarContextValue {
+  selectedDate?: Date;
+  paymentDueDate?: Date;
+  onSelectDate: (date: Date) => void;
+  month: Date;
+  setMonth: (month: Date) => void;
+  defaultMonth: Date;
+}
+```
+
+This allows components to:
+- Access shared state without prop drilling
+- Update the calendar state from any child component
+- Maintain consistency across all parts of the calendar
+
+### 3. Modular Components
+
+Each component is focused and single-purpose:
+
+- **Navigation**: Handles month-to-month navigation
+- **MonthSelect/YearSelect**: Individual or combined date navigation
+- **Grid**: Manages the calendar layout
+  - **Header**: Displays weekday labels
+  - **Body**: Renders the date grid
+
+### 4. Styling Flexibility
+
+Every component accepts className props for custom styling:
+
+```tsx
+<Calendar>
+  <Calendar.MonthSelect className="bg-purple-400 text-white" />
+  <Calendar.Grid className="mt-4 rounded-lg shadow-md">
+    <Calendar.Grid.Header className="bg-gray-50" />
+    <Calendar.Grid.Body className="bg-white" />
+  </Calendar.Grid>
+</Calendar>
+```
+
+## Accessibility Features
+
+- Proper ARIA labels and roles
+- Keyboard navigation support
+- Focus management
+- Screen reader friendly
+
+## Type Safety
+
+The component is built with TypeScript and includes comprehensive type definitions:
+
+```tsx
+interface GridProps extends BaseProps {
+  outsideDayClassName?: string;
+  showOutsideDays?: boolean;
+}
+
+interface GridHeaderProps extends BaseProps {
+  weekdayChar?: number;
+  weekStartsOn?: 0 | 1;
+}
+```
+
+## Best Practices Implemented
+
+1. **Composition Over Configuration**
+   - Components are composed rather than configured
+   - Flexible layout and styling options
+   - Easy to extend and customize
+
+2. **Single Responsibility**
+   - Each component has a focused purpose
+   - Clear separation of concerns
+   - Easy to test and maintain
+
+3. **State Management**
+   - Centralized state via Context
+   - Controlled and uncontrolled modes
+   - Predictable data flow
+
+4. **Performance**
+   - Minimal re-renders
+   - Efficient date calculations
+   - Optimized component structure
+
+## Future Enhancements
+
+- Range selection support
+- Custom date formatting
+- Additional view options (week, year)
+- Event handling capabilities
+- Enhanced animation support
+
+## Conclusion
+
+This Calendar component demonstrates modern React patterns and practices while maintaining flexibility and ease of use. Its composable nature makes it adaptable to various use cases while keeping the codebase maintainable and extensible. 
