@@ -9,7 +9,7 @@ export const useCalendarContext = () => {
   const context = useContext(CalendarContext);
   if (!context) {
     throw new Error(
-      'Calendar components must be used within a Calendar provider'
+      'Calendar compound components must be used within Calendar'
     );
   }
   return context;

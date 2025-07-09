@@ -31,7 +31,7 @@ export function Calendar({
   onSelectDate,
   defaultMonth = new Date(),
   className = '',
-}: CalendarProps) {
+}) => {
   const [month, setMonth] = React.useState<Date>(defaultMonth);
 
   return (
@@ -48,7 +48,7 @@ export function Calendar({
       <div className={className}>{children}</div>
     </CalendarContext.Provider>
   );
-}
+};
 
 // Attach subcomponents to maintain compound component pattern
 Calendar.Heading = Heading;
