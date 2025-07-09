@@ -4,9 +4,7 @@ import { format as dateFnsFormat, addMonths, addYears } from 'date-fns';
 import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import {
-  MonthSelectProps,
-  YearSelectProps,
-  MonthYearSelectProps,
+  SelectOptionsProps,
 } from './types';
 import { useCalendarContext } from './CalendarContext';
 
@@ -22,7 +20,6 @@ const selectBaseClasses = clsx(
 const selectContentClasses = clsx(
   'bg-white',
   'rounded-md',
-  'border border-gray-200',
   'shadow-md',
   'overflow-hidden',
   'z-50' // Ensure dropdown is above other content
@@ -33,8 +30,6 @@ const selectItemClasses = clsx(
   'text-pink-900',
   'cursor-pointer',
   'outline-none',
-  'hover:bg-gray-100',
-  'focus:bg-gray-100',
   'data-[highlighted]:bg-pink-100',
   'data-[state=checked]:bg-pink-50',
   'data-[disabled]:opacity-50',
@@ -47,7 +42,7 @@ const scrollButtonClasses = clsx(
   'hover:bg-pink-50'
 );
 
-export const MonthYearSelect: FC<MonthYearSelectProps> = ({
+export const MonthYearSelect: FC<SelectOptionsProps> = ({
   className,
   optionsBefore = 0,
   optionsAfter = 12,
@@ -111,7 +106,7 @@ export const MonthYearSelect: FC<MonthYearSelectProps> = ({
   );
 };
 
-export const MonthSelect: FC<MonthSelectProps> = ({
+export const MonthSelect: FC<SelectOptionsProps> = ({
   className,
   optionsBefore = 0,
   optionsAfter = 11,
@@ -178,7 +173,7 @@ export const MonthSelect: FC<MonthSelectProps> = ({
   );
 };
 
-export const YearSelect: FC<YearSelectProps> = ({
+export const YearSelect: FC<SelectOptionsProps> = ({
   className,
   optionsBefore = 0,
   optionsAfter = 5,
@@ -209,7 +204,7 @@ export const YearSelect: FC<YearSelectProps> = ({
         className={clsx(selectBaseClasses, className)}
         aria-label='Select year'
       >
-        <Select.Value />
+        <Select.Value>{month.getFullYear()}</Select.Value>
         <Select.Icon>
           <ChevronDownIcon className='h-4 w-4 opacity-50' />
         </Select.Icon>

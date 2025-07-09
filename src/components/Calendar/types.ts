@@ -64,17 +64,33 @@ export interface SelectOptionsProps extends BaseProps {
     optionsBefore?: number;
 }
 
-/** Properties for month selection component */
-export type MonthSelectProps = SelectOptionsProps;
+/** 
+ * The shape of the Calendar context value that will be shared across calendar components.
+ * This context provides state and callbacks for managing calendar date selection,
+ * current month view, and payment due dates.
+ */
+export interface CalendarContextValue {
+    /** Currently selected date in the calendar */
+    selectedDate?: Date;
 
-/** Properties for combined month-year selection component */
-export type MonthYearSelectProps = SelectOptionsProps;
+    /** Date when payment is due, will be highlighted in the calendar */
+    paymentDueDate?: Date;
 
-/** Properties for year selection component */
-export type YearSelectProps = SelectOptionsProps;
+    /** 
+     * Callback function triggered when a date is selected
+     * @param date - The newly selected date
+     */
+    onSelectDate: (date: Date) => void;
 
-/** Properties for the calendar caption component */
-export type CaptionProps = BaseProps;
+    /** Current month being displayed in the calendar view */
+    month: Date;
 
-/** Properties for the calendar messaging component */
-export type MessagingProps = BaseProps;
+    /** 
+     * Function to update the currently displayed month
+     * @param month - The new month to display
+     */
+    setMonth: (month: Date) => void;
+
+    /** Initial month to display when calendar first renders */
+    defaultMonth: Date;
+}

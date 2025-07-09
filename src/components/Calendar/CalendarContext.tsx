@@ -1,13 +1,5 @@
 import { createContext, useContext } from 'react';
-
-export interface CalendarContextValue {
-  selectedDate?: Date;
-  paymentDueDate?: Date;
-  onSelectDate: (date: Date) => void;
-  month: Date;
-  setMonth: (month: Date) => void;
-  defaultMonth: Date;
-}
+import { CalendarContextValue } from './types';
 
 export const CalendarContext = createContext<CalendarContextValue | undefined>(
   undefined

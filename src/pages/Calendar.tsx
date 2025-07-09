@@ -81,7 +81,7 @@ const CalendarPage = () => {
             <Calendar.Navigation direction='next' />
             <Calendar.Caption className='text-gray-700 font-medium' />
             <Calendar.MonthSelect
-              className='bg-purple-400 border-pink-400 text-white'
+              className='bg-purple-400 border-pink-400 '
               optionsBefore={6}
               optionsAfter={5}
             />

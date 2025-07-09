@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { CalendarProps } from './types';
 import { CalendarContext } from './CalendarContext';
 import { Grid, GridHeader, GridBody } from './Grid';
@@ -9,7 +9,7 @@ import { Messaging } from './Messaging';
 import { Heading } from './Heading';
 import { Caption } from './Caption';
 
-interface CalendarComponent extends FC<CalendarProps> {
+interface CalendarComponent extends React.FC<CalendarProps> {
   Heading: typeof Heading;
   Navigation: typeof Navigation;
   Caption: typeof Caption;
@@ -24,7 +24,7 @@ interface CalendarComponent extends FC<CalendarProps> {
   Messaging: typeof Messaging;
 }
 
-const CalendarBase: FC<CalendarProps> = ({
+export function Calendar({
   children,
   selectedDate,
   paymentDueDate,
@@ -50,19 +50,18 @@ const CalendarBase: FC<CalendarProps> = ({
   );
 };
 
-export const Calendar = Object.assign(CalendarBase, {
-  Heading,
-  Navigation,
-  Caption,
-  MonthSelect,
-  YearSelect,
-  MonthYearSelect,
-  Grid,
-  GridHeader,
-  GridBody,
-  Legend,
-  LegendItem,
-  Messaging,
-}) as CalendarComponent;
+// Attach subcomponents to maintain compound component pattern
+Calendar.Heading = Heading;
+Calendar.Navigation = Navigation;
+Calendar.Caption = Caption;
+Calendar.MonthSelect = MonthSelect;
+Calendar.YearSelect = YearSelect;
+Calendar.MonthYearSelect = MonthYearSelect;
+Calendar.Grid = Grid;
+Calendar.GridHeader = GridHeader;
+Calendar.GridBody = GridBody;
+Calendar.Legend = Legend;
+Calendar.LegendItem = LegendItem;
+Calendar.Messaging = Messaging;
 
-export default Calendar;
+export default Calendar as CalendarComponent;
