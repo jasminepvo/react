@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactNode, HTMLAttributes, AriaAttributes } from 'react';
 
 /** Base properties shared by all calendar components */
-export interface BaseProps {
+export interface BaseProps extends HTMLAttributes<HTMLElement>, AriaAttributes {
     /** Optional CSS class name for styling */
     className?: string;
     /** Optional child elements */
@@ -73,8 +73,3 @@ export type MonthYearSelectProps = SelectOptionsProps;
 /** Properties for year selection component */
 export type YearSelectProps = SelectOptionsProps;
 
-/** Properties for the calendar caption component */
-export type CaptionProps = BaseProps;
-
-/** Properties for the calendar messaging component */
-export type MessagingProps = BaseProps;
