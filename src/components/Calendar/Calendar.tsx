@@ -8,6 +8,7 @@ import { Legend, LegendItem } from './Legend';
 import { Messaging } from './Messaging';
 import { Heading } from './Heading';
 import { Caption } from './Caption';
+import { ActionItemButton } from './ActionItemButton';
 
 interface CalendarComponent extends FC<CalendarProps> {
   Heading: typeof Heading;
@@ -22,6 +23,7 @@ interface CalendarComponent extends FC<CalendarProps> {
   Legend: typeof Legend;
   LegendItem: typeof LegendItem;
   Messaging: typeof Messaging;
+  ActionItemButton: typeof ActionItemButton;
 }
 
 const CalendarBase: FC<CalendarProps> = ({
@@ -63,6 +65,7 @@ export const Calendar = Object.assign(CalendarBase, {
   Legend,
   LegendItem,
   Messaging,
+  ActionItemButton,
 }) as CalendarComponent;
 
 export default Calendar;

@@ -73,3 +73,17 @@ export type MonthYearSelectProps = SelectOptionsProps;
 /** Properties for year selection component */
 export type YearSelectProps = SelectOptionsProps;
 
+/** Properties for calendar action items */
+export interface ActionItemProps extends BaseProps {
+    /** URL for link variant */
+    href?: string;
+    /** Click handler for button and icon variants */
+    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+    /** Visual style variant */
+    variant: 'button' | 'link' | 'icon';
+    /** Whether the action is disabled */
+    disabled?: boolean;
+    /** Icon element for icon variant */
+    icon?: ReactNode;
+}
+
