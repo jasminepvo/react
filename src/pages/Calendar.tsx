@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar } from '../components/Calendar';
+import { DateField } from '../components/DateField/DateField';
 
 const CalendarPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const paymentDueDate = new Date();
   paymentDueDate.setDate(paymentDueDate.getDate() + 7);
+  const [date, setDate] = useState<Date | undefined>();
 
   return (
     <div className='p-10'>
@@ -22,6 +24,38 @@ const CalendarPage = () => {
 
       <div className='max-w-md mx-auto'>
         {/* Main Calendar */}
+        <DateField
+          value={date}
+          onChange={setDate}
+          className='border border-gray-200 rounded-lg shadow-sm bg-pink-300 mb-40'
+        >
+          <DateField.Input placeholder='Pick a date' />
+          <DateField.Popover>
+            <DateField.Trigger />
+            <DateField.PopoverPanel>
+              <DateField.Calendar
+                className='border border-gray-200 rounded-lg shadow-sm bg-pink-300'
+                paymentDueDate={paymentDueDate}
+                defaultMonth={new Date()}
+              >
+                <Calendar.Heading>
+                  <Calendar.Navigation direction='prev' />
+                  <Calendar.MonthSelect />
+                  <Calendar.YearSelect />
+                  <Calendar.Navigation direction='next' />
+                </Calendar.Heading>
+                <Calendar.Grid>
+                  <Calendar.GridHeader />
+                  <Calendar.GridBody />
+                </Calendar.Grid>
+                <Calendar.Messaging>
+                  Payments scheduled after 11:59 PM EST will be processed the
+                  next business day
+                </Calendar.Messaging>
+              </DateField.Calendar>
+            </DateField.PopoverPanel>
+          </DateField.Popover>
+        </DateField>
         <Calendar
           selectedDate={selectedDate}
           paymentDueDate={paymentDueDate}
@@ -57,15 +91,52 @@ const CalendarPage = () => {
             <Calendar.LegendItem type='payment-due'>
               Payment Due
             </Calendar.LegendItem>
-            
           </Calendar.Legend>
 
           <Calendar.Messaging className='text-gray-600 text-sm p-4'>
             Payments scheduled after 11:59 PM EST will be processed the next
             business day
           </Calendar.Messaging>
+          <div className='flex justify-end items-end'>
+            <Calendar.ActionItemButton
+              variant='button'
+              onClick={() => console.log('clicked')}
+              aria-label='Add event'
+              className='bottom-0 right-0'
+            >
+              Submit
+            </Calendar.ActionItemButton>
+          </div>
         </Calendar>
         <p>Selected Date: {selectedDate?.toLocaleDateString()}</p>
+        {/* Button variant */}
+
+        {/* Link variant */}
+        <Calendar.ActionItemButton
+          variant='link'
+          href='/event/123'
+          aria-label='View event details'
+        >
+          View Details
+        </Calendar.ActionItemButton>
+        {/* Icon variant */}
+        <Calendar.ActionItemButton
+          variant='icon'
+          // icon={< />}
+          onClick={() => console.log('clicked')}
+          aria-label='Delete event'
+        >
+          Delete
+        </Calendar.ActionItemButton>
+        {/* Disabled state */}
+        <Calendar.ActionItemButton
+          variant='button'
+          disabled
+          onClick={() => console.log('not called')}
+          aria-label='Cannot perform action'
+        >
+          Unavailable Action
+        </Calendar.ActionItemButton>
       </div>
 
       {/* Basic Calendar */}
