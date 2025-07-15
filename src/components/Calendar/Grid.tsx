@@ -19,26 +19,28 @@ export const Grid: FC<GridProps> = ({ className, children }) => (
   <div className={className}>{children}</div>
 );
 
+// Helper function to format weekday names
+function formatWeekdayName(fullName: string, format: 'short' | 'med' | 'long') {
+  if (format === 'short') return fullName[0];
+  if (format === 'med') return fullName.slice(0, 2);
+  return fullName;
+}
+
 // Grid Header Component
 export const GridHeader: FC<GridHeaderProps> = ({
   className,
-  weekdayChar = 2,
-  weekStartsOn = 0, // Default to Sunday
+  weekdayChar = 'med', // Default to 'med'
+  weekStartsOn = 'sunday', // Default to 'sunday'
 }) => {
+  // Convert weekStartsOn to number for date-fns
+  const weekStartsOnNum = weekStartsOn === 'monday' ? 1 : 0;
   // Get the start of the week based on weekStartsOn
-  const baseDate = startOfWeek(new Date(), { weekStartsOn });
+  const baseDate = startOfWeek(new Date(), { weekStartsOn: weekStartsOnNum });
 
   const weekDays = Array.from({ length: 7 }, (_, i) => {
     const date = addDays(baseDate, i);
     const fullName = dateFnsFormat(date, 'EEEE');
-
-    return weekdayChar === 1
-      ? fullName[0]
-      : weekdayChar === 2
-      ? fullName.slice(0, 2)
-      : weekdayChar === 3
-      ? fullName.slice(0, 3)
-      : fullName;
+    return formatWeekdayName(fullName, weekdayChar);
   });
 
   return (
@@ -59,16 +61,21 @@ export const GridHeader: FC<GridHeaderProps> = ({
 export const GridBody: FC<GridBodyProps> = ({
   className,
   showOutsideDays = true,
-  weekStartsOn = 0, // Default to Sunday
+  weekStartsOn = 'sunday', // Default to 'sunday'
 }) => {
   const { month, selectedDate, paymentDueDate, onSelectDate } =
     useCalendarContext();
 
+  // Convert weekStartsOn to number for date-fns
+  const weekStartsOnNum = weekStartsOn === 'monday' ? 1 : 0;
+
   // Get the start and end dates for the calendar grid
   const monthStart = startOfMonth(month);
   const monthEnd = endOfMonth(month);
-  const calendarStart = startOfWeek(monthStart, { weekStartsOn });
-  const calendarEnd = endOfWeek(monthEnd, { weekStartsOn });
+  const calendarStart = startOfWeek(monthStart, {
+    weekStartsOn: weekStartsOnNum,
+  });
+  const calendarEnd = endOfWeek(monthEnd, { weekStartsOn: weekStartsOnNum });
 
   // Generate all dates to display
   const dates = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
