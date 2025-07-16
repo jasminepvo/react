@@ -1,17 +1,23 @@
 import React from 'react';
 import { useDateFieldContext } from './DateFieldContext';
 import * as Popover from '@radix-ui/react-popover';
+import clsx from 'clsx';
 
-const Trigger: React.FC<{
+interface TriggerProps {
   className?: string;
   style?: React.CSSProperties;
-}> = ({ className = '', style }) => {
+}
+
+const Trigger: React.FC<TriggerProps> = ({ className = '', style }) => {
   const ctx = useDateFieldContext();
   return (
     <Popover.Trigger asChild>
       <button
         type='button'
-        className={`absolute right-2 top-1/2 -translate-y-1/2 text-pink-500 hover:text-pink-700 focus:outline-none ${className}`}
+        className={clsx(
+          'absolute right-2 top-1/2 -translate-y-1/2 text-pink-500 hover:text-pink-700 focus:outline-none',
+          className
+        )}
         aria-label='Open calendar'
         disabled={ctx.disabled}
         tabIndex={-1}

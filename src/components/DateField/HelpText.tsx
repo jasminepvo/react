@@ -1,10 +1,19 @@
 import React from 'react';
 import { useDateFieldContext } from './DateFieldContext';
+import clsx from 'clsx';
 
-const HelpText: React.FC = () => {
+interface HelpTextProps {
+  className?: string;
+}
+
+const HelpText: React.FC<HelpTextProps> = ({ className = '' }) => {
   const ctx = useDateFieldContext();
   if (!ctx.helpText) return null;
-  return <p className='mt-1 ml-1 text-xs text-black'>{ctx.helpText}</p>;
+  return (
+    <p className={clsx('mt-1 ml-1 text-xs text-black', className)}>
+      {ctx.helpText}
+    </p>
+  );
 };
 
 export default HelpText;

@@ -29,6 +29,10 @@ const CalendarPage = () => {
           onChange={setDate}
           className='border border-gray-200 rounded-lg shadow-sm bg-pink-300 mb-40'
         >
+          <DateField.Label className='text-lg text-blue-600'>
+            My Label
+          </DateField.Label>
+          <DateField.Error className='italic' />
           <DateField.Input placeholder='Pick a date' />
           <DateField.Popover>
             <DateField.Trigger />

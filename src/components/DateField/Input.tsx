@@ -5,14 +5,23 @@ import {
   validDateFormat,
   formatDateInput,
 } from '../DatePicker/helper';
+import clsx from 'clsx';
 
-const Input: React.FC<{
+interface InputProps {
   placeholder?: string;
   name?: string;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
-}> = ({ placeholder = 'Select date', name, id, className = '', style }) => {
+}
+
+const Input: React.FC<InputProps> = ({
+  placeholder = 'Select date',
+  name,
+  id,
+  className = '',
+  style,
+}) => {
   const ctx = useDateFieldContext();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +57,10 @@ const Input: React.FC<{
     <input
       ref={ctx.inputRef}
       type='text'
-      className={`w-full border rounded px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-pink-400 ${className}`}
+      className={clsx(
+        'w-full border rounded px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-pink-400',
+        className
+      )}
       value={ctx.inputValue || ''}
       onChange={handleInputChange}
       placeholder={placeholder}

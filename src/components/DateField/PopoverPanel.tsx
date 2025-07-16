@@ -1,15 +1,25 @@
 import React, { ReactNode } from 'react';
 import * as Popover from '@radix-ui/react-popover';
+import clsx from 'clsx';
 
-const PopoverPanel: React.FC<{
+interface PopoverPanelProps {
   children: ReactNode;
   className?: string;
   style?: React.CSSProperties;
-}> = ({ children, className = '', style }) => {
+}
+
+const PopoverPanel: React.FC<PopoverPanelProps> = ({
+  children,
+  className = '',
+  style,
+}) => {
   return (
     <Popover.Portal>
       <Popover.Content
-        className={`z-50 bg-white rounded-lg shadow-lg p-4 mt-2 ${className}`}
+        className={clsx(
+          'z-50 bg-white rounded-lg shadow-lg p-4 mt-2',
+          className
+        )}
         style={style}
       >
         {children}
