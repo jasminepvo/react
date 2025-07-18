@@ -6,4 +6,5 @@ export { Legend, LegendItem } from './Legend';
 export { Messaging } from './Messaging';
 export { Heading } from './Heading';
 export { Caption } from './Caption';
+export { useActionItemContext } from './useActionItemContext';
 export type { CalendarProps } from './types'; 

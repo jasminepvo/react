@@ -27,11 +27,13 @@ const CalendarSlot: React.FC<DateFieldCalendarSlotProps> = ({
   };
 
   return (
-    <Calendar selectedDate={tempDate} onSelectDate={handleSelect} {...rest}>
+    <Calendar
+      selectedDate={tempDate}
+      onSelectDate={handleSelect}
+      onSubmit={handleSubmit}
+      {...rest}
+    >
       {children}
-      <Calendar.ActionItemButton variant='button' onClick={handleSubmit}>
-        Submit
-      </Calendar.ActionItemButton>
     </Calendar>
   );
 };

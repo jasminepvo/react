@@ -4,6 +4,7 @@ export interface CalendarContextValue {
   selectedDate?: Date;
   paymentDueDate?: Date;
   onSelectDate: (date: Date) => void;
+  onSubmit?: () => void;
   month: Date;
   setMonth: (month: Date) => void;
   defaultMonth: Date;

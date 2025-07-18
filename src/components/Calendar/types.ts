@@ -14,6 +14,8 @@ export interface CalendarProps extends BaseProps {
     defaultMonth?: Date;
     /** Callback function when a date is selected */
     onSelectDate: (date: Date) => void;
+    /** Callback function when submit button is clicked (for DateField context) */
+    onSubmit?: () => void;
     /** Date when payment is due, will be highlighted */
     paymentDueDate?: Date;
     /** Currently selected date */
@@ -79,8 +81,8 @@ export interface ActionItemProps extends BaseProps {
     href?: string;
     /** Click handler for button and icon variants */
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;
-    /** Visual style variant */
-    variant: 'button' | 'link' | 'icon';
+    /** Context type */
+    contextType?: 'dateField' | 'calendar';
     /** Whether the action is disabled */
     disabled?: boolean;
     /** Icon element for icon variant */
