@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { CalendarProps } from './types';
 import { CalendarContext } from './CalendarContext';
 import { Grid, GridHeader, GridBody } from './Grid';
@@ -31,22 +31,34 @@ const CalendarBase: FC<CalendarProps> = ({
   selectedDate,
   paymentDueDate,
   onSelectDate,
+  onSubmit,
   defaultMonth = new Date(),
   className = '',
 }) => {
   const [month, setMonth] = React.useState<Date>(defaultMonth);
 
+  const contextValue = useMemo(
+    () => ({
+      selectedDate,
+      paymentDueDate,
+      onSelectDate,
+      onSubmit,
+      month,
+      setMonth,
+      defaultMonth,
+    }),
+    [
+      selectedDate,
+      paymentDueDate,
+      onSelectDate,
+      onSubmit,
+      month,
+      setMonth,
+      defaultMonth,
+    ]
+  );
   return (
-    <CalendarContext.Provider
-      value={{
-        selectedDate,
-        paymentDueDate,
-        onSelectDate,
-        month,
-        setMonth,
-        defaultMonth,
-      }}
-    >
+    <CalendarContext.Provider value={contextValue}>
       <div className={className}>{children}</div>
     </CalendarContext.Provider>
   );

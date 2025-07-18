@@ -1,10 +1,18 @@
 // Types for DateField and its subcomponents
 import type { CalendarProps } from '../Calendar';
+import { ReactNode, HTMLAttributes, AriaAttributes } from 'react';
 
+/** Base properties shared by all calendar components */
+export interface BaseProps extends HTMLAttributes<HTMLElement>, AriaAttributes {
+    /** Optional CSS class name for styling */
+    className?: string;
+    /** Optional child elements */
+    children?: ReactNode;
+}
 /**
  * Base props shared by DateField and its context.
  */
-export interface DateFieldBaseProps {
+export interface DateFieldBaseProps extends HTMLAttributes<HTMLDivElement> {
     /** Children for composition. */
     children: React.ReactNode;
     /** Optional class name for the root element. */
@@ -26,7 +34,7 @@ export interface DateFieldBaseProps {
     /** Minimum selectable date. */
     minDate?: Date;
     /** Callback when the date changes. */
-    onChange?: (date: Date | undefined) => void;
+    onDateChange?: (date: Date | undefined) => void;
     /** Whether the field is required. */
     required?: boolean;
     /** Error message for invalid start date. */
@@ -36,12 +44,6 @@ export interface DateFieldBaseProps {
     /** The selected date value (controlled). */
     value?: Date;
 }
-
-/**
- * Props for the DateField component.
- * (Identical to DateFieldBaseProps)
- */
-export type DateFieldProps = DateFieldBaseProps;
 
 /**
  * Context value for DateField compound components.
@@ -75,7 +77,7 @@ export interface DateFieldContextProps extends Omit<DateFieldBaseProps, 'childre
     /** Minimum selectable date. */
     minDate?: Date;
     /** Callback when the date changes. */
-    onChange?: (date: Date | undefined) => void;
+    onDateChange?: (date: Date | undefined) => void;
     /** Whether the popover is open. */
     open: boolean;
     /** Setter for popover open state. */

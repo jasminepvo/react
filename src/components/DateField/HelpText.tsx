@@ -1,12 +1,9 @@
 import React from 'react';
 import { useDateFieldContext } from './DateFieldContext';
 import clsx from 'clsx';
+import { BaseProps } from './types';
 
-interface HelpTextProps {
-  className?: string;
-}
-
-const HelpText: React.FC<HelpTextProps> = ({ className = '' }) => {
+const HelpText: React.FC<BaseProps> = ({ className = '' }) => {
   const ctx = useDateFieldContext();
   if (!ctx.helpText) return null;
   return (

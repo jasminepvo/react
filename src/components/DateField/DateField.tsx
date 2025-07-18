@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { DateFieldContext } from './DateFieldContext';
-import type { DateFieldProps } from './types';
+import type { DateFieldBaseProps } from './types';
 import Label from './Label';
 import HelpText from './HelpText';
 import Error from './Error';
@@ -10,16 +10,26 @@ import Popover from './Popover';
 import PopoverPanel from './PopoverPanel';
 import CalendarSlot from './CalendarSlot';
 
-const DateFieldBase: React.FC<DateFieldProps> = ({
+interface DateFieldCompoundComponent extends React.FC<DateFieldBaseProps> {
+  Input: typeof Input;
+  Trigger: typeof Trigger;
+  Popover: typeof Popover;
+  PopoverPanel: typeof PopoverPanel;
+  Calendar: typeof CalendarSlot;
+  Label: typeof Label;
+  HelpText: typeof HelpText;
+  Error: typeof Error;
+}
+
+const DateField: DateFieldCompoundComponent = ({
   value,
-  onChange,
+  onDateChange,
   className = '',
   style,
   children,
   disabled = false,
   label,
   required = false,
-  helpText,
   minDate = new Date(0),
   maxDate = new Date(8640000000000000),
   excludeDates = [],
@@ -37,36 +47,60 @@ const DateFieldBase: React.FC<DateFieldProps> = ({
   );
   const [inputError, setInputError] = useState<string>('');
 
-  const setValue = (date: Date | undefined) => {
-    if (!isControlled) setInternalValue(date);
-    onChange?.(date);
-    setInputValue(date ? date.toLocaleDateString() : '');
-  };
+  const setValue = useCallback(
+    (date: Date | undefined) => {
+      if (!isControlled) setInternalValue(date);
+      onDateChange?.(date);
+      setInputValue(date ? date.toLocaleDateString() : '');
+    },
+    [isControlled, onDateChange]
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      value: selectedDate,
+      setValue,
+      open,
+      setOpen,
+      inputRef,
+      disabled,
+      inputValue,
+      setInputValue,
+      inputError,
+      setInputError,
+      required,
+      label,
+      minDate,
+      maxDate,
+      excludeDates,
+      startDateErrorMessage,
+      endDateErrorMessage,
+      excludeDatesErrorMessage,
+    }),
+    [
+      selectedDate,
+      setValue,
+      open,
+      setOpen,
+      inputRef,
+      disabled,
+      inputValue,
+      setInputValue,
+      inputError,
+      setInputError,
+      required,
+      label,
+      minDate,
+      maxDate,
+      excludeDates,
+      startDateErrorMessage,
+      endDateErrorMessage,
+      excludeDatesErrorMessage,
+    ]
+  );
 
   return (
-    <DateFieldContext.Provider
-      value={{
-        value: selectedDate,
-        setValue,
-        open,
-        setOpen,
-        inputRef,
-        disabled,
-        inputValue,
-        setInputValue,
-        inputError,
-        setInputError,
-        required,
-        label,
-        helpText,
-        minDate,
-        maxDate,
-        excludeDates,
-        startDateErrorMessage,
-        endDateErrorMessage,
-        excludeDatesErrorMessage,
-      }}
-    >
+    <DateFieldContext.Provider value={contextValue}>
       <div className={`relative inline-block ${className}`} style={style}>
         {children}
       </div>
@@ -74,15 +108,13 @@ const DateFieldBase: React.FC<DateFieldProps> = ({
   );
 };
 
-export const DateField = Object.assign(DateFieldBase, {
-  Input,
-  Trigger,
-  Popover,
-  PopoverPanel,
-  Calendar: CalendarSlot,
-  Label,
-  HelpText,
-  Error,
-});
+DateField.Input = Input;
+DateField.Trigger = Trigger;
+DateField.Popover = Popover;
+DateField.PopoverPanel = PopoverPanel;
+DateField.Calendar = CalendarSlot;
+DateField.Label = Label;
+DateField.HelpText = HelpText;
+DateField.Error = Error;
 
 export default DateField;

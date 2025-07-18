@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar } from '../components/Calendar';
-import { DateField } from '../components/DateField/DateField';
+import DateField from '../components/DateField/DateField';
 
 const CalendarPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -26,13 +26,19 @@ const CalendarPage = () => {
         {/* Main Calendar */}
         <DateField
           value={date}
-          onChange={setDate}
+          onDateChange={setDate}
           className='border border-gray-200 rounded-lg shadow-sm bg-pink-300 mb-40'
         >
           <DateField.Label className='text-lg text-blue-600'>
             My Label
           </DateField.Label>
+          <DateField.HelpText className='text-green-500'>
+            This is a help text
+          </DateField.HelpText>
           <DateField.Error className='italic' />
+          <DateField.HelpText className='text-green-500'>
+            This is a help text
+          </DateField.HelpText>
           <DateField.Input placeholder='Pick a date' />
           <DateField.Popover>
             <DateField.Trigger />
@@ -56,9 +62,17 @@ const CalendarPage = () => {
                   Payments scheduled after 11:59 PM EST will be processed the
                   next business day
                 </Calendar.Messaging>
+                <Calendar.ActionItemButton
+                  contextType='dateField'
+                >
+                  Submit
+                </Calendar.ActionItemButton>
               </DateField.Calendar>
             </DateField.PopoverPanel>
           </DateField.Popover>
+          <DateField.HelpText className='text-green-500'>
+            This is a help text
+          </DateField.HelpText>
         </DateField>
         <Calendar
           selectedDate={selectedDate}
@@ -103,8 +117,7 @@ const CalendarPage = () => {
           </Calendar.Messaging>
           <div className='flex justify-end items-end'>
             <Calendar.ActionItemButton
-              variant='button'
-              onClick={() => console.log('clicked')}
+              contextType='calendar'
               aria-label='Add event'
               className='bottom-0 right-0'
             >
@@ -113,34 +126,6 @@ const CalendarPage = () => {
           </div>
         </Calendar>
         <p>Selected Date: {selectedDate?.toLocaleDateString()}</p>
-        {/* Button variant */}
-
-        {/* Link variant */}
-        <Calendar.ActionItemButton
-          variant='link'
-          href='/event/123'
-          aria-label='View event details'
-        >
-          View Details
-        </Calendar.ActionItemButton>
-        {/* Icon variant */}
-        <Calendar.ActionItemButton
-          variant='icon'
-          // icon={< />}
-          onClick={() => console.log('clicked')}
-          aria-label='Delete event'
-        >
-          Delete
-        </Calendar.ActionItemButton>
-        {/* Disabled state */}
-        <Calendar.ActionItemButton
-          variant='button'
-          disabled
-          onClick={() => console.log('not called')}
-          aria-label='Cannot perform action'
-        >
-          Unavailable Action
-        </Calendar.ActionItemButton>
       </div>
 
       {/* Basic Calendar */}
