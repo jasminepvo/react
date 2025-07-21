@@ -21,6 +21,99 @@ interface DateFieldCompoundComponent extends React.FC<DateFieldBaseProps> {
   Error: typeof Error;
 }
 
+/**
+ * DateField is a modular and accessible date input component that provides a comprehensive
+ * solution for date selection with a popover calendar interface.
+ *
+ * Features:
+ * - Controlled & Uncontrolled modes
+ * - Accessible with ARIA attributes and keyboard navigation
+ * - Composable using compound component pattern
+ * - Built-in date validation with custom error messages
+ * - Extensive styling and behavior customization options
+ * - Full TypeScript support
+ *
+ * Basic Usage:
+ * ```tsx
+ * <DateField value={date} onDateChange={setDate}>
+ *   <DateField.Label>Select Date</DateField.Label>
+ *   <DateField.Input placeholder="Choose a date" />
+ *   <DateField.Popover>
+ *     <DateField.Trigger />
+ *     <DateField.PopoverPanel>
+ *       <DateField.Calendar>
+ *         <Calendar.Heading>
+ *           <Calendar.Navigation direction="prev" />
+ *           <Calendar.MonthSelect />
+ *           <Calendar.YearSelect />
+ *           <Calendar.Navigation direction="next" />
+ *         </Calendar.Heading>
+ *         <Calendar.Grid>
+ *           <Calendar.GridHeader />
+ *           <Calendar.GridBody />
+ *         </Calendar.Grid>
+ *         <Calendar.ActionItemButton>Submit</Calendar.ActionItemButton>
+ *       </DateField.Calendar>
+ *     </DateField.PopoverPanel>
+ *   </DateField.Popover>
+ * </DateField>
+ * ```
+ *
+ * Compound Components:
+ * - DateField.Label: Renders the field label
+ * - DateField.Input: Main input field for date entry
+ * - DateField.Trigger: Calendar icon button
+ * - DateField.Popover: Popover container
+ * - DateField.PopoverPanel: Panel containing the calendar
+ * - DateField.Calendar: Calendar wrapper with DateField behavior
+ * - DateField.HelpText: Help text display
+ * - DateField.Error: Validation error display
+ *
+ * @param props - DateField component props
+ * @returns DateField component with compound components
+ * @example
+ * <DateField value={date} onDateChange={setDate}>
+ *   <DateField.Label>Select Date</DateField.Label>
+ *   <DateField.Input placeholder="Choose a date" />
+ *   <DateField.Popover>
+ *     <DateField.Trigger />
+ *     <DateField.PopoverPanel>
+ *       <DateField.Calendar>
+ *         <Calendar.Heading>
+ *           <Calendar.Navigation direction="prev" />
+ *           <Calendar.MonthSelect />
+ *           <Calendar.YearSelect />
+ *           <Calendar.Navigation direction="next" />
+ *         </Calendar.Heading>
+ *         <Calendar.Grid>  
+ *           <Calendar.GridHeader />
+ *           <Calendar.GridBody />
+ *         </Calendar.Grid>
+ *       </DateField.Calendar>
+ *     </DateField.PopoverPanel>
+ *   </DateField.Popover>
+ * </DateField>
+ * @params {string} [className] - Optional class name for styling
+ * @params {React.CSSProperties} [style] - Optional inline styles
+ * @params {React.ReactNode} [children] - Child elements to render
+ * @params {boolean} [disabled] - Whether the input is disabled
+ * @params {string} [label] - The label for the input
+ * @params {boolean} [required] - Whether the input is required
+ * @params {Date} [minDate] - The minimum date that can be selected
+ * @params {Date} [maxDate] - The maximum date that can be selected
+ * @params {Date[]} [excludeDates] - Dates to exclude from selection
+ * @params {string} [startDateErrorMessage] - Error message for start date
+ * @params {string} [endDateErrorMessage] - Error message for end date
+ * @params {string} [excludeDatesErrorMessage] - Error message for excluded dates
+ * @params {Date} [value] - The value of the input
+ * @params {function} [onDateChange] - Function to call when the date changes
+ * @params {function} [onSubmit] - Function to call when the form is submitted
+ * @params {function} [onClose] - Function to call when the popover is closed
+ * @params {function} [onOpen] - Function to call when the popover is opened
+ * @params {function} [onError] - Function to call when the input is in an error state
+ * @params {function} [onFocus] - Function to call when the input is focused
+ */
+
 const DateField: DateFieldCompoundComponent = ({
   value,
   onDateChange,
@@ -47,6 +140,10 @@ const DateField: DateFieldCompoundComponent = ({
   );
   const [inputError, setInputError] = useState<string>('');
 
+  /**
+   * Sets the date value and updates related state.
+   * Handles both controlled and uncontrolled modes.
+   */
   const setValue = useCallback(
     (date: Date | undefined) => {
       if (!isControlled) setInternalValue(date);
@@ -56,6 +153,10 @@ const DateField: DateFieldCompoundComponent = ({
     [isControlled, onDateChange]
   );
 
+  /**
+   * Context value provided to all child components.
+   * Contains all state and setters needed by compound components.
+   */
   const contextValue = useMemo(
     () => ({
       value: selectedDate,
