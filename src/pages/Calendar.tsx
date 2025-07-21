@@ -13,13 +13,22 @@ const CalendarPage = () => {
     <div className='p-10'>
       <div className='flex items-center justify-between mb-8'>
         <h1 className='text-4xl font-bold'>Calendar Component</h1>
-        <Link
-          to='/'
-          className='bg-pink-500 text-white px-6 py-3 rounded-lg hover:bg-pink-600 
+        <div className='flex gap-4'>
+          <Link
+            to='/calendar-keyboard-demo'
+            className='bg-white text-pink-500 px-6 py-3 rounded-lg hover:bg-pink-600 hover:text-white
                      transition-colors font-medium'
-        >
-          ← Back to Home
-        </Link>
+          >
+            🎹 Keyboard Demo
+          </Link>
+          <Link
+            to='/'
+            className='bg-pink-500 text-white px-6 py-3 rounded-lg hover:bg-pink-600 
+                     transition-colors font-medium'
+          >
+            ← Back to Home
+          </Link>
+        </div>
       </div>
 
       <div className='max-w-md mx-auto'>
@@ -32,44 +41,40 @@ const CalendarPage = () => {
           <DateField.Label className='text-lg text-blue-600'>
             My Label
           </DateField.Label>
-          <DateField.HelpText className='text-green-500'>
-            This is a help text
-          </DateField.HelpText>
-          <DateField.Error className='italic' />
-          <DateField.HelpText className='text-green-500'>
-            This is a help text
-          </DateField.HelpText>
-          <DateField.Input placeholder='Pick a date' />
-          <DateField.Popover>
-            <DateField.Trigger />
-            <DateField.PopoverPanel>
-              <DateField.Calendar
-                className='border border-gray-200 rounded-lg shadow-sm bg-pink-300'
-                paymentDueDate={paymentDueDate}
-                defaultMonth={new Date()}
-              >
-                <Calendar.Heading>
-                  <Calendar.Navigation direction='prev' />
-                  <Calendar.MonthSelect />
-                  <Calendar.YearSelect />
-                  <Calendar.Navigation direction='next' />
-                </Calendar.Heading>
-                <Calendar.Grid>
-                  <Calendar.GridHeader />
-                  <Calendar.GridBody />
-                </Calendar.Grid>
-                <Calendar.Messaging>
-                  Payments scheduled after 11:59 PM EST will be processed the
-                  next business day
-                </Calendar.Messaging>
-                <Calendar.ActionItemButton
-                  contextType='dateField'
+          <div className='flex flex-row bg-white rounded-lg'>
+            <DateField.Input placeholder='Pick a date' />
+            <DateField.Popover>
+              <DateField.Trigger />
+              <DateField.PopoverPanel>
+                <DateField.Calendar
+                  className='border border-gray-200 rounded-lg shadow-sm bg-pink-300'
+                  paymentDueDate={paymentDueDate}
+                  defaultMonth={new Date()}
                 >
-                  Submit
-                </Calendar.ActionItemButton>
-              </DateField.Calendar>
-            </DateField.PopoverPanel>
-          </DateField.Popover>
+                  <Calendar.Heading>
+                    <Calendar.Navigation direction='prev' />
+                    <Calendar.MonthSelect />
+                    <Calendar.YearSelect />
+                    <Calendar.Navigation direction='next' />
+                  </Calendar.Heading>
+                  <Calendar.Grid>
+                    <Calendar.GridHeader />
+                    <Calendar.GridBody />
+                  </Calendar.Grid>
+                  <Calendar.Messaging>
+                    Payments scheduled after 11:59 PM EST will be processed the
+                    next business day
+                  </Calendar.Messaging>
+                  <div className='flex justify-end mt-4'>
+                    <Calendar.ActionItemButton>
+                      Submit
+                    </Calendar.ActionItemButton>
+                  </div>
+                </DateField.Calendar>
+              </DateField.PopoverPanel>
+            </DateField.Popover>
+          </div>
+
           <DateField.HelpText className='text-green-500'>
             This is a help text
           </DateField.HelpText>
@@ -116,11 +121,7 @@ const CalendarPage = () => {
             business day
           </Calendar.Messaging>
           <div className='flex justify-end items-end'>
-            <Calendar.ActionItemButton
-              contextType='calendar'
-              aria-label='Add event'
-              className='bottom-0 right-0'
-            >
+            <Calendar.ActionItemButton aria-label='Add event'>
               Submit
             </Calendar.ActionItemButton>
           </div>
@@ -140,15 +141,8 @@ const CalendarPage = () => {
             <Calendar.Navigation direction='prev' />
             <Calendar.Navigation direction='next' />
             <Calendar.Caption className='text-gray-700 font-medium' />
-            <Calendar.MonthSelect
-              className='bg-purple-400 border-pink-400 text-white'
-              optionsBefore={6}
-              optionsAfter={5}
-            />
-            <Calendar.YearSelect
-              className='bg-purple-400 border-pink-400 text-white'
-              optionsAfter={10}
-            />
+            <Calendar.MonthSelect optionsBefore={6} optionsAfter={5} />
+            <Calendar.YearSelect optionsAfter={10} />
           </Calendar.Heading>
           <Calendar.Grid>
             <Calendar.GridHeader

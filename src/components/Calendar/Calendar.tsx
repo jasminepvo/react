@@ -1,4 +1,11 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useCallback } from 'react';
+import {
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  eachDayOfInterval,
+} from 'date-fns';
 import { CalendarProps } from './types';
 import { CalendarContext } from './CalendarContext';
 import { Grid, GridHeader, GridBody } from './Grid';
@@ -36,30 +43,90 @@ const CalendarBase: FC<CalendarProps> = ({
   className = '',
 }) => {
   const [month, setMonth] = React.useState<Date>(defaultMonth);
-
-  const contextValue = useMemo(
-    () => ({
-      selectedDate,
-      paymentDueDate,
-      onSelectDate,
-      onSubmit,
-      month,
-      setMonth,
-      defaultMonth,
-    }),
-    [
-      selectedDate,
-      paymentDueDate,
-      onSelectDate,
-      onSubmit,
-      month,
-      setMonth,
-      defaultMonth,
-    ]
+  const [focusedDate, setFocusedDate] = React.useState<Date | undefined>(
+    selectedDate
   );
+
+  // Update focused date when selected date changes
+  React.useEffect(() => {
+    setFocusedDate(selectedDate);
+  }, [selectedDate]);
+
+  // Ensure we always have a focused date when the calendar mounts
+  React.useEffect(() => {
+    if (!focusedDate) {
+      const monthStart = startOfMonth(month);
+      const calendarStart = startOfWeek(monthStart, { weekStartsOn: 0 });
+      setFocusedDate(calendarStart);
+    }
+  }, [focusedDate, month]);
+
+  // Get all dates in the current month view for navigation
+  const getCalendarDates = useCallback(() => {
+    const monthStart = startOfMonth(month);
+    const monthEnd = endOfMonth(month);
+    const calendarStart = startOfWeek(monthStart, { weekStartsOn: 0 });
+    const calendarEnd = endOfWeek(monthEnd, { weekStartsOn: 0 });
+    return eachDayOfInterval({ start: calendarStart, end: calendarEnd });
+  }, [month]);
+
+  // Focus management methods
+  const focusFirstDate = useCallback(() => {
+    const monthStart = startOfMonth(month);
+    const calendarStart = startOfWeek(monthStart, { weekStartsOn: 0 });
+    setFocusedDate(calendarStart);
+  }, [month, setFocusedDate]);
+
+  const focusLastDate = useCallback(() => {
+    const monthEnd = endOfMonth(month);
+    const calendarEnd = endOfWeek(monthEnd, { weekStartsOn: 0 });
+    setFocusedDate(calendarEnd);
+  }, [month, setFocusedDate]);
+
+  // Simple keyboard navigation handler - delegates to Grid component
+  const handleKeyDown = useCallback(() => {
+    // This will be handled by the Grid component
+    // We just need to provide the basic context
+  }, []);
+
+  const contextValue = useMemo(() => {
+    // Ensure all functions are properly defined
+    const value = {
+      selectedDate,
+      paymentDueDate,
+      onSelectDate,
+      onSubmit,
+      month,
+      setMonth,
+      defaultMonth,
+      focusedDate,
+      setFocusedDate: setFocusedDate || (() => {}),
+      handleKeyDown: handleKeyDown || (() => {}),
+      focusFirstDate: focusFirstDate || (() => {}),
+      focusLastDate: focusLastDate || (() => {}),
+      getCalendarDates,
+    };
+
+    return value;
+  }, [
+    selectedDate,
+    paymentDueDate,
+    onSelectDate,
+    onSubmit,
+    month,
+    setMonth,
+    defaultMonth,
+    focusedDate,
+    setFocusedDate,
+    handleKeyDown,
+    focusFirstDate,
+    focusLastDate,
+    getCalendarDates,
+  ]);
+
   return (
     <CalendarContext.Provider value={contextValue}>
-      <div className={className}>{children}</div>
+      <div className={`relative ${className}`}>{children}</div>
     </CalendarContext.Provider>
   );
 };

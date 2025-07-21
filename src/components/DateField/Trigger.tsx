@@ -10,17 +10,35 @@ interface TriggerProps {
 
 const Trigger: React.FC<TriggerProps> = ({ className = '', style }) => {
   const ctx = useDateFieldContext();
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      ctx.setOpen(true);
+    }
+  };
+
+  const handleFocus = () => {
+    // Focus received - no action needed
+  };
+
+  const handleClick = () => {
+    // Click handled by Radix UI Popover.Trigger
+  };
+
   return (
     <Popover.Trigger asChild>
       <button
         type='button'
         className={clsx(
-          'absolute right-2 top-1/2 -translate-y-1/2 text-pink-500 hover:text-pink-700 focus:outline-none',
+          'relative-translate-y-1/2 text-pink-500 hover:text-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
           className
         )}
         aria-label='Open calendar'
         disabled={ctx.disabled}
-        tabIndex={-1}
+        onKeyDown={handleKeyDown}
+        onFocus={handleFocus}
+        onClick={handleClick}
         style={style}
       >
         <svg width='20' height='20' fill='currentColor' viewBox='0 0 20 20'>

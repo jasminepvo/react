@@ -8,6 +8,16 @@ export interface CalendarContextValue {
   month: Date;
   setMonth: (month: Date) => void;
   defaultMonth: Date;
+  // Keyboard navigation state
+  focusedDate?: Date;
+  setFocusedDate: (date: Date | undefined) => void;
+  // Keyboard navigation methods
+  handleKeyDown: (event: React.KeyboardEvent, currentDate: Date) => void;
+  // Focus management
+  focusFirstDate: () => void;
+  focusLastDate: () => void;
+  // Calendar dates utility
+  getCalendarDates: () => Date[];
 }
 
 export const CalendarContext = createContext<CalendarContextValue | undefined>(

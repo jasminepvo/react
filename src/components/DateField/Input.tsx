@@ -58,7 +58,7 @@ const Input: React.FC<InputProps> = ({
       ref={ctx.inputRef}
       type='text'
       className={clsx(
-        'w-full border rounded px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-pink-400',
+        'w-full px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-pink-400',
         className
       )}
       value={ctx.inputValue || ''}

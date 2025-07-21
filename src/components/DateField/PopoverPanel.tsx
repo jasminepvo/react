@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import clsx from 'clsx';
+import { useDateFieldContext } from './DateFieldContext';
 
 interface PopoverPanelProps {
   children: ReactNode;
@@ -13,6 +14,18 @@ const PopoverPanel: React.FC<PopoverPanelProps> = ({
   className = '',
   style,
 }) => {
+  const ctx = useDateFieldContext();
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        ctx.setOpen(false);
+      }
+    },
+    [ctx]
+  );
+
   return (
     <Popover.Portal>
       <Popover.Content
@@ -21,6 +34,13 @@ const PopoverPanel: React.FC<PopoverPanelProps> = ({
           className
         )}
         style={style}
+        onKeyDown={handleKeyDown}
+        onEscapeKeyDown={() => ctx.setOpen(false)}
+        onInteractOutside={() => ctx.setOpen(false)}
+        onOpenAutoFocus={(event) => {
+          // Prevent default focus behavior and let the Calendar component handle focus
+          event.preventDefault();
+        }}
       >
         {children}
       </Popover.Content>

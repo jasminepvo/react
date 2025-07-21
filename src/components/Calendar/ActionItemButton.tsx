@@ -6,7 +6,8 @@ import { useActionItemContext } from './useActionItemContext';
 export const ActionItemButton = forwardRef<HTMLButtonElement, ActionItemProps>(
   ({ onClick, disabled = false, children, className = '', ...props }, ref) => {
     // Use the custom hook to get the appropriate context
-    const { contextType, context } = useActionItemContext();
+    const { contextType: detectedContextType, context } =
+      useActionItemContext();
 
     const baseClassName =
       'inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50 disabled:pointer-events-none m-2';
@@ -23,12 +24,12 @@ export const ActionItemButton = forwardRef<HTMLButtonElement, ActionItemProps>(
       onClick?.(event);
 
       // Additional context-specific behavior
-      if (contextType === 'calendar') {
+      if (detectedContextType === 'calendar') {
         // In Calendar context, call the onSubmit function if available
         if (context.onSubmit) {
           context.onSubmit();
         }
-      } else if (contextType === 'dateField') {
+      } else if (detectedContextType === 'dateField') {
         // In DateField context, we need to handle this differently
         // The DateField context doesn't have onSubmit, so we'll rely on the onClick prop
         // or handle it through the parent components

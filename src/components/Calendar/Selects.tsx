@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import clsx from 'clsx';
-import { format as dateFnsFormat, addMonths, addYears } from 'date-fns';
+import { format as dateFnsFormat, addMonths } from 'date-fns';
 import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import {
@@ -11,40 +11,19 @@ import {
 import { useCalendarContext } from './CalendarContext';
 
 const selectBaseClasses = clsx(
-  'py-1 pr-4 pl-3',
-  'border border-gray-200 rounded-md',
-  'bg-white text-pink-900',
-  'cursor-pointer appearance-none',
-  'focus:outline-none focus:ring-2 focus:ring-blue-500',
-  'inline-flex items-center justify-between'
+  'py-1 pr-4 pl-3 border border-gray-200 rounded-md bg-white text-pink-900 cursor-pointer appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 inline-flex items-center justify-between'
 );
 
 const selectContentClasses = clsx(
-  'bg-white',
-  'rounded-md',
-  'border border-gray-200',
-  'shadow-md',
-  'overflow-hidden',
-  'z-50' // Ensure dropdown is above other content
+  'bg-white rounded-md border border-gray-200 shadow-md overflow-hidden z-50' // Ensure dropdown is above other content
 );
 
 const selectItemClasses = clsx(
-  'py-2 px-4',
-  'text-pink-900',
-  'cursor-pointer',
-  'outline-none',
-  'hover:bg-gray-100',
-  'focus:bg-gray-100',
-  'data-[highlighted]:bg-pink-100',
-  'data-[state=checked]:bg-pink-50',
-  'data-[disabled]:opacity-50',
-  'data-[disabled]:cursor-not-allowed'
+  'py-2 px-4 text-pink-900 cursor-pointer outline-none hover:bg-gray-10 focus:bg-gray-100 data-[highlighted]:bg-pink-100 data-[state=checked]:bg-pink-50 data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed'
 );
 
 const scrollButtonClasses = clsx(
-  'flex items-center justify-center',
-  'h-6 bg-white cursor-default',
-  'hover:bg-pink-50'
+  'flex items-center justify-center h-6 bg-white cursor-default hover:bg-pink-50'
 );
 
 export const MonthYearSelect: FC<MonthYearSelectProps> = ({
@@ -81,14 +60,16 @@ export const MonthYearSelect: FC<MonthYearSelectProps> = ({
       </Select.Trigger>
       <Select.Portal>
         <Select.Content
-          className={selectContentClasses}
+          className={clsx(selectContentClasses, className)}
           position='popper'
           sideOffset={4}
           align='start'
           alignOffset={0}
           avoidCollisions={true}
         >
-          <Select.ScrollUpButton className={scrollButtonClasses}>
+          <Select.ScrollUpButton
+            className={clsx(scrollButtonClasses, className)}
+          >
             <ChevronUpIcon className='h-4 w-4' />
           </Select.ScrollUpButton>
           <Select.Viewport className='p-1'>
@@ -96,13 +77,15 @@ export const MonthYearSelect: FC<MonthYearSelectProps> = ({
               <Select.Item
                 key={value}
                 value={value}
-                className={selectItemClasses}
+                className={clsx(selectItemClasses, className)}
               >
                 <Select.ItemText>{label}</Select.ItemText>
               </Select.Item>
             ))}
           </Select.Viewport>
-          <Select.ScrollDownButton className={scrollButtonClasses}>
+          <Select.ScrollDownButton
+            className={clsx(scrollButtonClasses, className)}
+          >
             <ChevronDownIcon className='h-4 w-4' />
           </Select.ScrollDownButton>
         </Select.Content>
@@ -151,11 +134,13 @@ export const MonthSelect: FC<MonthSelectProps> = ({
       </Select.Trigger>
       <Select.Portal>
         <Select.Content
-          className={selectContentClasses}
+          className={clsx(selectContentClasses, className)}
           position='popper'
           sideOffset={4}
         >
-          <Select.ScrollUpButton className={scrollButtonClasses}>
+          <Select.ScrollUpButton
+            className={clsx(scrollButtonClasses, className)}
+          >
             <ChevronUpIcon className='h-4 w-4' />
           </Select.ScrollUpButton>
           <Select.Viewport className='p-1'>
@@ -163,13 +148,15 @@ export const MonthSelect: FC<MonthSelectProps> = ({
               <Select.Item
                 key={value}
                 value={value}
-                className={selectItemClasses}
+                className={clsx(selectItemClasses, className)}
               >
                 <Select.ItemText>{label}</Select.ItemText>
               </Select.Item>
             ))}
           </Select.Viewport>
-          <Select.ScrollDownButton className={scrollButtonClasses}>
+          <Select.ScrollDownButton
+            className={clsx(scrollButtonClasses, className)}
+          >
             <ChevronDownIcon className='h-4 w-4' />
           </Select.ScrollDownButton>
         </Select.Content>
@@ -180,25 +167,28 @@ export const MonthSelect: FC<MonthSelectProps> = ({
 
 export const YearSelect: FC<YearSelectProps> = ({
   className,
-  optionsBefore = 0,
-  optionsAfter = 5,
+  optionsBefore = 20,
+  optionsAfter = 20,
 }) => {
   const { month, setMonth } = useCalendarContext();
+  const currentYear = month.getFullYear();
 
+  // Create a wide range of years (10 before + current + 10 after = 21 total)
+  // But only show 5 at a time in the viewport
   const options = Array.from(
     { length: optionsBefore + optionsAfter + 1 },
     (_, i) => {
-      const date = addYears(month, i - optionsBefore);
+      const year = currentYear - optionsBefore + i;
       return {
-        value: date.getFullYear().toString(),
-        label: date.getFullYear().toString(),
+        value: year.toString(),
+        label: year.toString(),
       };
     }
   );
 
   return (
     <Select.Root
-      value={month.getFullYear().toString()}
+      value={currentYear.toString()}
       onValueChange={(value) => {
         const newMonth = new Date(month);
         newMonth.setFullYear(parseInt(value));
@@ -216,25 +206,29 @@ export const YearSelect: FC<YearSelectProps> = ({
       </Select.Trigger>
       <Select.Portal>
         <Select.Content
-          className={selectContentClasses}
+          className={clsx(selectContentClasses, className)}
           position='popper'
           sideOffset={4}
         >
-          <Select.ScrollUpButton className={scrollButtonClasses}>
+          <Select.ScrollUpButton
+            className={clsx(scrollButtonClasses, className)}
+          >
             <ChevronUpIcon className='h-4 w-4' />
           </Select.ScrollUpButton>
-          <Select.Viewport className='p-1'>
+          <Select.Viewport className='p-1 max-h-[200px] overflow-y-auto'>
             {options.map(({ value, label }) => (
               <Select.Item
                 key={value}
                 value={value}
-                className={selectItemClasses}
+                className={clsx(selectItemClasses, className)}
               >
                 <Select.ItemText>{label}</Select.ItemText>
               </Select.Item>
             ))}
           </Select.Viewport>
-          <Select.ScrollDownButton className={scrollButtonClasses}>
+          <Select.ScrollDownButton
+            className={clsx(scrollButtonClasses, className)}
+          >
             <ChevronDownIcon className='h-4 w-4' />
           </Select.ScrollDownButton>
         </Select.Content>

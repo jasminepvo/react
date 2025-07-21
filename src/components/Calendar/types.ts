@@ -87,5 +87,7 @@ export interface ActionItemProps extends BaseProps {
     disabled?: boolean;
     /** Icon element for icon variant */
     icon?: ReactNode;
+    /** Position of the button ('left' or 'right') */
+    position?: 'left' | 'right';
 }
 
