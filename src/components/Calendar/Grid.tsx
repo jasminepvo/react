@@ -22,9 +22,11 @@ export const Grid: FC<GridProps> = ({ className, children }) => (
 );
 
 // Helper function to format weekday names
-function formatWeekdayName(fullName: string, format: 'short' | 'med' | 'long') {
+function formatWeekdayName(fullName: string, format: 'short' | 'med' | 'long' | 'full') {
   if (format === 'short') return fullName[0];
   if (format === 'med') return fullName.slice(0, 2);
+  if (format === 'long') return fullName.slice(0, 3);
+  if (format === 'full') return fullName;
   return fullName;
 }
 

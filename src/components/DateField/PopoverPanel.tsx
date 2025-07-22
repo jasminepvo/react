@@ -13,6 +13,7 @@ const PopoverPanel: React.FC<PopoverPanelProps> = ({
   children,
   className = '',
   style,
+  ...props
 }) => {
   const ctx = useDateFieldContext();
 
@@ -29,6 +30,7 @@ const PopoverPanel: React.FC<PopoverPanelProps> = ({
   return (
     <Popover.Portal>
       <Popover.Content
+        {...props}
         className={clsx(
           'z-50 bg-white rounded-lg shadow-lg p-4 mt-2',
           className
