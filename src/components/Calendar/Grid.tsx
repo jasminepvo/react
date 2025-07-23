@@ -6,14 +6,20 @@ import {
   endOfMonth,
   eachDayOfInterval,
   isSameMonth,
-  isSameDay,
   startOfWeek,
   endOfWeek,
   addDays,
-  addMonths,
 } from 'date-fns';
 import { GridProps, GridHeaderProps, GridBodyProps } from './types';
 import { useCalendarContext } from './CalendarContext';
+import {
+  formatWeekdayName,
+  getWeekStartsOnNum,
+  groupDatesIntoWeeks,
+  getDayClasses,
+  calculatePreviousMonthDate,
+  calculateNextMonthDate,
+} from './helpers';
 import React from 'react';
 
 // Grid Component
@@ -27,18 +33,6 @@ export const Grid: FC<GridProps> = ({ className, children }) => (
   </table>
 );
 
-// Helper function to format weekday names
-function formatWeekdayName(
-  fullName: string,
-  format: 'short' | 'med' | 'long' | 'full'
-) {
-  if (format === 'short') return fullName[0];
-  if (format === 'med') return fullName.slice(0, 2);
-  if (format === 'long') return fullName.slice(0, 3);
-  if (format === 'full') return fullName;
-  return fullName;
-}
-
 // Grid Header Component
 export const GridHeader: FC<GridHeaderProps> = ({
   className,
@@ -46,7 +40,7 @@ export const GridHeader: FC<GridHeaderProps> = ({
   weekStartsOn = 'sunday', // Default to 'sunday'
 }) => {
   // Convert weekStartsOn to number for date-fns
-  const weekStartsOnNum = weekStartsOn === 'monday' ? 1 : 0;
+  const weekStartsOnNum = getWeekStartsOnNum(weekStartsOn);
   // Get the start of the week based on weekStartsOn
   const baseDate = startOfWeek(new Date(), { weekStartsOn: weekStartsOnNum });
 
@@ -107,33 +101,7 @@ export const GridBody: FC<GridBodyProps> = ({
           newDate = dates[currentIndex - 1];
         } else {
           // Navigate to previous month
-          const prevMonth = addMonths(month, -1);
-          setMonth(prevMonth);
-
-          // Calculate the corresponding date in the previous month
-          const currentDayOfWeek = currentDate.getDay();
-          const prevMonthStart = startOfMonth(prevMonth);
-          const prevMonthEnd = endOfMonth(prevMonth);
-          const prevMonthCalendarStart = startOfWeek(prevMonthStart, {
-            weekStartsOn: 0,
-          });
-          const prevMonthCalendarEnd = endOfWeek(prevMonthEnd, {
-            weekStartsOn: 0,
-          });
-
-          // Get all dates in the previous month view
-          const prevMonthDates = eachDayOfInterval({
-            start: prevMonthCalendarStart,
-            end: prevMonthCalendarEnd,
-          });
-
-          // Find the same day of week in the last week of previous month
-          const lastWeekStartIndex = prevMonthDates.length - 7;
-          const targetDateIndex = lastWeekStartIndex + currentDayOfWeek;
-
-          if (targetDateIndex >= 0 && targetDateIndex < prevMonthDates.length) {
-            newDate = prevMonthDates[targetDateIndex];
-          }
+          newDate = calculatePreviousMonthDate(currentDate, month, setMonth);
         }
         break;
 
@@ -144,32 +112,7 @@ export const GridBody: FC<GridBodyProps> = ({
           newDate = dates[currentIndex + 1];
         } else {
           // Navigate to next month
-          const nextMonth = addMonths(month, 1);
-          setMonth(nextMonth);
-
-          // Calculate the corresponding date in the next month
-          const currentDayOfWeek = currentDate.getDay();
-          const nextMonthStart = startOfMonth(nextMonth);
-          const nextMonthEnd = endOfMonth(nextMonth);
-          const nextMonthCalendarStart = startOfWeek(nextMonthStart, {
-            weekStartsOn: 0,
-          });
-          const nextMonthCalendarEnd = endOfWeek(nextMonthEnd, {
-            weekStartsOn: 0,
-          });
-
-          // Get all dates in the next month view
-          const nextMonthDates = eachDayOfInterval({
-            start: nextMonthCalendarStart,
-            end: nextMonthCalendarEnd,
-          });
-
-          // Find the same day of week in the first week of next month
-          const targetDateIndex = currentDayOfWeek;
-
-          if (targetDateIndex >= 0 && targetDateIndex < nextMonthDates.length) {
-            newDate = nextMonthDates[targetDateIndex];
-          }
+          newDate = calculateNextMonthDate(currentDate, month, setMonth);
         }
         break;
 
@@ -184,33 +127,7 @@ export const GridBody: FC<GridBodyProps> = ({
           newDate = dates[targetIndex];
         } else {
           // Navigate to previous month
-          const prevMonth = addMonths(month, -1);
-          setMonth(prevMonth);
-
-          // Calculate the corresponding date in the previous month
-          const currentDayOfWeek = currentDate.getDay();
-          const prevMonthStart = startOfMonth(prevMonth);
-          const prevMonthEnd = endOfMonth(prevMonth);
-          const prevMonthCalendarStart = startOfWeek(prevMonthStart, {
-            weekStartsOn: 0,
-          });
-          const prevMonthCalendarEnd = endOfWeek(prevMonthEnd, {
-            weekStartsOn: 0,
-          });
-
-          // Get all dates in the previous month view
-          const prevMonthDates = eachDayOfInterval({
-            start: prevMonthCalendarStart,
-            end: prevMonthCalendarEnd,
-          });
-
-          // Find the same day of week in the last week of previous month
-          const lastWeekStartIndex = prevMonthDates.length - 7;
-          const targetDateIndex = lastWeekStartIndex + currentDayOfWeek;
-
-          if (targetDateIndex >= 0 && targetDateIndex < prevMonthDates.length) {
-            newDate = prevMonthDates[targetDateIndex];
-          }
+          newDate = calculatePreviousMonthDate(currentDate, month, setMonth);
         }
         break;
       }
@@ -226,32 +143,7 @@ export const GridBody: FC<GridBodyProps> = ({
           newDate = dates[targetIndexDown];
         } else {
           // Navigate to next month
-          const nextMonth = addMonths(month, 1);
-          setMonth(nextMonth);
-
-          // Calculate the corresponding date in the next month
-          const currentDayOfWeek = currentDate.getDay();
-          const nextMonthStart = startOfMonth(nextMonth);
-          const nextMonthEnd = endOfMonth(nextMonth);
-          const nextMonthCalendarStart = startOfWeek(nextMonthStart, {
-            weekStartsOn: 0,
-          });
-          const nextMonthCalendarEnd = endOfWeek(nextMonthEnd, {
-            weekStartsOn: 0,
-          });
-
-          // Get all dates in the next month view
-          const nextMonthDates = eachDayOfInterval({
-            start: nextMonthCalendarStart,
-            end: nextMonthCalendarEnd,
-          });
-
-          // Find the same day of week in the first week of next month
-          const targetDateIndex = currentDayOfWeek;
-
-          if (targetDateIndex >= 0 && targetDateIndex < nextMonthDates.length) {
-            newDate = nextMonthDates[targetDateIndex];
-          }
+          newDate = calculateNextMonthDate(currentDate, month, setMonth);
         }
         break;
       }
@@ -293,7 +185,7 @@ export const GridBody: FC<GridBodyProps> = ({
   };
 
   // Convert weekStartsOn to number for date-fns
-  const weekStartsOnNum = weekStartsOn === 'monday' ? 1 : 0;
+  const weekStartsOnNum = getWeekStartsOnNum(weekStartsOn);
 
   // Get the start and end dates for the calendar grid
   const monthStart = startOfMonth(month);
@@ -306,17 +198,8 @@ export const GridBody: FC<GridBodyProps> = ({
   // Generate all dates to display
   const dates = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
 
-  // Group dates into weeks
-  const weeks: Date[][] = [];
-  let currentWeek: Date[] = [];
-
-  dates.forEach((date) => {
-    currentWeek.push(date);
-    if (currentWeek.length === 7) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-  });
+  // Group dates into weeks using helper function
+  const weeks = groupDatesIntoWeeks(dates);
 
   // Focus first date when component mounts or month changes
   React.useEffect(() => {
@@ -340,36 +223,6 @@ export const GridBody: FC<GridBodyProps> = ({
       }
     }
   }, [focusedDate]);
-
-  const getDayClasses = (date: Date) => {
-    const isOutsideMonth = !isSameMonth(date, month);
-    const isSelected = selectedDate ? isSameDay(date, selectedDate) : false;
-    const isPaymentDue = paymentDueDate
-      ? isSameDay(date, paymentDueDate)
-      : false;
-    const isToday = isSameDay(date, new Date());
-    const isFocused = focusedDate ? isSameDay(date, focusedDate) : false;
-
-    const baseClasses = 'aspect-square text-md cursor-pointer';
-
-    return clsx(baseClasses, {
-      // Text colors
-      'bg-pink-100 text-pink-300': isOutsideMonth && !isSelected,
-      'text-white': isSelected,
-      'font-bold': isToday,
-
-      // Background colors
-      'bg-white': !isOutsideMonth && !isSelected && !isFocused,
-      'bg-pink-500': isSelected,
-      'bg-pink-200': isFocused && !isSelected,
-      'hover:bg-pink-500': !isSelected,
-
-      // Borders and special states
-      'outline outline-1 outline-yellow-400': isPaymentDue,
-      'focus:ring-2 focus:ring-pink-500 focus:ring-offset-2': true,
-      'focus:outline-none': true,
-    });
-  };
 
   const handleDateClick = (date: Date) => {
     onSelectDate(date);
@@ -395,17 +248,27 @@ export const GridBody: FC<GridBodyProps> = ({
             }
 
             const isFocused = focusedDate
-              ? isSameDay(date, focusedDate)
+              ? isSameMonth(date, focusedDate) &&
+                date.getDate() === focusedDate.getDate()
               : false;
 
             return (
               <td
                 key={dayIndex}
-                className={clsx(getDayClasses(date))}
+                className={getDayClasses(
+                  date,
+                  month,
+                  selectedDate,
+                  paymentDueDate,
+                  focusedDate
+                )}
                 role='gridcell'
                 data-date={date.toISOString()}
                 aria-selected={
-                  selectedDate ? isSameDay(date, selectedDate) : false
+                  selectedDate
+                    ? isSameMonth(date, selectedDate) &&
+                      date.getDate() === selectedDate.getDate()
+                    : false
                 }
                 aria-label={`${dateFnsFormat(date, 'EEEE, MMMM d, yyyy')}${
                   isOutsideMonth ? ' (outside current month)' : ''
