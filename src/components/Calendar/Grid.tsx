@@ -18,7 +18,9 @@ import React from 'react';
 
 // Grid Component
 export const Grid: FC<GridProps> = ({ className, children }) => (
-  <div className={className}>{children}</div>
+  <table className={className} role='grid' aria-label='Calendar'>
+    {children}
+  </table>
 );
 
 // Helper function to format weekday names
@@ -51,16 +53,20 @@ export const GridHeader: FC<GridHeaderProps> = ({
   });
 
   return (
-    <div
-      className={clsx(
-        'grid grid-cols-7 gap-px bg-gray-100 text-center text-xs text-gray-500 py-2',
-        className
-      )}
-    >
-      {weekDays.map((day, i) => (
-        <div key={i}>{day}</div>
-      ))}
-    </div>
+    <thead>
+      <tr
+        className={clsx(
+          'grid grid-cols-7 gap-px bg-gray-100 text-center text-xs text-gray-500 py-2',
+          className
+        )}
+      >
+        {weekDays.map((day, i) => (
+          <th key={i} scope='col' className='font-normal'>
+            {day}
+          </th>
+        ))}
+      </tr>
+    </thead>
   );
 };
 
@@ -379,21 +385,19 @@ export const GridBody: FC<GridBodyProps> = ({
   };
 
   return (
-    <div
+    <tbody
       className={clsx(
         'grid gap-px bg-gray-100 rounded-lg overflow-hidden',
         className
       )}
-      role='grid'
-      aria-label='Calendar'
     >
       {weeks.map((week, weekIndex) => (
-        <div key={weekIndex} className='grid grid-cols-7 gap-px' role='row'>
+        <tr key={weekIndex} className='grid grid-cols-7 gap-px' role='row'>
           {week.map((date, dayIndex) => {
             const isOutsideMonth = !isSameMonth(date, month);
             if (!showOutsideDays && isOutsideMonth) {
               return (
-                <div
+                <td
                   key={dayIndex}
                   className='aspect-square bg-gray-100 cursor-default'
                   role='gridcell'
@@ -406,13 +410,9 @@ export const GridBody: FC<GridBodyProps> = ({
               : false;
 
             return (
-              <button
+              <td
                 key={dayIndex}
                 className={getDayClasses(date)}
-                onClick={() => handleDateClick(date)}
-                onKeyDown={(e) => handleDateKeyDown(e, date)}
-                disabled={isOutsideMonth && !showOutsideDays}
-                tabIndex={isFocused ? 0 : -1}
                 role='gridcell'
                 data-date={date.toISOString()}
                 aria-selected={
@@ -422,12 +422,20 @@ export const GridBody: FC<GridBodyProps> = ({
                   isOutsideMonth ? ' (outside current month)' : ''
                 }`}
               >
-                {dateFnsFormat(date, 'd')}
-              </button>
+                <button
+                  className='w-full h-full flex items-center justify-center'
+                  onClick={() => handleDateClick(date)}
+                  onKeyDown={(e) => handleDateKeyDown(e, date)}
+                  disabled={isOutsideMonth && !showOutsideDays}
+                  tabIndex={isFocused ? 0 : -1}
+                >
+                  {dateFnsFormat(date, 'd')}
+                </button>
+              </td>
             );
           })}
-        </div>
+        </tr>
       ))}
-    </div>
+    </tbody>
   );
 };
