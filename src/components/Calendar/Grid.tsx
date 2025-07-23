@@ -60,10 +60,7 @@ export const GridHeader: FC<GridHeaderProps> = ({
     <thead>
       <tr className={clsx('text-center text-sm py-2 font-normal', className)}>
         {weekDays.map((day, i) => (
-          <th
-            key={i}
-            scope='col'
-          >
+          <th key={i} scope='col'>
             {day}
           </th>
         ))}
@@ -333,18 +330,14 @@ export const GridBody: FC<GridBodyProps> = ({
   }, [month, focusedDate, focusFirstDate]);
 
   // Additional effect to ensure focus is set when calendar opens
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (focusedDate && typeof focusedDate === 'object') {
-      // Small delay to ensure the DOM is updated
-      const timer = setTimeout(() => {
-        const focusedButton = document.querySelector(
-          `button[data-date="${focusedDate.toISOString()}"][tabindex="0"]`
-        ) as HTMLElement;
-        if (focusedButton) {
-          focusedButton.focus();
-        }
-      }, 10); // Slightly longer delay to ensure DOM is ready
-      return () => clearTimeout(timer);
+      const focusedButton = document.querySelector(
+        `button[data-date="${focusedDate.toISOString()}"][tabindex="0"]`
+      ) as HTMLElement;
+      if (focusedButton) {
+        focusedButton.focus();
+      }
     }
   }, [focusedDate]);
 
