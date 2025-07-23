@@ -94,25 +94,17 @@ export const MonthYearSelect: FC<MonthYearSelectProps> = ({
   );
 };
 
-export const MonthSelect: FC<MonthSelectProps> = ({
-  className,
-  optionsBefore = 0,
-  optionsAfter = 11,
-}) => {
+export const MonthSelect: FC<MonthSelectProps> = ({ className }) => {
   const { month, setMonth } = useCalendarContext();
   const currentMonth = month.getMonth();
 
-  const options = Array.from(
-    { length: optionsBefore + optionsAfter + 1 },
-    (_, i) => {
-      const monthIndex = (currentMonth - optionsBefore + i + 12) % 12;
-      const date = new Date(month.getFullYear(), monthIndex, 1);
-      return {
-        value: monthIndex.toString(),
-        label: dateFnsFormat(date, 'MMMM'),
-      };
-    }
-  );
+  const options = Array.from({ length: 12 }, (_, i) => {
+    const date = new Date(month.getFullYear(), i, 1);
+    return {
+      value: i.toString(),
+      label: dateFnsFormat(date, 'MMMM'),
+    };
+  });
 
   return (
     <Select.Root
