@@ -40,7 +40,7 @@ const CalendarPage = () => {
           minDate={new Date('2025-07-01')}
           maxDate={new Date('2025-07-31')}
         >
-          <DateField.Label className='text-lg text-blue-600'>
+          <DateField.Label>
             My Label
           </DateField.Label>
           <DateField.Input placeholder='mm/dd/yyyy'>

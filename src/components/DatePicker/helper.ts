@@ -8,33 +8,33 @@ const INVALID_MSG = "Invalid date range";
  * @returns A specific error message if the date is out of range or excluded, otherwise an empty string.
  */
 export const validateDateInput = ({
-    minDate,
-    maxDate,
-    formattedDate,
-    excludeDates,
-    startDateErrorMessage,
-    endDateErrorMessage,
-    excludeDatesErrorMessage,
+  minDate,
+  maxDate,
+  formattedDate,
+  excludeDates,
+  startDateErrorMessage,
+  endDateErrorMessage,
+  excludeDatesErrorMessage,
 }: ValidateDateInputProps): string => {
-    const typedDate = new Date(formattedDate);
-    const isDateRange = minDate !== maxDate;
-    const isExcludeDates = excludeDates?.some((date: Date) => 
-        new Date(date).getTime() === typedDate.getTime()
-    );
+  const typedDate = new Date(formattedDate);
+  const isDateRange = minDate !== maxDate;
+  const isExcludeDates = excludeDates?.some((date: Date) =>
+    new Date(date).getTime() === typedDate.getTime()
+  );
 
-    if (isDateRange && typedDate < minDate) {
-        return startDateErrorMessage || INVALID_MSG;
-    }
+  if (isDateRange && typedDate < minDate) {
+    return startDateErrorMessage || INVALID_MSG;
+  }
 
-    if (isDateRange && typedDate > maxDate) {
-        return endDateErrorMessage || INVALID_MSG;
-    }
-    
-    if (isExcludeDates) {       
-        return excludeDatesErrorMessage || INVALID_MSG;
-    }
+  if (isDateRange && typedDate > maxDate) {
+    return endDateErrorMessage || INVALID_MSG;
+  }
 
-    return "";
+  if (isExcludeDates) {
+    return excludeDatesErrorMessage || INVALID_MSG;
+  }
+
+  return "";
 }
 
 /**
@@ -43,8 +43,8 @@ export const validateDateInput = ({
  * @returns True if the string is a valid date format, false otherwise.
  */
 export const validDateFormat = (testDate: string): boolean => {
-    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-    return dateRegex.test(testDate);
+  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+  return dateRegex.test(testDate);
 }
 
 /**

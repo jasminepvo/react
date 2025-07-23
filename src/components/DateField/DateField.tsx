@@ -38,25 +38,25 @@ interface DateFieldCompoundComponent extends React.FC<DateFieldBaseProps> {
  * <DateField value={date} onDateChange={setDate}>
  *   <DateField.Label>Select Date</DateField.Label>
  *   <DateField.Input placeholder="Choose a date">
-  *   <DateField.Popover>
-  *     <DateField.Trigger />
-  *     <DateField.PopoverPanel>
-  *       <DateField.Calendar>
-  *         <Calendar.Heading>
-  *           <Calendar.Navigation direction="prev" />
-  *           <Calendar.MonthSelect />
-  *           <Calendar.YearSelect />
-  *           <Calendar.Navigation direction="next" />
-  *         </Calendar.Heading>
-  *         <Calendar.Grid>
-  *           <Calendar.GridHeader />
-  *           <Calendar.GridBody />
-  *         </Calendar.Grid>
-  *         <Calendar.ActionItemButton>Submit</Calendar.ActionItemButton>
-  *       </DateField.Calendar>
-  *     </DateField.PopoverPanel>
-  *   </DateField.Popover>
-  * </DateField.Input>
+ *   <DateField.Popover>
+ *     <DateField.Trigger />
+ *     <DateField.PopoverPanel>
+ *       <DateField.Calendar>
+ *         <Calendar.Heading>
+ *           <Calendar.Navigation direction="prev" />
+ *           <Calendar.MonthSelect />
+ *           <Calendar.YearSelect />
+ *           <Calendar.Navigation direction="next" />
+ *         </Calendar.Heading>
+ *         <Calendar.Grid>
+ *           <Calendar.GridHeader />
+ *           <Calendar.GridBody />
+ *         </Calendar.Grid>
+ *         <Calendar.ActionItemButton>Submit</Calendar.ActionItemButton>
+ *       </DateField.Calendar>
+ *     </DateField.PopoverPanel>
+ *   </DateField.Popover>
+ * </DateField.Input>
  * </DateField>
  * ```
  *
@@ -76,23 +76,23 @@ interface DateFieldCompoundComponent extends React.FC<DateFieldBaseProps> {
  * <DateField value={date} onDateChange={setDate}>
  *   <DateField.Label>Select Date</DateField.Label>
  *   <DateField.Input placeholder="Choose a date">
-  *   <DateField.Popover>
-  *     <DateField.Trigger />
-  *     <DateField.PopoverPanel>
-  *       <DateField.Calendar>
-  *         <Calendar.Heading>
-  *           <Calendar.Navigation direction="prev" />
-  *           <Calendar.MonthSelect />
-  *           <Calendar.YearSelect />
-  *           <Calendar.Navigation direction="next" />
-  *         </Calendar.Heading>
-  *         <Calendar.Grid>
-  *           <Calendar.GridHeader />
-  *           <Calendar.GridBody />
-  *         </Calendar.Grid>
-  *       </DateField.Calendar>
-  *     </DateField.PopoverPanel>
-  *   </DateField.Popover>
+ *   <DateField.Popover>
+ *     <DateField.Trigger />
+ *     <DateField.PopoverPanel>
+ *       <DateField.Calendar>
+ *         <Calendar.Heading>
+ *           <Calendar.Navigation direction="prev" />
+ *           <Calendar.MonthSelect />
+ *           <Calendar.YearSelect />
+ *           <Calendar.Navigation direction="next" />
+ *         </Calendar.Heading>
+ *         <Calendar.Grid>
+ *           <Calendar.GridHeader />
+ *           <Calendar.GridBody />
+ *         </Calendar.Grid>
+ *       </DateField.Calendar>
+ *     </DateField.PopoverPanel>
+ *   </DateField.Popover>
  *   </DateField.Input>
  * </DateField>
  * @params {string} [className] - Optional class name for styling

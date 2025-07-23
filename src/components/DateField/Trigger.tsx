@@ -33,7 +33,7 @@ const Trigger: React.FC<TriggerProps> = ({ className = '', style }) => {
       <button
         type='button'
         className={clsx(
-          'flex-shrink-0 p-2 focus:outline-none',
+          'flex-shrink-0 p-2 focus:ring-2 focus:ring-pink-500',
           {
             'text-pink-500 hover:text-pink-700': !hasError,
             'text-red-500 hover:text-red-700': hasError,
