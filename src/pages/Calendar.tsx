@@ -40,9 +40,7 @@ const CalendarPage = () => {
           minDate={new Date('2025-07-01')}
           maxDate={new Date('2025-07-31')}
         >
-          <DateField.Label>
-            My Label
-          </DateField.Label>
+          <DateField.Label>My Label</DateField.Label>
           <DateField.Input placeholder='mm/dd/yyyy'>
             <DateField.Popover>
               <DateField.Trigger />
@@ -100,13 +98,9 @@ const CalendarPage = () => {
             </div>
           </Calendar.Heading>
 
-          <Calendar.Grid className='p-4'>
-            <Calendar.GridHeader
-              className='mb-2'
-              weekdayChar='short'
-              weekStartsOn='monday'
-            />
-            <Calendar.GridBody showOutsideDays weekStartsOn='monday' />
+          <Calendar.Grid className='p-4' weekStartsOn='monday'>
+            <Calendar.GridHeader className='mb-2' weekdayChar='short' />
+            <Calendar.GridBody showOutsideDays />
           </Calendar.Grid>
 
           <Calendar.Legend>
@@ -131,6 +125,26 @@ const CalendarPage = () => {
         <p>Selected Date: {selectedDate?.toLocaleDateString()}</p>
       </div>
 
+      {/* Saturday Calendar Example */}
+      <div className='max-w-md mx-auto mt-8'>
+        <h2 className='text-xl font-bold mb-4'>Saturday Start Calendar</h2>
+        <Calendar
+          selectedDate={selectedDate}
+          onSelectDate={setSelectedDate}
+          className='border rounded p-4 bg-blue-200'
+        >
+          <Calendar.Heading className='flex items-center justify-between mb-4 bg-blue-500 p-4 rounded-t-lg'>
+            <Calendar.Navigation direction='prev' />
+            <Calendar.MonthYearSelect />
+            <Calendar.Navigation direction='next' />
+          </Calendar.Heading>
+          <Calendar.Grid weekStartsOn='saturday'>
+            <Calendar.GridHeader className='mb-2' weekdayChar='short' />
+            <Calendar.GridBody showOutsideDays />
+          </Calendar.Grid>
+        </Calendar>
+      </div>
+
       {/* Basic Calendar */}
       <div className='max-w-md mx-auto mt-8'>
         <h2 className='text-xl font-bold mb-4'>Basic Calendar</h2>
@@ -146,13 +160,9 @@ const CalendarPage = () => {
             <Calendar.MonthSelect optionsBefore={6} optionsAfter={5} />
             <Calendar.YearSelect optionsAfter={10} />
           </Calendar.Heading>
-          <Calendar.Grid>
-            <Calendar.GridHeader
-              className='mb-2'
-              weekdayChar='short'
-              weekStartsOn='monday'
-            />
-            <Calendar.GridBody weekStartsOn='monday' showOutsideDays={false} />
+          <Calendar.Grid weekStartsOn='monday'>
+            <Calendar.GridHeader className='mb-2' weekdayChar='short' />
+            <Calendar.GridBody showOutsideDays={false} />
           </Calendar.Grid>
         </Calendar>
       </div>

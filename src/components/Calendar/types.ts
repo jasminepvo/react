@@ -26,16 +26,16 @@ export interface CalendarProps extends BaseProps {
 export interface GridBodyProps extends BaseProps {
     /** Whether to show days from previous/next months */
     showOutsideDays?: boolean;
-    /** Which day the week starts on ('sunday' or 'monday') */
-    weekStartsOn?: 'sunday' | 'monday';
+    /** Which day the week starts on ('sunday', 'monday', or 'saturday') */
+    weekStartsOn?: 'sunday' | 'monday' | 'saturday';
 }
 
 /** Properties for the calendar grid header component */
 export interface GridHeaderProps extends BaseProps {
     /** Format for weekday names: 'short' (1 char), 'med' (2 chars), or 'long' (full name) */
     weekdayChar?: 'short' | 'med' | 'long';
-    /** Which day the week starts on ('sunday' or 'monday') */
-    weekStartsOn?: 'sunday' | 'monday';
+    /** Which day the week starts on ('sunday', 'monday', or 'saturday') */
+    weekStartsOn?: 'sunday' | 'monday' | 'saturday';
 }
 
 /** Properties for the main grid container component */
@@ -44,6 +44,8 @@ export interface GridProps extends BaseProps {
     outsideDayClassName?: string;
     /** Whether to show days from previous/next months */
     showOutsideDays?: boolean;
+    /** Which day the week starts on ('sunday', 'monday', or 'saturday') */
+    weekStartsOn?: 'sunday' | 'monday' | 'saturday';
 }
 
 /** Properties for legend items showing date types */

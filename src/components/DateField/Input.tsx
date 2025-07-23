@@ -16,6 +16,18 @@ interface InputProps {
   children?: ReactNode; // For the trigger and popover content
 }
 
+/**
+ * @description Input component for DateField
+ * @param {InputProps} props - The props for the Input component
+ * @param {string} props.placeholder - The placeholder of the Input component
+ * @param {string} props.name - The name of the Input component
+ * @param {string} props.id - The id of the Input component
+ * @param {string} props.className - The className of the Input component
+ * @param {React.CSSProperties} props.style - The style of the Input component
+ * @param {React.ReactNode} props.children - The children of the Input component
+ * @returns {React.ReactNode} The Input component
+ */
+
 const Input: React.FC<InputProps> = ({
   placeholder = 'Select date',
   name,

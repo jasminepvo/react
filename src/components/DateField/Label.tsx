@@ -7,6 +7,15 @@ interface LabelProps extends React.PropsWithChildren {
   className?: string;
 }
 
+/**
+ * @description Label component for DateField
+ * @param {LabelProps} props - The props for the Label component
+ * @param {React.ReactNode} props.children - The children of the Label component
+ * @param {boolean} props.required - Whether the field is required
+ * @param {string} props.className - The className of the Label component
+ * @returns {React.ReactNode} The Label component
+ */
+
 const Label: React.FC<LabelProps> = ({
   children,
   required,

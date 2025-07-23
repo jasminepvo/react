@@ -8,6 +8,14 @@ interface TriggerProps {
   style?: React.CSSProperties;
 }
 
+/**
+ * @description Trigger component for DateField
+ * @param {TriggerProps} props - The props for the Trigger component
+ * @param {string} props.className - The className of the Trigger component
+ * @param {React.CSSProperties} props.style - The style of the Trigger component
+ * @returns {React.ReactNode} The Trigger component
+ */
+
 const Trigger: React.FC<TriggerProps> = ({ className = '', style }) => {
   const ctx = useDateFieldContext();
 
