@@ -81,6 +81,7 @@ const Input: React.FC<InputProps> = ({
         disabled={ctx.disabled}
         name={name}
         id={id}
+        required={ctx.required}
         readOnly={false}
         aria-invalid={hasError}
         aria-describedby={hasError ? `${id || name}-error` : undefined}
