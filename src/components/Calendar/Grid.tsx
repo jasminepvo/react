@@ -58,12 +58,11 @@ export const GridHeader: FC<GridHeaderProps> = ({
 
   return (
     <thead>
-      <tr className={clsx('bg-gray-100', className)}>
+      <tr className={clsx('text-center text-sm py-2 font-normal', className)}>
         {weekDays.map((day, i) => (
           <th
             key={i}
             scope='col'
-            className='text-center text-xs text-gray-500 py-2 font-normal'
           >
             {day}
           </th>
@@ -339,7 +338,7 @@ export const GridBody: FC<GridBodyProps> = ({
       // Small delay to ensure the DOM is updated
       const timer = setTimeout(() => {
         const focusedButton = document.querySelector(
-          `[data-date="${focusedDate.toISOString()}"][tabindex="0"]`
+          `button[data-date="${focusedDate.toISOString()}"][tabindex="0"]`
         ) as HTMLElement;
         if (focusedButton) {
           focusedButton.focus();
@@ -420,11 +419,12 @@ export const GridBody: FC<GridBodyProps> = ({
                 }`}
               >
                 <button
-                  className='w-full h-full p-1 my-1 flex items-center justify-center'
+                  className='w-full h-full flex items-center justify-center'
                   onClick={() => handleDateClick(date)}
                   onKeyDown={(e) => handleDateKeyDown(e, date)}
                   disabled={isOutsideMonth && !showOutsideDays}
                   tabIndex={isFocused ? 0 : -1}
+                  data-date={date.toISOString()}
                 >
                   {dateFnsFormat(date, 'd')}
                 </button>
