@@ -18,7 +18,11 @@ import React from 'react';
 
 // Grid Component
 export const Grid: FC<GridProps> = ({ className, children }) => (
-  <table className={className} role='grid' aria-label='Calendar'>
+  <table
+    className={clsx('w-full border-collapse', className)}
+    role='grid'
+    aria-label='Calendar'
+  >
     {children}
   </table>
 );
@@ -54,14 +58,13 @@ export const GridHeader: FC<GridHeaderProps> = ({
 
   return (
     <thead>
-      <tr
-        className={clsx(
-          'grid grid-cols-7 gap-px bg-gray-100 text-center text-xs text-gray-500 py-2',
-          className
-        )}
-      >
+      <tr className={clsx('bg-gray-100', className)}>
         {weekDays.map((day, i) => (
-          <th key={i} scope='col' className='font-normal'>
+          <th
+            key={i}
+            scope='col'
+            className='text-center text-xs text-gray-500 py-2 font-normal'
+          >
             {day}
           </th>
         ))}
@@ -355,8 +358,7 @@ export const GridBody: FC<GridBodyProps> = ({
     const isToday = isSameDay(date, new Date());
     const isFocused = focusedDate ? isSameDay(date, focusedDate) : false;
 
-    const baseClasses =
-      'aspect-square flex items-center justify-center text-md cursor-pointer';
+    const baseClasses = 'aspect-square text-md cursor-pointer';
 
     return clsx(baseClasses, {
       // Text colors
@@ -385,21 +387,16 @@ export const GridBody: FC<GridBodyProps> = ({
   };
 
   return (
-    <tbody
-      className={clsx(
-        'grid gap-px bg-gray-100 rounded-lg overflow-hidden',
-        className
-      )}
-    >
+    <tbody className={clsx('', className)}>
       {weeks.map((week, weekIndex) => (
-        <tr key={weekIndex} className='grid grid-cols-7 gap-px' role='row'>
+        <tr key={weekIndex} role='row'>
           {week.map((date, dayIndex) => {
             const isOutsideMonth = !isSameMonth(date, month);
             if (!showOutsideDays && isOutsideMonth) {
               return (
                 <td
                   key={dayIndex}
-                  className='aspect-square bg-gray-100 cursor-default'
+                  className='aspect-square bg-gray-100 cursor-default w-[14.2857%]'
                   role='gridcell'
                 />
               );
@@ -412,7 +409,7 @@ export const GridBody: FC<GridBodyProps> = ({
             return (
               <td
                 key={dayIndex}
-                className={getDayClasses(date)}
+                className={clsx(getDayClasses(date))}
                 role='gridcell'
                 data-date={date.toISOString()}
                 aria-selected={
@@ -423,7 +420,7 @@ export const GridBody: FC<GridBodyProps> = ({
                 }`}
               >
                 <button
-                  className='w-full h-full flex items-center justify-center'
+                  className='w-full h-full p-1 my-1 flex items-center justify-center'
                   onClick={() => handleDateClick(date)}
                   onKeyDown={(e) => handleDateKeyDown(e, date)}
                   disabled={isOutsideMonth && !showOutsideDays}
