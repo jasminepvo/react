@@ -22,7 +22,10 @@ export const Grid: FC<GridProps> = ({ className, children }) => (
 );
 
 // Helper function to format weekday names
-function formatWeekdayName(fullName: string, format: 'short' | 'med' | 'long' | 'full') {
+function formatWeekdayName(
+  fullName: string,
+  format: 'short' | 'med' | 'long' | 'full'
+) {
   if (format === 'short') return fullName[0];
   if (format === 'med') return fullName.slice(0, 2);
   if (format === 'long') return fullName.slice(0, 3);
@@ -80,12 +83,6 @@ export const GridBody: FC<GridBodyProps> = ({
     onSubmit,
   } = useCalendarContext();
 
-  // Safety checks for context functions
-  const safeSetFocusedDate = setFocusedDate || (() => {});
-  const safeFocusFirstDate = focusFirstDate || (() => {});
-  const safeSetMonth = setMonth || (() => {});
-  const safeOnSubmit = onSubmit || (() => {});
-
   // Keyboard navigation handler
   const handleDateKeyDown = (event: React.KeyboardEvent, currentDate: Date) => {
     const dates = getCalendarDates();
@@ -106,7 +103,7 @@ export const GridBody: FC<GridBodyProps> = ({
         } else {
           // Navigate to previous month
           const prevMonth = addMonths(month, -1);
-          safeSetMonth(prevMonth);
+          setMonth(prevMonth);
 
           // Calculate the corresponding date in the previous month
           const currentDayOfWeek = currentDate.getDay();
@@ -143,7 +140,7 @@ export const GridBody: FC<GridBodyProps> = ({
         } else {
           // Navigate to next month
           const nextMonth = addMonths(month, 1);
-          safeSetMonth(nextMonth);
+          setMonth(nextMonth);
 
           // Calculate the corresponding date in the next month
           const currentDayOfWeek = currentDate.getDay();
@@ -183,7 +180,7 @@ export const GridBody: FC<GridBodyProps> = ({
         } else {
           // Navigate to previous month
           const prevMonth = addMonths(month, -1);
-          safeSetMonth(prevMonth);
+          setMonth(prevMonth);
 
           // Calculate the corresponding date in the previous month
           const currentDayOfWeek = currentDate.getDay();
@@ -225,7 +222,7 @@ export const GridBody: FC<GridBodyProps> = ({
         } else {
           // Navigate to next month
           const nextMonth = addMonths(month, 1);
-          safeSetMonth(nextMonth);
+          setMonth(nextMonth);
 
           // Calculate the corresponding date in the next month
           const currentDayOfWeek = currentDate.getDay();
@@ -263,12 +260,12 @@ export const GridBody: FC<GridBodyProps> = ({
       case 'Escape':
         event.preventDefault();
         // Close popover if we're in a DateField context
-        safeOnSubmit();
+        onSubmit?.();
         break;
 
       case 'Home':
         event.preventDefault();
-        safeFocusFirstDate();
+        focusFirstDate();
         return;
 
       case 'End': {
@@ -276,7 +273,7 @@ export const GridBody: FC<GridBodyProps> = ({
         // Focus last date
         const lastDate = dates[dates.length - 1];
         if (lastDate) {
-          safeSetFocusedDate(lastDate);
+          setFocusedDate(lastDate);
         }
         return;
       }
@@ -286,7 +283,7 @@ export const GridBody: FC<GridBodyProps> = ({
     }
 
     if (newDate) {
-      safeSetFocusedDate(newDate);
+      setFocusedDate(newDate);
     }
   };
 
@@ -320,12 +317,12 @@ export const GridBody: FC<GridBodyProps> = ({
   React.useEffect(() => {
     if (
       !focusedDate &&
-      safeFocusFirstDate &&
-      typeof safeFocusFirstDate === 'function'
+      focusFirstDate &&
+      typeof focusFirstDate === 'function'
     ) {
-      safeFocusFirstDate();
+      focusFirstDate();
     }
-  }, [month, focusedDate, safeFocusFirstDate]);
+  }, [month, focusedDate, focusFirstDate]);
 
   // Additional effect to ensure focus is set when calendar opens
   React.useEffect(() => {
@@ -376,8 +373,8 @@ export const GridBody: FC<GridBodyProps> = ({
 
   const handleDateClick = (date: Date) => {
     onSelectDate(date);
-    if (safeSetFocusedDate && typeof safeSetFocusedDate === 'function') {
-      safeSetFocusedDate(date);
+    if (setFocusedDate && typeof setFocusedDate === 'function') {
+      setFocusedDate(date);
     }
   };
 
