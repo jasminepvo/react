@@ -16,7 +16,7 @@ export const Navigation: React.FC<NavigationButtonProps> = ({
   };
 
   const buttonClasses = clsx(
-    'p-2 text-white hover:text-black transition-colors',
+    'p-2 text-white hover:text-black transition-colors cursor-pointer',
     className
   );
 

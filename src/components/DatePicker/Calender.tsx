@@ -30,7 +30,7 @@ export const Calendar = ({
         ? 'after:absolute after:top-10 after:bottom-0 after:w-[1px] after:bg-red-200 after:left-1/2'
         : ''
     ),
-    day: 'h-10 w-10 text-brown/70 text-base p-0 font-light aria-selected:opacity-100 hover:bg-gray/20 pointer rounded-lg',
+    day: 'h-10 w-10 text-brown/70 text-base p-0 font-light aria-selected:opacity-100 hover:bg-gray/20 cursor-pointer rounded-lg',
     day_button: 'h-10 w-10',
     month_grid: 'w-[100%]',
     month_caption: 'text-base text-brown',

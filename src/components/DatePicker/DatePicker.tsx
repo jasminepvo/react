@@ -212,7 +212,7 @@ const DatePicker = ({
           >
             <Popover.Trigger asChild>
               <button
-                className='absolute -top-1/4 right-3'
+                className='absolute -top-1/4 right-3 cursor-pointer'
                 type='button'
                 aria-label='Open calendar'
                 disabled={isReadOnly}
@@ -270,7 +270,7 @@ const DatePicker = ({
                   <div className='sticky bottom-0 right-0 py-4 w-full bg-cream flex justify-end'>
                     <button
                       type='button'
-                      className='w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush'
+                      className='w-[138px] rounded-md p-4 text-sm font-semibold uppercase text-taupe hover:text-cream hover:bg-blush cursor-pointer'
                       onClick={handleConfirmDate}
                     >
                       Select Date
