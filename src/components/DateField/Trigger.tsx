@@ -26,12 +26,18 @@ const Trigger: React.FC<TriggerProps> = ({ className = '', style }) => {
     // Click handled by Radix UI Popover.Trigger
   };
 
+  const hasError = !!ctx.inputError;
+
   return (
     <Popover.Trigger asChild>
       <button
         type='button'
         className={clsx(
-          'relative-translate-y-1/2 text-pink-500 hover:text-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
+          'flex-shrink-0 p-2 focus:outline-none',
+          {
+            'text-pink-500 hover:text-pink-700': !hasError,
+            'text-red-500 hover:text-red-700': hasError,
+          },
           className
         )}
         aria-label='Open calendar'

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useDateFieldContext } from './DateFieldContext';
 import {
   validateDateInput,
@@ -13,6 +13,7 @@ interface InputProps {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
+  children?: ReactNode; // For the trigger and popover content
 }
 
 const Input: React.FC<InputProps> = ({
@@ -21,6 +22,7 @@ const Input: React.FC<InputProps> = ({
   id,
   className = '',
   style,
+  children,
 }) => {
   const ctx = useDateFieldContext();
 
@@ -53,23 +55,39 @@ const Input: React.FC<InputProps> = ({
     }
   };
 
+  const hasError = !!ctx.inputError;
+
   return (
-    <input
-      ref={ctx.inputRef}
-      type='text'
+    <div
       className={clsx(
-        'w-full px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-pink-400',
+        'relative flex items-center bg-white rounded-lg border',
+        {
+          'border-gray-300 focus-within:border-pink-400 focus-within:ring-2 focus-within:ring-pink-400':
+            !hasError,
+          'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500':
+            hasError,
+        },
         className
       )}
-      value={ctx.inputValue || ''}
-      onChange={handleInputChange}
-      placeholder={placeholder}
-      disabled={ctx.disabled}
-      name={name}
-      id={id}
-      readOnly={false}
       style={style}
-    />
+    >
+      <input
+        ref={ctx.inputRef}
+        type='text'
+        className='flex-1 px-3 py-2 bg-transparent focus:outline-none'
+        value={ctx.inputValue || ''}
+        onChange={handleInputChange}
+        placeholder={placeholder}
+        disabled={ctx.disabled}
+        name={name}
+        id={id}
+        readOnly={false}
+        aria-invalid={hasError}
+        aria-describedby={hasError ? `${id || name}-error` : undefined}
+      />
+
+      {children}
+    </div>
   );
 };
 

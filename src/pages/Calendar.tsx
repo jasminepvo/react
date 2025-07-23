@@ -37,12 +37,13 @@ const CalendarPage = () => {
           value={date}
           onDateChange={setDate}
           className='border border-gray-200 rounded-lg shadow-sm bg-pink-300 mb-40'
+          minDate={new Date('2025-07-01')}
+          maxDate={new Date('2025-07-31')}
         >
           <DateField.Label className='text-lg text-blue-600'>
             My Label
           </DateField.Label>
-          <div className='flex flex-row bg-white rounded-lg'>
-            <DateField.Input placeholder='Pick a date' />
+          <DateField.Input placeholder='mm/dd/yyyy'>
             <DateField.Popover>
               <DateField.Trigger />
               <DateField.PopoverPanel>
@@ -73,8 +74,9 @@ const CalendarPage = () => {
                 </DateField.Calendar>
               </DateField.PopoverPanel>
             </DateField.Popover>
-          </div>
+          </DateField.Input>
 
+          <DateField.Error className='mt-2' />
           <DateField.HelpText className='text-green-500'>
             This is a help text
           </DateField.HelpText>
