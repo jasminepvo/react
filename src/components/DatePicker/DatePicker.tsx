@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import type { JSX } from 'react';
-import { format, parse, isValid } from 'date-fns';
 import * as Popover from '@radix-ui/react-popover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -14,6 +13,8 @@ import {
   getInitialInputError,
   formatDateInput,
   getRequiredFieldError,
+  formatDate,
+  parseDateWithFormat,
 } from './helper';
 import { DatePickerProps, SelectionValue } from './types';
 import clsx from 'clsx';
@@ -52,6 +53,7 @@ const DatePicker = ({
   showOutsideDays = true,
   captionLayout = 'dropdown',
   numberOfMonths = 2,
+  format = 'MM/dd/yyyy',
 }: DatePickerProps): JSX.Element => {
   // The currently selected date (uncontrolled mode)
   const [selectedDate, setSelectedDate] = useState<SelectionValue>(null);
@@ -64,10 +66,10 @@ const DatePicker = ({
     undefined
   );
 
-  // The string value shown in the input field
+  // Use the same format for display and parsing
   const [inputValue, setInputValue] = useState<string>(() => {
     const date = selected || selectedDate;
-    return date ? format(date, 'MM/dd/yyyy') : '';
+    return date ? formatDate(date, format) : '';
   });
 
   // The current error message for the input field
@@ -94,7 +96,7 @@ const DatePicker = ({
       const validationError = validateDateInput({
         minDate: startDate || new Date(0),
         maxDate: endDate || new Date(8640000000000000),
-        formattedDate: format(date, 'MM/dd/yyyy'),
+        formattedDate: formatDate(date, format),
         excludeDates,
         startDateErrorMessage,
         endDateErrorMessage,
@@ -118,7 +120,7 @@ const DatePicker = ({
     }
     onChange?.(confirmedDate);
 
-    setInputValue(confirmedDate ? format(confirmedDate, 'MM/dd/yyyy') : '');
+    setInputValue(confirmedDate ? formatDate(confirmedDate, format) : '');
     // Use helper to get required field error message
     setInputError(getRequiredFieldError(confirmedDate, required, error));
     setOpen(false);
@@ -131,17 +133,15 @@ const DatePicker = ({
     let input = e.target.value;
     setInputError(''); // Clear any previous errors
 
-    // Use helper to format input as MM/DD/YYYY
-    input = formatDateInput(input);
+    // Format input according to the specified format
+    input = formatDateInput(input, format);
+    setInputValue(input);
 
     // Prevent more than 10 characters (MM/DD/YYYY)
     if (input.length <= 10) {
-      setInputValue(input);
-
-      // Try to parse the date if we have enough characters
-      if (input.length === 10 && validDateFormat(input)) {
-        const parsedDate = parse(input, 'MM/dd/yyyy', new Date());
-        if (isValid(parsedDate)) {
+      if (input.length === 10 && validDateFormat(input, format)) {
+        const parsedDate = parseDateWithFormat(input, format);
+        if (parsedDate) {
           const validationError = validateDateInput({
             minDate: startDate || new Date(0),
             maxDate: endDate || new Date(8640000000000000),
@@ -164,7 +164,7 @@ const DatePicker = ({
           }
         } else {
           // Set a custom error message for invalid dates
-          setInputError('Please enter a valid date (MM/DD/YYYY).');
+          setInputError('Please enter a valid date.');
         }
       }
     }

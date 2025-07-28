@@ -9,6 +9,7 @@ import Trigger from './Trigger';
 import Popover from './Popover';
 import PopoverPanel from './PopoverPanel';
 import CalendarSlot from './CalendarSlot';
+import { formatDate } from '../DatePicker/helper';
 
 interface DateFieldCompoundComponent extends React.FC<DateFieldBaseProps> {
   Input: typeof Input;
@@ -131,6 +132,7 @@ const DateField: DateFieldCompoundComponent = ({
   startDateErrorMessage,
   endDateErrorMessage,
   excludeDatesErrorMessage,
+  format = 'MM/dd/yyyy',
 }) => {
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = useState<Date | undefined>();
@@ -138,7 +140,7 @@ const DateField: DateFieldCompoundComponent = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const selectedDate = isControlled ? value : internalValue;
   const [inputValue, setInputValue] = useState<string>(
-    selectedDate ? selectedDate.toLocaleDateString() : ''
+    selectedDate ? formatDate(selectedDate, format) : ''
   );
   const [inputError, setInputError] = useState<string>('');
 
@@ -150,9 +152,9 @@ const DateField: DateFieldCompoundComponent = ({
     (date: Date | undefined) => {
       if (!isControlled) setInternalValue(date);
       onDateChange?.(date);
-      setInputValue(date ? date.toLocaleDateString() : '');
+      setInputValue(date ? formatDate(date, format) : '');
     },
-    [isControlled, onDateChange]
+    [isControlled, onDateChange, format]
   );
 
   /**
@@ -179,6 +181,7 @@ const DateField: DateFieldCompoundComponent = ({
       startDateErrorMessage,
       endDateErrorMessage,
       excludeDatesErrorMessage,
+      format,
     }),
     [
       selectedDate,
@@ -199,6 +202,7 @@ const DateField: DateFieldCompoundComponent = ({
       startDateErrorMessage,
       endDateErrorMessage,
       excludeDatesErrorMessage,
+      format,
     ]
   );
 

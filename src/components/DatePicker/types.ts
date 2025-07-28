@@ -1,4 +1,5 @@
 import { Matcher, DayPicker } from "react-day-picker";
+import { DateFormat } from "./helper";
 
 /** Represents the value that can be selected in the DatePicker component */
 export type SelectionValue = Date | null;
@@ -102,4 +103,6 @@ export interface DatePickerProps {
     startDate?: Date;
     /** Error message for invalid start date */
     startDateErrorMessage?: string;
+    /** Date format for display and parsing (defaults to 'MM/dd/yyyy') */
+    format?: DateFormat;
 }

@@ -9,6 +9,9 @@ export interface BaseProps extends HTMLAttributes<HTMLElement>, AriaAttributes {
     /** Optional child elements */
     children?: ReactNode;
 }
+
+import { DateFormat } from "../DatePicker/helper";
+
 /**
  * Base props shared by DateField and its context.
  */
@@ -43,6 +46,10 @@ export interface DateFieldBaseProps extends HTMLAttributes<HTMLDivElement> {
     style?: React.CSSProperties;
     /** The selected date value (controlled). */
     value?: Date;
+    /** Date format for input and display (defaults to 'MM/dd/yyyy') */
+    format?: DateFormat;
+    /** Array of formats to try when parsing user input (defaults to all supported formats) */
+    parseFormats?: readonly DateFormat[];
 }
 
 /**
@@ -92,6 +99,8 @@ export interface DateFieldContextProps extends Omit<DateFieldBaseProps, 'childre
     style?: React.CSSProperties;
     /** The selected date value (may be controlled or uncontrolled). */
     value?: Date;
+    /** Date format for input and display (defaults to 'MM/dd/yyyy') */
+    format?: DateFormat;
 }
 
 /**
