@@ -49,31 +49,36 @@ const Input: React.FC<InputProps> = ({
     input = formatDateInput(input, format);
     ctx.setInputValue(input);
 
-    if (input.length === 10 && validDateFormat(input, format)) {
-      const parsedDate = parseDateWithFormat(input, format);
-
-      if (parsedDate) {
-        const validationError = validateDateInput({
-          minDate: ctx.minDate!,
-          maxDate: ctx.maxDate!,
-          parsedDate: parsedDate,
-          excludeDates: ctx.excludeDates!,
-          invalidRangeErrorMessage: ctx.invalidRangeErrorMessage,
-          excludeDatesErrorMessage: ctx.excludeDatesErrorMessage,
-        });
-
-        if (validationError) {
-          ctx.setInputError(validationError);
-        } else {
-          ctx.setValue(parsedDate);
-          ctx.setInputError('');
-        }
-      } else {
-        ctx.setInputError('Please enter a valid date.');
-      }
-    } else {
+    // Early return if input is incomplete or invalid format
+    if (input.length !== 10 || !validDateFormat(input, format)) {
       ctx.setInputError('');
+      return;
     }
+
+    const parsedDate = parseDateWithFormat(input, format);
+
+    // Early return if parsing failed
+    if (!parsedDate) {
+      ctx.setInputError('Please enter a valid date.');
+      return;
+    }
+
+    const validationError = validateDateInput({
+      minDate: ctx.minDate!,
+      maxDate: ctx.maxDate!,
+      parsedDate: parsedDate,
+      excludeDates: ctx.excludeDates!,
+      invalidRangeErrorMessage: ctx.invalidRangeErrorMessage,
+      excludeDatesErrorMessage: ctx.excludeDatesErrorMessage,
+    });
+
+    if (validationError) {
+      ctx.setInputError(validationError);
+      return;
+    }
+
+    ctx.setValue(parsedDate);
+    ctx.setInputError('');
   };
 
   const hasError = !!ctx.inputError;

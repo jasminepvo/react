@@ -36,20 +36,25 @@ export const validateDateInput = ({
   invalidRangeErrorMessage,
   excludeDatesErrorMessage,
 }: ValidateDateInputProps): string => {
-  const isDateRange = minDate !== maxDate;
-
+  // Check if date is in exclude list
   const isExcludeDates = excludeDates?.some((date: Date) =>
     new Date(date).getTime() === parsedDate.getTime()
   );
 
-  if (isDateRange && (parsedDate < minDate || parsedDate > maxDate)) {
+  if (isExcludeDates) {
+    return excludeDatesErrorMessage || 'This date is not available for selection';
+  }
+
+  // Check if date is within range (only if there's a range)
+  const isDateRange = minDate !== maxDate;
+  if (!isDateRange) {
+    return "";
+  }
+
+  if (parsedDate < minDate || parsedDate > maxDate) {
     const minDateStr = minDate.toLocaleDateString();
     const maxDateStr = maxDate.toLocaleDateString();
     return invalidRangeErrorMessage || `Date should be between ${minDateStr} and ${maxDateStr}`;
-  }
-
-  if (isExcludeDates) {
-    return excludeDatesErrorMessage || 'This date is not available for selection';
   }
 
   return "";
@@ -115,56 +120,48 @@ export function formatDateInput(value: string, formatStr: DateFormat = 'MM/dd/yy
     return "";
   }
 
-  // Format based on the target format
-  if (formatStr === 'MM/dd/yyyy') {
-    let formatted = "";
-
-    if (digits.length >= 1) {
-      // Month: take first 2 digits
-      const month = digits.slice(0, 2);
-      formatted = month;
-    }
-
-    if (digits.length >= 3) {
-      // Day: take next 2 digits
-      const day = digits.slice(2, 4);
-      formatted = `${formatted}/${day}`;
-    }
-
-    if (digits.length >= 5) {
-      // Year: take next 4 digits
-      const year = digits.slice(4, 8);
-      formatted = `${formatted}/${year}`;
-    }
-
-    // Limit to 10 characters (MM/DD/YYYY)
-    return formatted.slice(0, 10);
-  } else if (formatStr === 'dd/MM/yyyy') {
-    let formatted = "";
-
-    if (digits.length >= 1) {
-      // Day: take first 2 digits
-      const day = digits.slice(0, 2);
-      formatted = day;
-    }
-
-    if (digits.length >= 3) {
-      // Month: take next 2 digits
-      const month = digits.slice(2, 4);
-      formatted = `${formatted}/${month}`;
-    }
-
-    if (digits.length >= 5) {
-      // Year: take next 4 digits
-      const year = digits.slice(4, 8);
-      formatted = `${formatted}/${year}`;
-    }
-
-    // Limit to 10 characters (DD/MM/YYYY)
-    return formatted.slice(0, 10);
+  // Early return for unsupported formats
+  if (formatStr !== 'MM/dd/yyyy' && formatStr !== 'dd/MM/yyyy') {
+    return value;
   }
 
-  return value;
+  let formatted = "";
+
+  if (formatStr === 'MM/dd/yyyy') {
+    // Month: take first 2 digits
+    if (digits.length >= 1) {
+      formatted = digits.slice(0, 2);
+    }
+
+    // Day: take next 2 digits
+    if (digits.length >= 3) {
+      formatted = `${formatted}/${digits.slice(2, 4)}`;
+    }
+
+    // Year: take next 4 digits
+    if (digits.length >= 5) {
+      formatted = `${formatted}/${digits.slice(4, 8)}`;
+    }
+  } else {
+    // dd/MM/yyyy format
+    // Day: take first 2 digits
+    if (digits.length >= 1) {
+      formatted = digits.slice(0, 2);
+    }
+
+    // Month: take next 2 digits
+    if (digits.length >= 3) {
+      formatted = `${formatted}/${digits.slice(2, 4)}`;
+    }
+
+    // Year: take next 4 digits
+    if (digits.length >= 5) {
+      formatted = `${formatted}/${digits.slice(4, 8)}`;
+    }
+  }
+
+  // Limit to 10 characters
+  return formatted.slice(0, 10);
 }
 
 /**

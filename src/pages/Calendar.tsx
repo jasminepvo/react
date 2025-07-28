@@ -39,10 +39,10 @@ const CalendarPage = () => {
           className='border border-gray-200 rounded-lg shadow-sm bg-pink-300 mb-40'
           minDate={new Date('2025-07-01')}
           maxDate={new Date('2025-07-31')}
-          format='dd/MM/yyyy'
+          format='MM/dd/yyyy'
         >
           <DateField.Label>My Label</DateField.Label>
-          <DateField.Input placeholder='dd/mm/yyyy'>
+          <DateField.Input placeholder='mm/dd/yyyy'>
             <DateField.Popover>
               <DateField.Trigger />
               <DateField.PopoverPanel>
