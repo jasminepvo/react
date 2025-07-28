@@ -76,13 +76,36 @@ export function getInitialInputError({
  */
 export function formatDateInput(value: string): string {
   // Remove all non-digit characters
-  let digits = value.replace(/\D/g, "");
-  // Insert slash after MM
-  if (digits.length > 2) digits = digits.slice(0, 2) + '/' + digits.slice(2);
-  // Insert slash after MM/DD
-  if (digits.length > 5) digits = digits.slice(0, 5) + '/' + digits.slice(5, 9);
+  const digits = value.replace(/\D/g, "");
+
+  // Handle empty input
+  if (digits.length === 0) {
+    return "";
+  }
+
+  // Format as MM/DD/YYYY
+  let formatted = "";
+
+  if (digits.length >= 1) {
+    // Month: take first 2 digits
+    const month = digits.slice(0, 2);
+    formatted = month;
+  }
+
+  if (digits.length >= 3) {
+    // Day: take next 2 digits
+    const day = digits.slice(2, 4);
+    formatted = `${formatted}/${day}`;
+  }
+
+  if (digits.length >= 5) {
+    // Year: take next 4 digits
+    const year = digits.slice(4, 8);
+    formatted = `${formatted}/${year}`;
+  }
+
   // Limit to 10 characters (MM/DD/YYYY)
-  return digits.slice(0, 10);
+  return formatted.slice(0, 10);
 }
 
 /**
