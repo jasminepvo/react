@@ -125,39 +125,19 @@ export function formatDateInput(value: string, formatStr: DateFormat = 'MM/dd/yy
     return value;
   }
 
+  // Build formatted string based on digit length
   let formatted = "";
 
-  if (formatStr === 'MM/dd/yyyy') {
-    // Month: take first 2 digits
-    if (digits.length >= 1) {
-      formatted = digits.slice(0, 2);
-    }
+  if (digits.length >= 1) {
+    formatted = digits.slice(0, 2);
+  }
 
-    // Day: take next 2 digits
-    if (digits.length >= 3) {
-      formatted = `${formatted}/${digits.slice(2, 4)}`;
-    }
+  if (digits.length >= 3) {
+    formatted = `${formatted}/${digits.slice(2, 4)}`;
+  }
 
-    // Year: take next 4 digits
-    if (digits.length >= 5) {
-      formatted = `${formatted}/${digits.slice(4, 8)}`;
-    }
-  } else {
-    // dd/MM/yyyy format
-    // Day: take first 2 digits
-    if (digits.length >= 1) {
-      formatted = digits.slice(0, 2);
-    }
-
-    // Month: take next 2 digits
-    if (digits.length >= 3) {
-      formatted = `${formatted}/${digits.slice(2, 4)}`;
-    }
-
-    // Year: take next 4 digits
-    if (digits.length >= 5) {
-      formatted = `${formatted}/${digits.slice(4, 8)}`;
-    }
+  if (digits.length >= 5) {
+    formatted = `${formatted}/${digits.slice(4, 8)}`;
   }
 
   // Limit to 10 characters
