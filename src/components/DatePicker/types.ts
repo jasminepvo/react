@@ -33,20 +33,18 @@ export interface CalendarProps extends Pick<React.ComponentProps<typeof DayPicke
 
 /** Props for validating date input values */
 export interface ValidateDateInputProps {
-    /** Error message to display when end date is invalid */
-    endDateErrorMessage?: string;
     /** Error message to display when date is in excluded dates */
     excludeDatesErrorMessage?: string;
     /** Array of dates that should be excluded from selection */
     excludeDates?: Date[];
-    /** Date string in the specified format */
-    formattedDate: string;
+    /** Parsed Date object to validate */
+    parsedDate: Date;
     /** Maximum allowed date */
     maxDate: Date;
     /** Minimum allowed date */
     minDate: Date;
-    /** Error message to display when start date is invalid */
-    startDateErrorMessage?: string;
+    /** Error message to display when date is outside valid range */
+    invalidRangeErrorMessage?: string;
 }
 
 /** Props for the main DatePicker component */

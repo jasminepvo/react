@@ -41,56 +41,37 @@ const Input: React.FC<InputProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value;
-    console.log('🔍 DateField Input - Raw input value:', input);
     ctx.setInputError('');
 
     // Use the format from context, defaulting to MM/dd/yyyy
     const format = ctx.format || 'MM/dd/yyyy';
-    console.log('📅 DateField Input - Using format:', format);
 
     input = formatDateInput(input, format);
-    console.log('✨ DateField Input - Formatted input:', input);
     ctx.setInputValue(input);
 
     if (input.length === 10 && validDateFormat(input, format)) {
-      console.log('✅ DateField Input - Input is complete and valid format');
       const parsedDate = parseDateWithFormat(input, format);
-      console.log('📅 DateField Input - Parsed date:', parsedDate);
 
       if (parsedDate) {
-        console.log('🎯 DateField Input - Date parsed successfully');
         const validationError = validateDateInput({
           minDate: ctx.minDate!,
           maxDate: ctx.maxDate!,
-          formattedDate: input,
+          parsedDate: parsedDate,
           excludeDates: ctx.excludeDates!,
-          startDateErrorMessage: ctx.startDateErrorMessage,
-          endDateErrorMessage: ctx.endDateErrorMessage,
+          invalidRangeErrorMessage: ctx.invalidRangeErrorMessage,
           excludeDatesErrorMessage: ctx.excludeDatesErrorMessage,
         });
-        console.log('🔍 DateField Input - Validation error:', validationError);
 
         if (validationError) {
-          console.log(
-            '❌ DateField Input - Validation failed:',
-            validationError
-          );
           ctx.setInputError(validationError);
         } else {
-          console.log('✅ DateField Input - Validation passed, setting date');
           ctx.setValue(parsedDate);
           ctx.setInputError('');
         }
       } else {
-        console.log('❌ DateField Input - Failed to parse date');
         ctx.setInputError('Please enter a valid date.');
       }
     } else {
-      console.log(
-        '⏳ DateField Input - Input incomplete or invalid format (length:',
-        input.length,
-        ')'
-      );
       ctx.setInputError('');
     }
   };

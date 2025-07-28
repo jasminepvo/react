@@ -26,8 +26,6 @@ export interface DateFieldBaseProps extends HTMLAttributes<HTMLDivElement> {
     excludeDates?: Date[];
     /** Error message for excluded dates. */
     excludeDatesErrorMessage?: string;
-    /** Error message for invalid end date. */
-    endDateErrorMessage?: string;
     /** Help text for the field. */
     helpText?: string;
     /** Label for the field. */
@@ -40,8 +38,8 @@ export interface DateFieldBaseProps extends HTMLAttributes<HTMLDivElement> {
     onDateChange?: (date: Date | undefined) => void;
     /** Whether the field is required. */
     required?: boolean;
-    /** Error message for invalid start date. */
-    startDateErrorMessage?: string;
+    /** Error message for invalid date range. */
+    invalidRangeErrorMessage?: string;
     /** Optional style for the root element. */
     style?: React.CSSProperties;
     /** The selected date value (controlled). */
@@ -63,8 +61,6 @@ export interface DateFieldContextProps extends Omit<DateFieldBaseProps, 'childre
     excludeDates?: Date[];
     /** Error message for excluded dates. */
     excludeDatesErrorMessage?: string;
-    /** Error message for invalid end date. */
-    endDateErrorMessage?: string;
     /** Help text for the field. */
     helpText?: string;
     /** Ref for the input element. */
@@ -93,8 +89,8 @@ export interface DateFieldContextProps extends Omit<DateFieldBaseProps, 'childre
     required?: boolean;
     /** Setter for date value. */
     setValue: (date: Date | undefined) => void;
-    /** Error message for invalid start date. */
-    startDateErrorMessage?: string;
+    /** Error message for invalid date range. */
+    invalidRangeErrorMessage?: string;
     /** Optional style for the root element. */
     style?: React.CSSProperties;
     /** The selected date value (may be controlled or uncontrolled). */

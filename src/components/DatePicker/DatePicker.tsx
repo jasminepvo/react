@@ -96,10 +96,9 @@ const DatePicker = ({
       const validationError = validateDateInput({
         minDate: startDate || new Date(0),
         maxDate: endDate || new Date(8640000000000000),
-        formattedDate: formatDate(date, format),
+        parsedDate: date,
         excludeDates,
-        startDateErrorMessage,
-        endDateErrorMessage,
+        invalidRangeErrorMessage: startDateErrorMessage || endDateErrorMessage,
         excludeDatesErrorMessage,
       });
 
@@ -145,10 +144,9 @@ const DatePicker = ({
           const validationError = validateDateInput({
             minDate: startDate || new Date(0),
             maxDate: endDate || new Date(8640000000000000),
-            formattedDate: input,
+            parsedDate: parsedDate,
             excludeDates,
-            startDateErrorMessage,
-            endDateErrorMessage,
+            invalidRangeErrorMessage: startDateErrorMessage || endDateErrorMessage,
             excludeDatesErrorMessage,
           });
 
