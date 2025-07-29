@@ -11,3 +11,10 @@ body {
         width: var(--radix-select-trigger-width);
     }
 }
+
+.line {
+    border-top: 1px solid #1e140a;
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

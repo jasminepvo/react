@@ -4,9 +4,12 @@ import { TicTacToe } from './components/TicTacToe';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import DatePicker from './components/DatePicker/DatePicker';
+import DateField from './components/DateField/DateField';
+import { Calendar } from './components/Calendar';
 
 function App() {
   const [singleDate, setSingleDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>();
 
   const handleDateChange = (date: Date | null) => {
     setSingleDate(date || undefined);
@@ -33,17 +36,20 @@ function App() {
         </Link>
       </div>
 
-      <hr className='border-t border-gray-300 w-full my-4' />
-      <hr className='border-t border-gray-300 w-full my-4' />
+      <hr className='line' />
+      <hr className='line' />
+
       <Counter />
-      <hr className='border-t border-gray-300 w-full my-4' />
-      <hr className='border-t border-gray-300 w-full my-4' />
+      <hr className='line' />
+      <hr className='line' />
+
       <Hangman />
-      <hr className='border-t border-gray-300 w-full my-4' />
-      <hr className='border-t border-gray-300 w-full my-4' />
+      <hr className='line' />
+      <hr className='line' />
+
       <TicTacToe />
-      <hr className='border-t border-gray-300 w-full my-4' />
-      <hr className='border-t border-gray-300 w-full my-4' />
+      <hr className='line' />
+      <hr className='line' />
 
       <h2 className='text-2xl font-bold text-brown mb-4'>Date Picker</h2>
       <DatePicker
@@ -60,6 +66,54 @@ function App() {
         helpText='This is a help text'
         captionLayout='dropdown'
       />
+
+      <hr className='line' />
+      <hr className='line' />
+
+      <DateField
+        value={date}
+        onDateChange={setDate}
+        className='border border-gray-200 rounded-lg shadow-sm bg-pink-300 mb-40'
+        minDate={new Date('2025-07-01')}
+        maxDate={new Date('2025-07-31')}
+        format='MM/dd/yyyy'
+      >
+        <DateField.Label>My Label</DateField.Label>
+        <DateField.Input placeholder='mm/dd/yyyy'>
+          <DateField.Popover>
+            <DateField.Trigger />
+            <DateField.PopoverPanel className='w-[200px]'>
+              <DateField.Calendar
+                className='border border-gray-200 rounded-lg shadow-sm bg-pink-300'
+                paymentDueDate={paymentDueDate}
+              >
+                <Calendar.Heading>
+                  <Calendar.Navigation direction='prev' />
+                  <Calendar.MonthSelect />
+                  <Calendar.YearSelect />
+                  <Calendar.Navigation direction='next' />
+                </Calendar.Heading>
+                <Calendar.Grid>
+                  <Calendar.GridHeader />
+                  <Calendar.GridBody />
+                </Calendar.Grid>
+                <Calendar.Messaging>
+                  Payments scheduled after 11:59 PM EST will be processed the
+                  next business day
+                </Calendar.Messaging>
+                {/* <div className='flex justify-end mt-4'>
+                  <Calendar.ActionItemButton>Submit</Calendar.ActionItemButton>
+                </div> */}
+              </DateField.Calendar>
+            </DateField.PopoverPanel>
+          </DateField.Popover>
+        </DateField.Input>
+
+        <DateField.Error className='mt-2' />
+        <DateField.HelpText className='text-green-500'>
+          This is a help text
+        </DateField.HelpText>
+      </DateField>
     </div>
   );
 }
