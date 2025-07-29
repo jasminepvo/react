@@ -93,3 +93,8 @@ export interface ActionItemProps extends BaseProps {
     position?: 'left' | 'right';
 }
 
+export type WeekStartsOn = 'sunday' | 'monday' | 'saturday';
+
+export interface CalendarGridContextType {
+    weekStartsOn: WeekStartsOn;
+}

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import clsx from 'clsx';
 import {
   format as dateFnsFormat,
@@ -13,6 +13,10 @@ import {
 import { GridProps, GridHeaderProps, GridBodyProps } from './types';
 import { useCalendarContext } from './CalendarContext';
 import {
+  CalendarGridContext,
+  useCalendarGridContext,
+} from './CalendarGridContext';
+import {
   formatWeekdayName,
   getWeekStartsOnNum,
   groupDatesIntoWeeks,
@@ -23,22 +27,31 @@ import {
 import React from 'react';
 
 // Grid Component
-export const Grid: FC<GridProps> = ({ className, children }) => (
-  <table
-    className={clsx('w-full border-collapse', className)}
-    role='grid'
-    aria-label='Calendar'
-  >
-    {children}
-  </table>
-);
+export const Grid: FC<GridProps> = ({
+  className,
+  children,
+  weekStartsOn = 'sunday',
+}) => {
+  const contextValue = useMemo(() => ({ weekStartsOn }), [weekStartsOn]);
+  return (
+    <table
+      className={clsx('w-full border-collapse', className)}
+      role='grid'
+      aria-label='Calendar'
+    >
+      <CalendarGridContext.Provider value={contextValue}>
+        {children}
+      </CalendarGridContext.Provider>
+    </table>
+  );
+};
 
 // Grid Header Component
 export const GridHeader: FC<GridHeaderProps> = ({
   className,
   weekdayChar = 'med', // Default to 'med'
-  weekStartsOn = 'sunday', // Default to 'sunday'
 }) => {
+  const { weekStartsOn } = useCalendarGridContext();
   // Convert weekStartsOn to number for date-fns
   const weekStartsOnNum = getWeekStartsOnNum(weekStartsOn);
   // Get the start of the week based on weekStartsOn
@@ -67,8 +80,8 @@ export const GridHeader: FC<GridHeaderProps> = ({
 export const GridBody: FC<GridBodyProps> = ({
   className,
   showOutsideDays = true,
-  weekStartsOn = 'sunday', // Default to 'sunday'
 }) => {
+  const { weekStartsOn } = useCalendarGridContext();
   const {
     month,
     selectedDate,
