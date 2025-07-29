@@ -50,8 +50,13 @@ const Input: React.FC<InputProps> = ({
     ctx.setInputValue(input);
 
     // Early return if input is incomplete or invalid format
-    if (input.length !== 10 || !validDateFormat(input, format)) {
+    if (input.length !== 10) {
       ctx.setInputError('');
+      return;
+    }
+
+    if (!validDateFormat(input, format)) {
+      ctx.setInputError('Please enter a valid date.');
       return;
     }
 

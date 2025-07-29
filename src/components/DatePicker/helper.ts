@@ -6,7 +6,7 @@ export const SUPPORTED_FORMATS = ['MM/dd/yyyy', 'dd/MM/yyyy'] as const;
 export type DateFormat = typeof SUPPORTED_FORMATS[number];
 
 /**
- * Parses a date string using the specified format
+ * Parses a date string using the specified format with enhanced validation
  * @param value - The date string to parse
  * @param format - The format to parse with
  * @returns Parsed Date object or null if invalid
@@ -17,7 +17,50 @@ export function parseDateWithFormat(
 ): Date | null {
   try {
     const parsed = parse(value, format, new Date());
-    return isValid(parsed) ? parsed : null;
+
+    // First check if date-fns considers it valid
+    if (!isValid(parsed)) {
+      return null;
+    }
+
+    // Additional validation for invalid date components
+    const parts = value.split('/');
+    if (parts.length !== 3) {
+      return null;
+    }
+
+    const [first, second, third] = parts;
+
+    // Check for invalid components (00/00/0000 should be invalid)
+    if (first === '00' || second === '00' || third === '0000') {
+      return null;
+    }
+
+    // Parse components as numbers for range validation
+    const month = parseInt(first, 10);
+    const day = parseInt(second, 10);
+    const year = parseInt(third, 10);
+
+    // Validate reasonable ranges
+    if (month < 1 || month > 12) {
+      return null;
+    }
+
+    if (day < 1 || day > 31) {
+      return null;
+    }
+
+    if (year < 1900 || year > 2100) {
+      return null;
+    }
+
+    // Additional validation for specific month/day combinations
+    const daysInMonth = new Date(year, month, 0).getDate();
+    if (day > daysInMonth) {
+      return null;
+    }
+
+    return parsed;
   } catch {
     return null;
   }
