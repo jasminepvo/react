@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar } from '../components/Calendar';
-import DateField from '../components/DateField/DateField';
 
 const CalendarPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const paymentDueDate = new Date();
   paymentDueDate.setDate(paymentDueDate.getDate() + 7);
-  const [date, setDate] = useState<Date | undefined>();
 
   return (
     <div className='p-10'>
@@ -33,53 +31,7 @@ const CalendarPage = () => {
 
       <div className='max-w-md mx-auto'>
         {/* Main Calendar */}
-        <DateField
-          value={date}
-          onDateChange={setDate}
-          className='border border-gray-200 rounded-lg shadow-sm bg-pink-300 mb-40'
-          minDate={new Date('2025-07-01')}
-          maxDate={new Date('2025-07-31')}
-          format='MM/dd/yyyy'
-        >
-          <DateField.Label>My Label</DateField.Label>
-          <DateField.Input placeholder='mm/dd/yyyy'>
-            <DateField.Popover>
-              <DateField.Trigger />
-              <DateField.PopoverPanel>
-                <DateField.Calendar
-                  className='border border-gray-200 rounded-lg shadow-sm bg-pink-300'
-                  paymentDueDate={paymentDueDate}
-                  defaultMonth={new Date()}
-                >
-                  <Calendar.Heading>
-                    <Calendar.Navigation direction='prev' />
-                    <Calendar.MonthSelect />
-                    <Calendar.YearSelect />
-                    <Calendar.Navigation direction='next' />
-                  </Calendar.Heading>
-                  <Calendar.Grid>
-                    <Calendar.GridHeader />
-                    <Calendar.GridBody />
-                  </Calendar.Grid>
-                  <Calendar.Messaging>
-                    Payments scheduled after 11:59 PM EST will be processed the
-                    next business day
-                  </Calendar.Messaging>
-                  <div className='flex justify-end mt-4'>
-                    <Calendar.ActionItemButton>
-                      Submit
-                    </Calendar.ActionItemButton>
-                  </div>
-                </DateField.Calendar>
-              </DateField.PopoverPanel>
-            </DateField.Popover>
-          </DateField.Input>
-
-          <DateField.Error className='mt-2' />
-          <DateField.HelpText className='text-green-500'>
-            This is a help text
-          </DateField.HelpText>
-        </DateField>
+        
         <Calendar
           selectedDate={selectedDate}
           paymentDueDate={paymentDueDate}

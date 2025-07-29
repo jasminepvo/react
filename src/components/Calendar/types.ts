@@ -84,13 +84,12 @@ export interface ActionItemProps extends BaseProps {
     /** Click handler for button and icon variants */
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;
     /** Context type */
-    contextType?: 'dateField' | 'calendar';
+    detectedContextType?: 'dateField' | 'calendar';
     /** Whether the action is disabled */
     disabled?: boolean;
     /** Icon element for icon variant */
     icon?: ReactNode;
-    /** Position of the button ('left' or 'right') */
-    position?: 'left' | 'right';
+
 }
 
 export type WeekStartsOn = 'sunday' | 'monday' | 'saturday';

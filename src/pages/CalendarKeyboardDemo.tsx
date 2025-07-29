@@ -124,36 +124,34 @@ const CalendarKeyboardDemo: React.FC = () => {
                 Select a Date
               </DateField.Label>
               <div className='relative'>
-                <DateField.Input
-                  placeholder='MM/DD/YYYY'
-                  className='w-full pr-10'
-                />
-                <DateField.Popover>
-                  <DateField.Trigger />
-                  <DateField.PopoverPanel>
-                    <Calendar
-                      selectedDate={dateFieldDate}
-                      onSelectDate={setDateFieldDate}
-                      defaultMonth={new Date()}
-                      className='p-4'
-                    >
-                      <Calendar.Heading className='flex items-center justify-between mb-4'>
-                        <Calendar.Navigation direction='prev' />
-                        <Calendar.MonthYearSelect />
-                        <Calendar.Navigation direction='next' />
-                      </Calendar.Heading>
-                      <Calendar.Grid>
-                        <Calendar.GridHeader />
-                        <Calendar.GridBody />
-                      </Calendar.Grid>
-                      <div className='flex justify-end mt-4'>
-                        <Calendar.ActionItemButton>
-                          Select Date
-                        </Calendar.ActionItemButton>
-                      </div>
-                    </Calendar>
-                  </DateField.PopoverPanel>
-                </DateField.Popover>
+                <DateField.Input placeholder='MM/DD/YYYY' className='w-full'>
+                  <DateField.Popover>
+                    <DateField.Trigger />
+                    <DateField.PopoverPanel>
+                      <Calendar
+                        selectedDate={dateFieldDate}
+                        onSelectDate={setDateFieldDate}
+                        defaultMonth={new Date()}
+                        className='p-4'
+                      >
+                        <Calendar.Heading className='flex items-center justify-between mb-4'>
+                          <Calendar.Navigation direction='prev' />
+                          <Calendar.MonthYearSelect />
+                          <Calendar.Navigation direction='next' />
+                        </Calendar.Heading>
+                        <Calendar.Grid>
+                          <Calendar.GridHeader />
+                          <Calendar.GridBody />
+                        </Calendar.Grid>
+                        <div className='flex justify-end mt-4'>
+                          <Calendar.ActionItemButton detectedContextType='calendar'>
+                            Select Date
+                          </Calendar.ActionItemButton>
+                        </div>
+                      </Calendar>
+                    </DateField.PopoverPanel>
+                  </DateField.Popover>
+                </DateField.Input>
               </div>
             </DateField>
             <div className='mt-4 p-3 bg-gray-50 rounded'>

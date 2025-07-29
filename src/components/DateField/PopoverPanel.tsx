@@ -11,7 +11,7 @@ interface PopoverPanelProps {
 
 const PopoverPanel: React.FC<PopoverPanelProps> = ({
   children,
-  className = '',
+  className,
   style,
   ...props
 }) => {
@@ -39,10 +39,6 @@ const PopoverPanel: React.FC<PopoverPanelProps> = ({
         onKeyDown={handleKeyDown}
         onEscapeKeyDown={() => ctx.setOpen(false)}
         onInteractOutside={() => ctx.setOpen(false)}
-        onOpenAutoFocus={(event) => {
-          // Prevent default focus behavior and let the Calendar component handle focus
-          event.preventDefault();
-        }}
       >
         {children}
       </Popover.Content>
