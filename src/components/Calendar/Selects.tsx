@@ -30,6 +30,7 @@ export const MonthYearSelect: FC<MonthYearSelectProps> = ({
   className,
   optionsBefore = 0,
   optionsAfter = 12,
+  ...props
 }) => {
   const { month, setMonth } = useCalendarContext();
 
@@ -52,6 +53,7 @@ export const MonthYearSelect: FC<MonthYearSelectProps> = ({
       <Select.Trigger
         className={clsx(selectBaseClasses, 'min-w-[160px]', className)}
         aria-label='Select month and year'
+        {...props}
       >
         <Select.Value />
         <Select.Icon>
@@ -94,7 +96,7 @@ export const MonthYearSelect: FC<MonthYearSelectProps> = ({
   );
 };
 
-export const MonthSelect: FC<MonthSelectProps> = ({ className }) => {
+export const MonthSelect: FC<MonthSelectProps> = ({ className, ...props }) => {
   const { month, setMonth } = useCalendarContext();
   const currentMonth = month.getMonth();
 
@@ -121,6 +123,7 @@ export const MonthSelect: FC<MonthSelectProps> = ({ className }) => {
       <Select.Trigger
         className={clsx(selectBaseClasses, 'min-w-[120px]', className)}
         aria-label='Select month'
+        {...props}
       >
         <Select.Value />
         <Select.Icon>
@@ -164,6 +167,7 @@ export const YearSelect: FC<YearSelectProps> = ({
   className,
   optionsBefore = 20,
   optionsAfter = 20,
+  ...props
 }) => {
   const { month, setMonth } = useCalendarContext();
   const currentYear = month.getFullYear();
@@ -191,6 +195,7 @@ export const YearSelect: FC<YearSelectProps> = ({
       <Select.Trigger
         className={clsx(selectBaseClasses, className)}
         aria-label='Select year'
+        {...props}
       >
         <Select.Value />
         <Select.Icon>
