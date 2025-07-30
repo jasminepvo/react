@@ -83,12 +83,6 @@ const CalendarBase: FC<CalendarProps> = ({
     setFocusedDate(calendarEnd);
   }, [month, setFocusedDate]);
 
-  // Simple keyboard navigation handler - delegates to Grid component
-  const handleKeyDown = useCallback(() => {
-    // This will be handled by the Grid component
-    // We just need to provide the basic context
-  }, []);
-
   const contextValue = useMemo(() => {
     // Ensure all functions are properly defined
     const value = {
@@ -101,7 +95,6 @@ const CalendarBase: FC<CalendarProps> = ({
       defaultMonth,
       focusedDate,
       setFocusedDate: setFocusedDate || (() => {}),
-      handleKeyDown: handleKeyDown || (() => {}),
       focusFirstDate: focusFirstDate || (() => {}),
       focusLastDate: focusLastDate || (() => {}),
       getCalendarDates,
@@ -118,7 +111,6 @@ const CalendarBase: FC<CalendarProps> = ({
     defaultMonth,
     focusedDate,
     setFocusedDate,
-    handleKeyDown,
     focusFirstDate,
     focusLastDate,
     getCalendarDates,

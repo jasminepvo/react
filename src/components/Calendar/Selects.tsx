@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import clsx from 'clsx';
 import { format as dateFnsFormat, addMonths } from 'date-fns';
 import * as Select from '@radix-ui/react-select';
@@ -33,16 +33,16 @@ export const MonthYearSelect: FC<MonthYearSelectProps> = ({
 }) => {
   const { month, setMonth } = useCalendarContext();
 
-  const options = Array.from(
-    { length: optionsBefore + optionsAfter + 1 },
-    (_, i) => {
+  // Memoize the options array to prevent unnecessary recreations
+  const options = useMemo(() => {
+    return Array.from({ length: optionsBefore + optionsAfter + 1 }, (_, i) => {
       const date = addMonths(month, i - optionsBefore);
       return {
         value: date.toISOString(),
         label: dateFnsFormat(date, 'MMMM yyyy'),
       };
-    }
-  );
+    });
+  }, [month, optionsBefore, optionsAfter]);
 
   return (
     <Select.Root
@@ -98,13 +98,16 @@ export const MonthSelect: FC<MonthSelectProps> = ({ className }) => {
   const { month, setMonth } = useCalendarContext();
   const currentMonth = month.getMonth();
 
-  const options = Array.from({ length: 12 }, (_, i) => {
-    const date = new Date(month.getFullYear(), i, 1);
-    return {
-      value: i.toString(),
-      label: dateFnsFormat(date, 'MMMM'),
-    };
-  });
+  // Memoize the options array to prevent unnecessary recreations
+  const options = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      const date = new Date(month.getFullYear(), i, 1);
+      return {
+        value: i.toString(),
+        label: dateFnsFormat(date, 'MMMM'),
+      };
+    });
+  }, [month]);
 
   return (
     <Select.Root
@@ -165,18 +168,16 @@ export const YearSelect: FC<YearSelectProps> = ({
   const { month, setMonth } = useCalendarContext();
   const currentYear = month.getFullYear();
 
-  // Create a wide range of years (10 before + current + 10 after = 21 total)
-  // But only show 5 at a time in the viewport
-  const options = Array.from(
-    { length: optionsBefore + optionsAfter + 1 },
-    (_, i) => {
+  // Memoize the options array to prevent unnecessary recreations
+  const options = useMemo(() => {
+    return Array.from({ length: optionsBefore + optionsAfter + 1 }, (_, i) => {
       const year = currentYear - optionsBefore + i;
       return {
         value: year.toString(),
         label: year.toString(),
       };
-    }
-  );
+    });
+  }, [currentYear, optionsBefore, optionsAfter]);
 
   return (
     <Select.Root

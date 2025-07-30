@@ -11,8 +11,6 @@ export interface CalendarContextValue {
   // Keyboard navigation state
   focusedDate?: Date;
   setFocusedDate: (date: Date | undefined) => void;
-  // Keyboard navigation methods
-  handleKeyDown: (event: React.KeyboardEvent, currentDate: Date) => void;
   // Focus management
   focusFirstDate: () => void;
   focusLastDate: () => void;
