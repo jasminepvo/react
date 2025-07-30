@@ -28,6 +28,8 @@ export interface GridBodyProps extends BaseProps {
     showOutsideDays?: boolean;
     /** Which day the week starts on ('sunday', 'monday', or 'saturday') */
     weekStartsOn?: 'sunday' | 'monday' | 'saturday';
+    /** Custom class name for styling days outside the current month */
+    outsideDayClassName?: string;
 }
 
 /** Properties for the calendar grid header component */
@@ -40,8 +42,6 @@ export interface GridHeaderProps extends BaseProps {
 
 /** Properties for the main grid container component */
 export interface GridProps extends BaseProps {
-    /** Custom class name for styling days outside the current month */
-    outsideDayClassName?: string;
     /** Whether to show days from previous/next months */
     showOutsideDays?: boolean;
     /** Which day the week starts on ('sunday', 'monday', or 'saturday') */
@@ -96,6 +96,5 @@ export type WeekStartsOn = 'sunday' | 'monday' | 'saturday';
 
 export interface CalendarGridContextType {
     weekStartsOn: WeekStartsOn;
-    outsideDayClassName?: string;
     showOutsideDays?: boolean;
 }

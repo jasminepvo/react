@@ -93,9 +93,9 @@ function App() {
                   <Calendar.YearSelect />
                   <Calendar.Navigation direction='next' />
                 </Calendar.Heading>
-                <Calendar.Grid outsideDayClassName='bg-blue-100'>
+                <Calendar.Grid>
                   <Calendar.GridHeader />
-                  <Calendar.GridBody />
+                  <Calendar.GridBody outsideDayClassName='bg-blue-100' />
                 </Calendar.Grid>
                 <Calendar.Messaging>
                   Payments scheduled after 11:59 PM EST will be processed the

@@ -31,16 +31,14 @@ export const Grid: FC<GridProps> = ({
   className,
   children,
   weekStartsOn = 'sunday',
-  outsideDayClassName,
   showOutsideDays,
 }) => {
   const contextValue = useMemo(
     () => ({
       weekStartsOn,
-      outsideDayClassName,
       showOutsideDays,
     }),
-    [weekStartsOn, outsideDayClassName, showOutsideDays]
+    [weekStartsOn, showOutsideDays]
   );
   return (
     <table
@@ -89,8 +87,9 @@ export const GridHeader: FC<GridHeaderProps> = ({
 export const GridBody: FC<GridBodyProps> = ({
   className,
   showOutsideDays = true,
+  outsideDayClassName,
 }) => {
-  const { weekStartsOn, outsideDayClassName } = useCalendarGridContext();
+  const { weekStartsOn } = useCalendarGridContext();
   const {
     month,
     selectedDate,
