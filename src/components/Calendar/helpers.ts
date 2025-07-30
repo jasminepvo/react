@@ -56,6 +56,7 @@ export function groupDatesIntoWeeks(dates: Date[]): Date[][] {
  * @param selectedDate - The currently selected date
  * @param paymentDueDate - The payment due date
  * @param focusedDate - The currently focused date
+ * @param outsideDayClassName - Optional custom class for outside days
  * @returns CSS classes string
  */
 export function getDayClasses(
@@ -63,7 +64,8 @@ export function getDayClasses(
     month: Date,
     selectedDate?: Date,
     paymentDueDate?: Date,
-    focusedDate?: Date
+    focusedDate?: Date,
+    outsideDayClassName?: string
 ): string {
     const isOutsideMonth = !isSameMonth(date, month);
     const isSelected = selectedDate ? isSameDay(date, selectedDate) : false;
@@ -74,8 +76,8 @@ export function getDayClasses(
     const baseClasses = 'aspect-square text-md cursor-pointer';
 
     return clsx(baseClasses, {
-        // Text colors
-        'bg-pink-100 text-pink-300': isOutsideMonth && !isSelected,
+        // Text colors - only apply default outside styling if no custom class provided
+        'bg-pink-100 text-pink-300': isOutsideMonth && !isSelected && !outsideDayClassName,
         'text-white': isSelected,
         'font-bold': isToday,
 
@@ -89,7 +91,7 @@ export function getDayClasses(
         'outline outline-1 outline-yellow-400': isPaymentDue,
         'focus:ring-2 focus:ring-pink-500 focus:ring-offset-2': true,
         'focus:outline-none': true,
-    });
+    }, outsideDayClassName && isOutsideMonth ? outsideDayClassName : '');
 }
 
 /**

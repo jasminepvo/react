@@ -31,8 +31,17 @@ export const Grid: FC<GridProps> = ({
   className,
   children,
   weekStartsOn = 'sunday',
+  outsideDayClassName,
+  showOutsideDays,
 }) => {
-  const contextValue = useMemo(() => ({ weekStartsOn }), [weekStartsOn]);
+  const contextValue = useMemo(
+    () => ({
+      weekStartsOn,
+      outsideDayClassName,
+      showOutsideDays,
+    }),
+    [weekStartsOn, outsideDayClassName, showOutsideDays]
+  );
   return (
     <table
       className={clsx('w-full border-collapse', className)}
@@ -81,7 +90,7 @@ export const GridBody: FC<GridBodyProps> = ({
   className,
   showOutsideDays = true,
 }) => {
-  const { weekStartsOn } = useCalendarGridContext();
+  const { weekStartsOn, outsideDayClassName } = useCalendarGridContext();
   const {
     month,
     selectedDate,
@@ -254,7 +263,10 @@ export const GridBody: FC<GridBodyProps> = ({
               return (
                 <td
                   key={dayIndex}
-                  className='aspect-square bg-gray-100 cursor-default w-[14.2857%]'
+                  className={clsx(
+                    'aspect-square bg-gray-100 cursor-default',
+                    outsideDayClassName
+                  )}
                   role='gridcell'
                 />
               );
@@ -273,7 +285,8 @@ export const GridBody: FC<GridBodyProps> = ({
                   month,
                   selectedDate,
                   paymentDueDate,
-                  focusedDate
+                  focusedDate,
+                  outsideDayClassName
                 )}
                 role='gridcell'
                 data-date={date.toISOString()}

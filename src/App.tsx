@@ -93,7 +93,7 @@ function App() {
                   <Calendar.YearSelect />
                   <Calendar.Navigation direction='next' />
                 </Calendar.Heading>
-                <Calendar.Grid>
+                <Calendar.Grid outsideDayClassName='bg-blue-100'>
                   <Calendar.GridHeader />
                   <Calendar.GridBody />
                 </Calendar.Grid>
